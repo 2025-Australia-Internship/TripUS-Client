@@ -24,44 +24,9 @@ class _HomePageStatet extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('LOGO'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.star),
-            onPressed: () {},
-          )
-        ],
-      ),
       body: Align(
         alignment: Alignment.center,
-        child: SingleChildScrollView(
-          child: Column(children: [
-            Container(
-              width: 123,
-              height: 144,
-              color: Colors.blueGrey,
-              margin: EdgeInsets.fromLTRB(0, 100, 0, 90),
-            ),
-            Container(
-              width: 315,
-              height: 58,
-              color: Colors.blueGrey,
-            ),
-            Container(
-              width: 315,
-              height: 245,
-              color: Colors.blueGrey,
-              margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
-            ),
-            Container(
-              width: 315,
-              height: 245,
-              color: Colors.blueGrey,
-              margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
-            )
-          ]),
-        ),
+        child: SingleChildScrollView(),
       ),
       bottomNavigationBar: BottomAppBar(),
     );
