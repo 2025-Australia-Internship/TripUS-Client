@@ -172,40 +172,57 @@ class _HomePageStatet extends State<HomePage> {
                       width: 315,
                       height: 245,
                       margin: EdgeInsets.only(top: 20),
-                      padding: EdgeInsets.all(15),
+                      padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12.0),
                       ),
-                      child: Column(children: [
-                        Text(
-                          "Today's Pins",
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Today's Pins",
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                      ]),
+                          Container(
+                            height: 170,
+                            color: Color(0xFFD9D9D9),
+                            margin: EdgeInsets.only(top: 10),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       width: 315,
                       height: 245,
                       margin: EdgeInsets.fromLTRB(0, 20, 0, 30),
+                      padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12.0),
                       ),
-                      child: Column(children: [
-                        Text(
-                          "Today's Picture",
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Today's Picture",
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                      ]),
+                          Container(
+                            height: 170,
+                            color: Color(0xFFD9D9D9),
+                            margin: EdgeInsets.only(top: 10),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
