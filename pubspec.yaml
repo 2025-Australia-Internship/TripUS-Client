@@ -39,6 +39,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_svg: ^1.0.0
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -53,6 +55,16 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+
+  fonts:
+  - family: Pretendard
+    fonts:
+      - asset: assets/fonts/Pretendard-Regular.otf
+        weight: 400
+      - asset: assets/fonts/Pretendard-Medium.otf
+        weight: 500
+      - asset: assets/fonts/Pretendard-SemiBold.otf
+        weight: 600
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
