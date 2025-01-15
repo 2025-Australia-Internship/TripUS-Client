@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tripus/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:tripus/pages/landmarks.dart';
+import 'package:tripus/pages/routes.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -7,24 +11,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TripUS',
-      theme: ThemeData(
-        textTheme: TextTheme(
-          bodyLarge: TextStyle(color: Color(0xFF0050FF)), // 일반 텍스트
-          bodyMedium: TextStyle(color: Colors.black), // 보조 텍스트
-          titleLarge: TextStyle(
-              color: Color(0xFF0050FF), fontWeight: FontWeight.bold), // 제목
-        ),
-        iconTheme: IconThemeData(color: Color(0xFFCDE0FF), size: 30),
-      ),
-      home: const HomePage(title: 'HOME'),
+      debugShowCheckedModeBanner: false,
+      home: const HomePage(),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-  final String title;
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageStatet();
@@ -39,13 +33,6 @@ class _HomePageStatet extends State<HomePage> {
     });
   }
 
-  static const List<Widget> _pages = <Widget>[
-    Text('Home Page'),
-    Text('Map Page'),
-    Text('Polaroid Page'),
-    Text('My Page'),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,34 +41,38 @@ class _HomePageStatet extends State<HomePage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _pages[_selectedIndex],
               Container(
+                width: double.infinity,
                 color: Colors.white,
                 child: Column(
                   children: [
-                    SizedBox(height: 20),
+                    SizedBox(height: 40),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left: 20.0),
-                          child: Text(
-                            'LOGO',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 28.0,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
+                          padding: EdgeInsets.only(left: 30),
+                          child: SvgPicture.asset('assets/small_logo.svg'),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(right: 8.0),
-                          child: IconButton(
-                            onPressed: () {
-                              print('star button is clicked');
-                            },
-                            icon: Icon(Icons.account_circle),
-                            iconSize: 35.0,
+                          padding: EdgeInsets.only(right: 30),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 20,
+                                backgroundColor: light08,
+                                child: IconButton(
+                                  onPressed: () {},
+                                  icon: SvgPicture.asset(
+                                    'assets/friends.svg',
+                                    width: 20,
+                                  ),
+                                  color: MainColor,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              CustomButton(),
+                            ],
                           ),
                         ),
                       ],
@@ -90,9 +81,8 @@ class _HomePageStatet extends State<HomePage> {
                       width: 123,
                       height: 144,
                       color: Colors.black12,
-                      margin: EdgeInsets.only(top: 70),
+                      margin: EdgeInsets.only(top: 50),
                     ),
-                    SizedBox(height: 40),
                   ],
                 ),
               ),
@@ -109,64 +99,61 @@ class _HomePageStatet extends State<HomePage> {
                   children: [
                     Container(
                       width: 315,
-                      height: 58,
-                      margin: EdgeInsets.only(top: 80),
-                      padding: EdgeInsets.all(15),
+                      height: 60,
+                      margin: EdgeInsets.only(top: 90),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12.0),
                       ),
-                      child: Row(children: [
-                        Text(
-                          'Landmark',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
+                      child: Row(
+                        children: [
+                          SizedBox(width: 20),
+                          Padding(
+                            padding: EdgeInsets.only(right: 15),
+                            child: Text(
+                              'Landmark',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                              ),
+                            ),
                           ),
-                        ),
-                        Container(
-                          width: 30.0,
-                          height: 30.0,
-                          margin: EdgeInsets.only(left: 30),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFCDE0FF),
-                            shape: BoxShape.circle,
+                          SvgPicture.asset(
+                            'assets/badge01.svg',
+                            width: 35,
                           ),
-                        ),
-                        Container(
-                          width: 30.0,
-                          height: 30.0,
-                          margin: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFCDE0FF),
-                            shape: BoxShape.circle,
+                          SizedBox(width: 5),
+                          SvgPicture.asset(
+                            'assets/badge02.svg',
+                            width: 35,
                           ),
-                        ),
-                        Container(
-                          width: 30.0,
-                          height: 30.0,
-                          margin: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFCDE0FF),
-                            shape: BoxShape.circle,
+                          SizedBox(width: 5),
+                          SvgPicture.asset(
+                            'assets/badge03.svg',
+                            width: 35,
                           ),
-                        ),
-                        Container(
-                          width: 30.0,
-                          height: 30.0,
-                          margin: EdgeInsets.only(left: 10, right: 10),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFCDE0FF),
-                            shape: BoxShape.circle,
+                          SizedBox(width: 5),
+                          SvgPicture.asset(
+                            'assets/badge01.svg',
+                            width: 35,
                           ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: Colors.black,
-                          size: 18.0,
-                        ),
-                      ]),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      const LandmarkPage(),
+                                ),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                            ),
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       width: 315,
@@ -188,10 +175,19 @@ class _HomePageStatet extends State<HomePage> {
                               fontSize: 16,
                             ),
                           ),
-                          Container(
-                            height: 170,
-                            color: Color(0xFFD9D9D9),
-                            margin: EdgeInsets.only(top: 10),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RoutePage()),
+                              );
+                            },
+                            child: Container(
+                              height: 170,
+                              color: Color(0xFFD9D9D9),
+                              margin: EdgeInsets.only(top: 10),
+                            ),
                           ),
                         ],
                       ),
@@ -280,6 +276,107 @@ class _HomePageStatet extends State<HomePage> {
             label: 'My page',
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CustomButton extends StatelessWidget {
+  const CustomButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: 20,
+      backgroundColor: light08,
+      child: IconButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Dialog(
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: SizedBox(
+                  width: 315,
+                  height: 445,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 90),
+                              child: Text(
+                                'Background',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.close),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: GridView.builder(
+                          padding: const EdgeInsets.all(16),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                            childAspectRatio: 0.8,
+                          ),
+                          itemCount: 9,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                Container(
+                                  width: 65,
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    color: gray02,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  'Landmark',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        icon: SvgPicture.asset(
+          'assets/edit.svg',
+          width: 20,
+        ),
       ),
     );
   }
