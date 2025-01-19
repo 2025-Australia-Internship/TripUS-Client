@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'pages/home_page.dart';
+import 'package:tripus/colors.dart';
+
+import 'dart:async';
 
 void main() {
-  //WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
