@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:tripus/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,6 +33,8 @@ class _ProfilePageStatet extends State<ProfilePage> {
       _selectedIndex = index;
     });
   }
+
+  double _height = 65.00;
 
   @override
   Widget build(BuildContext context) {
@@ -109,30 +113,48 @@ class _ProfilePageStatet extends State<ProfilePage> {
               ),
               Container(
                 width: 315,
-                height: 355,
-                padding: EdgeInsets.all(20),
+                height: _height,
+                padding: EdgeInsets.only(left: 20, top: 7),
                 decoration: BoxDecoration(
                   color: light09,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SvgPicture.asset(
-                          'assets/bookmark.svg',
-                          color: dark04,
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'Bookmark',
-                          style: TextStyle(
-                            color: dark04,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
+                        SizedBox(
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/bookmark.svg',
+                                color: dark04,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                'Bookmark',
+                                style: TextStyle(
+                                  color: dark04,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                if (_height != 355) {
+                                  _height = 355;
+                                } else {
+                                  _height = 65;
+                                }
+                              });
+                            },
+                            icon: Icon(Icons.keyboard_arrow_down_rounded))
                       ],
                     )
                   ],
@@ -140,7 +162,6 @@ class _ProfilePageStatet extends State<ProfilePage> {
               ),
               Container(
                 width: 315,
-                height: 355,
                 padding: EdgeInsets.all(20),
                 margin: EdgeInsets.only(top: 15, bottom: 30),
                 decoration: BoxDecoration(
@@ -149,6 +170,7 @@ class _ProfilePageStatet extends State<ProfilePage> {
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
@@ -167,10 +189,43 @@ class _ProfilePageStatet extends State<ProfilePage> {
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    SizedBox(height: 17),
+                    Divider(thickness: 1, height: 1, color: light05),
+                    SizedBox(height: 15),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        '한국어',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 18),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        'English',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
+              Text(
+                '로그아웃',
+                style: TextStyle(
+                  color: Color(0xffFF5555),
+                  fontFamily: 'Pretendard',
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              )
             ],
           ),
         ),
