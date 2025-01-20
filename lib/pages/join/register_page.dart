@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tripus/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tripus/pages/success_page.dart';
+
+import 'package:tripus/pages/join/success_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});

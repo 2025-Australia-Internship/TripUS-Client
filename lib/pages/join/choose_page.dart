@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tripus/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tripus/pages/login_page.dart';
-import 'package:tripus/pages/register_page.dart';
+
+import 'package:tripus/pages/join/login_page.dart';
+import 'package:tripus/pages/join/register_page.dart';
 
 class ChoosePage extends StatefulWidget {
   const ChoosePage({super.key});

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tripus/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:tripus/pages/landmarks.dart';
-import 'package:tripus/pages/routes.dart';
+import 'package:tripus/pages/home/landmarks.dart';
+import 'package:tripus/pages/home/routes.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

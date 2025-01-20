@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tripus/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tripus/pages/profile.dart';
+
+import 'package:tripus/pages/profile/profile.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});

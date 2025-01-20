@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tripus/colors.dart';
-import 'package:tripus/pages/choose_page.dart';
 
-import 'dart:async';
+import 'package:tripus/pages/join/choose_page.dart';
 
 void main() {
   runApp(const MyApp());

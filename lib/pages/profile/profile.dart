@@ -1,22 +1,8 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:tripus/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:tripus/pages/edit_profile.dart';
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const ProfilePage(),
-    );
-  }
-}
+import 'package:tripus/pages/profile/edit_profile.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

@@ -2,20 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tripus/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:tripus/pages/oneday_polaroid.dart';
-import 'package:tripus/pages/edit_polaroid.dart';
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const PolaroidPage(),
-    );
-  }
-}
+import 'package:tripus/pages/polaroid/oneday_polaroid.dart';
+import 'package:tripus/pages/polaroid/edit_polaroid.dart';
 
 class PolaroidPage extends StatefulWidget {
   const PolaroidPage({super.key});
