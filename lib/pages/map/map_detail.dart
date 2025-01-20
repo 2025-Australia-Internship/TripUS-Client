@@ -55,7 +55,7 @@ class _MapDetailState extends State<MapDetail> {
                     right: 30,
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundColor: gray02,
+                      backgroundColor: grey02,
                     ),
                   )
                 ],
@@ -139,7 +139,7 @@ class _MapDetailState extends State<MapDetail> {
                                   onTap: () {},
                                   child: Icon(
                                     Icons.bookmark_border,
-                                    color: gray04,
+                                    color: grey04,
                                     size: 24,
                                   ),
                                 ),
@@ -158,7 +158,7 @@ class _MapDetailState extends State<MapDetail> {
                     ],
                   ),
                   SizedBox(height: 20),
-                  Divider(thickness: 2, height: 1, color: gray03),
+                  Divider(thickness: 2, height: 1, color: grey03),
                   SizedBox(height: 10),
                   Text(
                     'My memories',
@@ -180,7 +180,7 @@ class _MapDetailState extends State<MapDetail> {
                   Container(
                     width: 90,
                     height: 140,
-                    color: gray02,
+                    color: grey02,
                     padding: EdgeInsets.all(10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,7 +188,7 @@ class _MapDetailState extends State<MapDetail> {
                         Container(
                           width: 70,
                           height: 95,
-                          color: gray01,
+                          color: grey01,
                           margin: EdgeInsets.only(bottom: 5),
                         ),
                         Text(

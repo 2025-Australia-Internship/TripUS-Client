@@ -40,7 +40,7 @@ class _AIPageState extends State<AIPage> {
             Container(
               width: 260,
               height: 310,
-              color: gray04,
+              color: grey04,
             ),
             SizedBox(height: 80),
             SizedBox(

@@ -31,12 +31,11 @@ dependencies:
   flutter:
     sdk: flutter
 
+  http: ^0.13.0
   cupertino_icons: ^1.0.8
   flutter_svg: ^1.0.0
+  image_picker: ^0.8.7
 
-  flutter_map: ^0.14.0
-  geolocator: ^9.0.0
-  latlong2: ^0.8.0
 
 dev_dependencies:
   flutter_test:

@@ -66,7 +66,7 @@ class _EditPolaroidState extends State<EditPolaroid> {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(20, 30, 20, 100),
                 child: Container(
-                  color: gray01,
+                  color: grey01,
                 ),
               ),
             ),

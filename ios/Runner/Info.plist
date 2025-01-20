@@ -45,5 +45,20 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- image picker 권한 설정 -->
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera to take pictures.</string>
+	<string>카메라 사용에 필요합니다.</string>
+
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need access to your microphone to record audio.</string>
+	<string>마이크 사용에 필요합니다.</string>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library to select pictures.</string>
+	<string>사진 라이브러리 사용에 필요합니다.</string>
+
+	<key>UILaunchStoryboardName</key>
 </dict>
 </plist>

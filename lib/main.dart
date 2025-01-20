@@ -17,6 +17,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false, // 디버그 배너 제거
+      theme: ThemeData(
+        primaryColor: MainColor,
+        scaffoldBackgroundColor: Colors.white,
+        fontFamily: 'Pretendard',
+      ),
       home: const SplashScreen(),
     );
   }
@@ -31,6 +36,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
+  // 3초 뒤 화면 전환
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 3), () {

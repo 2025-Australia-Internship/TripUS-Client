@@ -348,7 +348,7 @@ class CustomButton extends StatelessWidget {
                                   width: 65,
                                   height: 65,
                                   decoration: BoxDecoration(
-                                    color: gray02,
+                                    color: grey02,
                                     shape: BoxShape.circle,
                                   ),
                                 ),

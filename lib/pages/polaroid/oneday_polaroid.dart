@@ -36,7 +36,7 @@ class _OnedayPolaroidState extends State<OnedayPolaroid> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [gray02, Color(0xff737373)],
+                  colors: [grey02, Color(0xff737373)],
                 ),
               ),
               child: Column(
@@ -63,17 +63,17 @@ class _OnedayPolaroidState extends State<OnedayPolaroid> {
                   Container(
                     width: 105,
                     height: 105,
-                    color: gray02,
+                    color: grey02,
                   ),
                   Container(
                     width: 105,
                     height: 105,
-                    color: gray03,
+                    color: grey03,
                   ),
                   Container(
                     width: 105,
                     height: 105,
-                    color: gray01,
+                    color: grey01,
                     child: IconButton(
                       onPressed: () {},
                       icon: Icon(Icons.add),

@@ -19,9 +19,7 @@ class _ChoosePageState extends State<ChoosePage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
+        color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -43,7 +41,7 @@ class _ChoosePageState extends State<ChoosePage> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  elevation: 0,
+                  elevation: 0, // 버튼 그림자 제거
                   backgroundColor: MainColor,
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   shape: RoundedRectangleBorder(
@@ -51,10 +49,11 @@ class _ChoosePageState extends State<ChoosePage> {
                   ),
                 ),
                 child: Text(
-                  'Login',
+                  'Log in',
                   style: TextStyle(
-                    color: Colors.white,
+                    fontSize: 16,
                     fontWeight: FontWeight.w600,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -71,8 +70,8 @@ class _ChoosePageState extends State<ChoosePage> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  backgroundColor: Color(0xffF1F1F1),
+                  elevation: 0, // 버튼 그림자 제거
+                  backgroundColor: grey01,
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -81,13 +80,14 @@ class _ChoosePageState extends State<ChoosePage> {
                 child: Text(
                   'Join',
                   style: TextStyle(
-                    color: MainColor,
+                    fontSize: 16,
                     fontWeight: FontWeight.w600,
+                    color: MainColor,
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 40),
           ],
         ),
       ),

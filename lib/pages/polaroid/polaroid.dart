@@ -80,7 +80,7 @@ class _PolaroidPageState extends State<PolaroidPage> {
                         width: 92,
                         height: 92,
                         decoration: BoxDecoration(
-                          color: gray04,
+                          color: grey04,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: IconButton(
@@ -108,7 +108,7 @@ class _PolaroidPageState extends State<PolaroidPage> {
                           width: 92,
                           height: 92,
                           decoration: BoxDecoration(
-                            color: gray04,
+                            color: grey04,
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
@@ -125,7 +125,7 @@ class _PolaroidPageState extends State<PolaroidPage> {
                           width: 92,
                           height: 92,
                           decoration: BoxDecoration(
-                            color: gray04,
+                            color: grey04,
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
