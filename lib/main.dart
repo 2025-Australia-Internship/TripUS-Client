@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tripus/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'pages/choose_page.dart';
-
+import 'package:tripus/pages/choose_page.dart';
 import 'dart:async';
 
 void main() {
