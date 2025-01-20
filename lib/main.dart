@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tripus/colors.dart';
 import 'package:tripus/pages/choose_page.dart';
 
-import 'package:tripus/pages/profile.dart';
+import 'dart:async';
 
 void main() {
   runApp(const MyApp());
