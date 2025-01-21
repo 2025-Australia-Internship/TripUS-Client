@@ -18,13 +18,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageStatet extends State<HomePage> {
+  String selectedBackground = 'None';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Align(
         alignment: Alignment.center,
         child: SingleChildScrollView(
-          child: Column(
+          child: Stack(
+            clipBehavior: Clip.none,
             children: [
               Container(
                 width: double.infinity,
@@ -56,34 +59,29 @@ class _HomePageStatet extends State<HomePage> {
                                 ),
                               ),
                               SizedBox(width: 10),
-                              CustomButton(),
+                              CustomButton(
+                                onBackgroundSelected: (String background) {
+                                  setState(() {
+                                    selectedBackground = background;
+                                  });
+                                },
+                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Container(
-                          width: 150,
-                          margin: EdgeInsets.only(top: 40),
-                          child: Image.asset('assets/mascot.png'),
-                        ),
-                        Positioned(
-                          bottom: -50,
-                          child: Image.asset(
-                            'assets/forest.png',
-                            width: 396,
-                          ),
-                        ),
-                      ],
+                    Container(
+                      width: 150,
+                      margin: EdgeInsets.only(top: 50),
+                      child: Image.asset('assets/mascot.png'),
                     ),
                   ],
                 ),
               ),
               Container(
                 width: double.infinity,
+                margin: EdgeInsets.only(top: 280),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -96,7 +94,7 @@ class _HomePageStatet extends State<HomePage> {
                     Container(
                       width: 315,
                       height: 60,
-                      margin: EdgeInsets.only(top: 90),
+                      margin: EdgeInsets.only(top: 80),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12.0),
@@ -105,7 +103,7 @@ class _HomePageStatet extends State<HomePage> {
                         children: [
                           SizedBox(width: 20),
                           Padding(
-                            padding: EdgeInsets.only(right: 15),
+                            padding: EdgeInsets.only(right: 18),
                             child: Text(
                               'Landmark',
                               style: TextStyle(
@@ -115,23 +113,23 @@ class _HomePageStatet extends State<HomePage> {
                               ),
                             ),
                           ),
-                          SvgPicture.asset(
-                            'assets/badge01.svg',
+                          Image.asset(
+                            'assets/badge01.png',
                             width: 35,
                           ),
                           SizedBox(width: 5),
-                          SvgPicture.asset(
-                            'assets/badge02.svg',
+                          Image.asset(
+                            'assets/badge02.png',
                             width: 35,
                           ),
                           SizedBox(width: 5),
-                          SvgPicture.asset(
-                            'assets/badge03.svg',
+                          Image.asset(
+                            'assets/badge03.png',
                             width: 35,
                           ),
                           SizedBox(width: 5),
-                          SvgPicture.asset(
-                            'assets/badge01.svg',
+                          Image.asset(
+                            'assets/badge04.png',
                             width: 35,
                           ),
                           IconButton(
@@ -219,6 +217,14 @@ class _HomePageStatet extends State<HomePage> {
                   ],
                 ),
               ),
+              if (selectedBackground != 'None') // 선택된 배경이 None이 아닐 때만 표시
+                Positioned(
+                  top: 160,
+                  child: Image.asset(
+                    'assets/$selectedBackground.png', // 선택된 배경 경로
+                    width: 400,
+                  ),
+                ),
             ],
           ),
         ),
@@ -283,7 +289,9 @@ class _HomePageStatet extends State<HomePage> {
 
 // 팝업창 구현
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key});
+  final Function(String) onBackgroundSelected;
+
+  const CustomButton({super.key, required this.onBackgroundSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -295,81 +303,8 @@ class CustomButton extends StatelessWidget {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return Dialog(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: SizedBox(
-                  width: 315,
-                  height: 445,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 90),
-                              child: Text(
-                                'Background',
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.close),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: GridView.builder(
-                          padding: const EdgeInsets.all(16),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 16,
-                            mainAxisSpacing: 16,
-                            childAspectRatio: 0.8,
-                          ),
-                          itemCount: 9,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                Container(
-                                  width: 65,
-                                  height: 65,
-                                  decoration: BoxDecoration(
-                                    color: grey02,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                Text(
-                                  'Landmark',
-                                  style: TextStyle(
-                                    fontFamily: 'Pretendard',
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              return BackgroundSelectionDialog(
+                onBackgroundSelected: onBackgroundSelected,
               );
             },
           );
@@ -381,4 +316,124 @@ class CustomButton extends StatelessWidget {
       ),
     );
   }
+}
+
+class BackgroundSelectionDialog extends StatefulWidget {
+  final Function(String) onBackgroundSelected;
+
+  const BackgroundSelectionDialog(
+      {super.key, required this.onBackgroundSelected});
+
+  @override
+  State<BackgroundSelectionDialog> createState() =>
+      _BackgroundSelectionDialogState();
+}
+
+class _BackgroundSelectionDialogState extends State<BackgroundSelectionDialog> {
+  String? selectedBackground;
+
+  final List<BackgroundOption> backgrounds = [
+    BackgroundOption(name: 'None', icon: 'assets/none_icon.png'),
+    BackgroundOption(name: 'Forest', icon: 'assets/forest_icon.png'),
+    BackgroundOption(name: 'Flower', icon: 'assets/flower_icon.png'),
+    BackgroundOption(name: 'Spring', icon: 'assets/spring_icon.png'),
+    BackgroundOption(name: 'Stars', icon: 'assets/stars_icon.png'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: SizedBox(
+        width: 315,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(width: 48),
+                  Text(
+                    'Background',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 5),
+                    child: IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Wrap(
+                spacing: 5,
+                runSpacing: 10,
+                children: backgrounds
+                    .map((background) => GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedBackground = background.name;
+                            });
+                            widget.onBackgroundSelected(background.name);
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            width: 90,
+                            height: 115,
+                            decoration: BoxDecoration(
+                              color: selectedBackground == background.name
+                                  ? grey01
+                                  : Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: EdgeInsets.only(top: 10),
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  background.icon,
+                                  width: 65,
+                                  height: 65,
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  background.name,
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ))
+                    .toList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BackgroundOption {
+  final String name;
+  final String icon;
+
+  BackgroundOption({
+    required this.name,
+    required this.icon,
+  });
 }

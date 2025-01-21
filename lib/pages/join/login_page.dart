@@ -71,6 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 5),
                     TextFormField(
                       controller: _passwordController,
+                      obscureText: true,
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: light08, width: 2.5),
