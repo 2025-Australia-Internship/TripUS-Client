@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tripus/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
+import 'package:tripus/colors.dart';
 import 'package:tripus/pages/join/success_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -15,6 +17,21 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController _textController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+
+  File? _selectedImage; // 선택한 이미지를 저장할 변수
+
+  final ImagePicker _picker = ImagePicker();
+
+  // 이미지 선택 함수
+  Future<void> _pickImage() async {
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +60,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     decoration: BoxDecoration(
                       color: light05,
                       shape: BoxShape.circle,
+                      image: _selectedImage != null
+                          ? DecorationImage(
+                              image: FileImage(_selectedImage!),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
                     ),
                   ),
                   Positioned(
@@ -52,7 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       radius: 20,
                       backgroundColor: Color(0xffD9D9D9),
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: _pickImage,
                         icon: Icon(Icons.camera_alt),
                         color: MainColor,
                         iconSize: 18,
