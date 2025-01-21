@@ -8,6 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:tripus/colors.dart';
+import 'package:tripus/pages/home/home_page.dart';
 import 'package:tripus/pages/join/success_page.dart';
 import 'package:tripus/pages/join/login_page.dart';
 
@@ -25,22 +26,44 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    // AppBar 높이를 계산
+    final appBarHeight = AppBar().preferredSize.height;
+
+    // 화면 전체 높이에서 AppBar와 SafeArea를 제외
+    final bodyHeight = MediaQuery.of(context).size.height -
+        appBarHeight -
+        MediaQuery.of(context).padding.top;
+
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Log in',
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 23),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const HomePage(),
+                ),
+              );
+            },
+            color: dark08,
+            icon: Icon(Icons.close_rounded),
+            iconSize: 25,
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
-          height: MediaQuery.of(context).size.height,
+          height: bodyHeight,
           color: Colors.white,
           child: Column(
             children: [
-              SizedBox(height: 30),
-              Text(
-                'Join',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 23,
-                ),
-              ),
               SizedBox(height: 30),
               Stack(
                 children: [

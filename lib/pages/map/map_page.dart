@@ -22,7 +22,7 @@ class _MapPageState extends State<MapPage> {
       body: FlutterMap(
         options: MapOptions(
           center: LatLng(-37.8136, 144.9631), // 멜버른
-          zoom: 20.0,
+          zoom: 13.0,
         ),
         children: [
           TileLayer(

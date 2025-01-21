@@ -24,23 +24,44 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // AppBar 높이를 계산
+    final appBarHeight = AppBar().preferredSize.height;
+
+    // 화면 전체 높이에서 AppBar와 SafeArea를 제외
+    final bodyHeight = MediaQuery.of(context).size.height -
+        appBarHeight -
+        MediaQuery.of(context).padding.top;
+
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Log in',
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 23),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const HomePage(),
+                ),
+              );
+            },
+            color: dark08,
+            icon: Icon(Icons.close_rounded),
+            iconSize: 25,
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
-          height: MediaQuery.of(context).size.height,
+          height: bodyHeight,
           color: Colors.white,
           child: Column(
             children: [
-              SizedBox(height: 30),
-              Text(
-                'Log in',
-                style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 23,
-                ),
-              ),
               SizedBox(height: 30),
               SizedBox(
                 width: 315,

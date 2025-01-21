@@ -1,33 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:tripus/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class LandmarkPage extends StatefulWidget {
-  const LandmarkPage({super.key});
+import 'package:tripus/colors.dart';
+import 'package:tripus/main.dart';
 
-  @override
-  State<LandmarkPage> createState() => _LandmarkPageState();
-}
+class LandmarkPage extends StatelessWidget {
+  LandmarkPage({super.key});
 
-class _LandmarkPageState extends State<LandmarkPage> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  final List<String> svgPaths = [
-    'assets/badge01.svg',
-    'assets/badge02.svg',
-    'assets/badge03.svg',
-    'assets/badge00.svg',
-    'assets/badge00.svg',
-    'assets/badge00.svg',
-    'assets/badge00.svg',
-    'assets/badge00.svg',
-    'assets/badge00.svg',
+  // 이미지 데이터
+  final List<LandmarkOption> landmarks = [
+    LandmarkOption(name: 'Landmark 1', icon: 'assets/landmark1.png'),
+    LandmarkOption(name: 'Landmark 2', icon: 'assets/landmark2.png'),
+    LandmarkOption(name: 'Landmark 3', icon: 'assets/landmark3.png'),
+    LandmarkOption(name: 'Landmark 4', icon: 'assets/landmark4.png'),
+    LandmarkOption(name: 'Landmark 5', icon: 'assets/landmark5.png'),
   ];
 
   @override
@@ -51,75 +37,62 @@ class _LandmarkPageState extends State<LandmarkPage> {
       body: Container(
         width: double.infinity,
         color: Colors.white,
-        child: GridView.count(
-          crossAxisCount: 3, // 3x3 그리드
-          childAspectRatio: 0.8,
-          children: List.generate(9, (index) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 20),
-                SvgPicture.asset(
-                  svgPaths[index],
-                  width: 100,
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'Ladmark ${index + 1}',
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-                ),
-              ],
+        child: Wrap(
+          spacing: 10, // 가로 간격
+          runSpacing: 15, // 세로 간격
+          alignment: WrapAlignment.center,
+          children: landmarks.map((landmark) {
+            return LandmarkCard(
+              name: landmark.name,
+              iconPath: landmark.icon,
             );
-          }),
+          }).toList(),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/home_icon.svg',
-              width: 24,
-              height: 24,
-              color:
-                  _selectedIndex == 0 ? Color(0xFF0050FF) : Color(0xFFD9D9D9),
-            ),
-            label: 'Home',
+      bottomNavigationBar: const BottomNavigation(),
+    );
+  }
+}
+
+class LandmarkOption {
+  final String name;
+  final String icon;
+
+  LandmarkOption({
+    required this.name,
+    required this.icon,
+  });
+}
+
+class LandmarkCard extends StatelessWidget {
+  final String name;
+  final String iconPath;
+
+  const LandmarkCard({
+    Key? key,
+    required this.name,
+    required this.iconPath,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 100, // 카드 폭
+      child: Column(
+        children: [
+          Image.asset(
+            iconPath,
+            width: 65,
+            height: 65,
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/map_icon.svg',
-              width: 24,
-              height: 24,
-              color:
-                  _selectedIndex == 1 ? Color(0xFF0050FF) : Color(0xFFD9D9D9),
+          SizedBox(height: 10),
+          Text(
+            name,
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
             ),
-            label: 'Map',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/polaroid_icon.svg',
-              width: 24,
-              height: 24,
-              color:
-                  _selectedIndex == 2 ? Color(0xFF0050FF) : Color(0xFFD9D9D9),
-            ),
-            label: 'Polaroid',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/myPage_icon.svg',
-              width: 24,
-              height: 24,
-              color:
-                  _selectedIndex == 3 ? Color(0xFF0050FF) : Color(0xFFD9D9D9),
-            ),
-            label: 'My page',
+            textAlign: TextAlign.center,
           ),
         ],
       ),

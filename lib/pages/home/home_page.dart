@@ -137,7 +137,7 @@ class _HomePageStatet extends State<HomePage> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      const LandmarkPage(),
+                                      LandmarkPage(),
                                 ),
                               );
                             },

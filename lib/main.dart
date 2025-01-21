@@ -8,6 +8,11 @@ import 'package:tripus/colors.dart';
 
 import 'package:tripus/pages/join/choose_page.dart';
 
+import 'package:tripus/pages/home/home_page.dart';
+import 'package:tripus/pages/map/map_page.dart';
+import 'package:tripus/pages/polaroid/polaroid.dart';
+import 'package:tripus/pages/profile/profile.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: 'assets/config/.env');
@@ -63,6 +68,46 @@ class _SplashScreenState extends State<SplashScreen> {
           'assets/Logo.svg',
           width: 300,
         ),
+      ),
+    );
+  }
+}
+
+class BottomNavigation extends StatelessWidget {
+  const BottomNavigation({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 85,
+      color: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildIcon(context, 'assets/home_icon.svg', const HomePage()),
+            _buildIcon(context, 'assets/map_icon.svg', const MapPage()),
+            _buildIcon(
+                context, 'assets/polaroid_icon.svg', const PolaroidPage()),
+            _buildIcon(context, 'assets/myPage_icon.svg', const ProfilePage()),
+          ],
+        ),
+      ),
+    );
+  }
+
+  IconButton _buildIcon(BuildContext context, String iconPath, Widget page) {
+    return IconButton(
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (BuildContext context) => page),
+        );
+      },
+      icon: SvgPicture.asset(
+        iconPath,
+        color: MainColor,
       ),
     );
   }
