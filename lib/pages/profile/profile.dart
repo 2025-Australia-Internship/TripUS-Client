@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tripus/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:tripus/pages/profile/edit_profile.dart';
 
@@ -28,6 +34,51 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageStatet extends State<ProfilePage> {
   double _height = 65.00;
+  String username = '';
+  String email = '';
+  String profileImage = '';
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserProfile();
+  }
+
+  Future<void> loadUserProfile() async {
+    try {
+      final String apiUrl = '${dotenv.env['BASE_URL']}/user/info';
+
+      const storage = FlutterSecureStorage();
+      final accessToken = await storage.read(key: 'jwt');
+
+      if (accessToken == null) {
+        print("access token not found");
+        return;
+      }
+
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {'Authorization': 'Bearer $accessToken'},
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          username = data['username'];
+          email = data['email'];
+          profileImage = data['profile_image'];
+          isLoading = false;
+        });
+      } else {
+        print('Failed to load profile : ${response.statusCode}');
+        setState(() => isLoading = false);
+      }
+    } catch (error) {
+      print('Error loading profile : $error');
+      setState(() => isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,54 +106,62 @@ class _ProfilePageStatet extends State<ProfilePage> {
                   color: light08,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      width: 55,
-                      height: 55,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 25.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                child: isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            'AU-COS',
-                            style: TextStyle(
-                              color: dark04,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
+                          Container(
+                            width: 55,
+                            height: 55,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              image: profileImage.isNotEmpty
+                                  ? DecorationImage(
+                                      image: NetworkImage(profileImage),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : null,
                             ),
                           ),
-                          Text(
-                            'example@example.com',
-                            style: TextStyle(
-                              color: Color(0xff909EB4),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
+                          Padding(
+                            padding: EdgeInsets.only(top: 25.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  username,
+                                  style: TextStyle(
+                                    color: dark04,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                Text(
+                                  email,
+                                  style: TextStyle(
+                                    color: Color(0xff909EB4),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
                             ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      const EditProfilePage(),
+                                ),
+                              );
+                            },
+                            icon: SvgPicture.asset('assets/edit_profile.svg'),
                           ),
                         ],
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                const EditProfilePage(),
-                          ),
-                        );
-                      },
-                      icon: SvgPicture.asset('assets/edit_profile.svg'),
-                    ),
-                  ],
-                ),
               ),
               Container(
                 width: 315,
