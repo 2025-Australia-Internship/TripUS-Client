@@ -57,7 +57,7 @@ class _MapDetailState extends State<MapDetail> {
                       radius: 50,
                       backgroundColor: grey02,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tripus/colors.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:tripus/pages/join/choose_page.dart';
+import 'package:tripus/pages/home/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,9 +21,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
+          color: Colors.white,
           child: Column(
             children: [
               SizedBox(height: 30),
@@ -57,12 +54,9 @@ class _LoginPageState extends State<LoginPage> {
                           borderSide: BorderSide(color: light08, width: 2.5),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.clear_rounded,
-                            color: light03,
-                          ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: light08, width: 2.5),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     ),
@@ -82,26 +76,23 @@ class _LoginPageState extends State<LoginPage> {
                           borderSide: BorderSide(color: light08, width: 2.5),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.clear_rounded,
-                            color: light03,
-                          ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: light08, width: 2.5),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 420),
+              Spacer(),
               SizedBox(
                 width: 315,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (BuildContext context) => const ChoosePage(),
+                        builder: (BuildContext context) => const HomePage(),
                       ),
                     );
                   },
@@ -122,6 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
+              SizedBox(height: 40),
             ],
           ),
         ),

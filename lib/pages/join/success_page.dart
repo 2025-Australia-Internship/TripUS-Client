@@ -18,9 +18,7 @@ class _SuccessPageState extends State<SuccessPage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
+        color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -30,10 +28,7 @@ class _SuccessPageState extends State<SuccessPage> {
               width: 300,
             ),
             SizedBox(height: 10),
-            SvgPicture.asset(
-              'assets/koala.svg',
-              width: 180,
-            ),
+            Image.asset('assets/mascot.png'),
             Spacer(),
             SizedBox(
               width: 315,

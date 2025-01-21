@@ -4,6 +4,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:tripus/pages/profile/edit_profile.dart';
 
+import 'package:tripus/pages/home/home_page.dart';
+import 'package:tripus/pages/map/map_page.dart';
+import 'package:tripus/pages/polaroid/polaroid.dart';
+
+class ProfilePageContent extends StatelessWidget {
+  const ProfilePageContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Home Page Content'),
+    );
+  }
+}
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -12,14 +27,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageStatet extends State<ProfilePage> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   double _height = 65.00;
 
   @override
@@ -216,55 +223,59 @@ class _ProfilePageStatet extends State<ProfilePage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/home_icon.svg',
-              width: 24,
-              height: 24,
-              color:
-                  _selectedIndex == 0 ? Color(0xFF0050FF) : Color(0xFFD9D9D9),
-            ),
-            label: 'Home',
+      bottomNavigationBar: Container(
+        width: double.infinity,
+        height: 85,
+        color: Colors.white,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => const HomePage(),
+                    ),
+                  );
+                },
+                icon: SvgPicture.asset('assets/home_icon.svg'),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => const MapPage(),
+                    ),
+                  );
+                },
+                icon: SvgPicture.asset('assets/map_icon.svg'),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => const PolaroidPage(),
+                    ),
+                  );
+                },
+                icon: SvgPicture.asset('assets/polaroid_icon.svg'),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => const ProfilePage(),
+                    ),
+                  );
+                },
+                icon: SvgPicture.asset('assets/myPage_icon.svg',
+                    color: MainColor),
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/map_icon.svg',
-              width: 24,
-              height: 24,
-              color:
-                  _selectedIndex == 1 ? Color(0xFF0050FF) : Color(0xFFD9D9D9),
-            ),
-            label: 'Map',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/polaroid_icon.svg',
-              width: 24,
-              height: 24,
-              color:
-                  _selectedIndex == 2 ? Color(0xFF0050FF) : Color(0xFFD9D9D9),
-            ),
-            label: 'Polaroid',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/myPage_icon.svg',
-              width: 24,
-              height: 24,
-              color:
-                  _selectedIndex == 3 ? Color(0xFF0050FF) : Color(0xFFD9D9D9),
-            ),
-            label: 'My page',
-          ),
-        ],
+        ),
       ),
     );
   }
