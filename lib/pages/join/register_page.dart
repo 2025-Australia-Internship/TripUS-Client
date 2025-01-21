@@ -93,9 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
+          color: Colors.white,
           child: Column(
             children: [
               SizedBox(height: 30),
@@ -150,16 +148,24 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                       controller: _textController,
                       decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: light08, width: 2.5),
-                              borderRadius: BorderRadius.circular(10)),
-                          suffixIcon: IconButton(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: light08, width: 2.5),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: light08, width: 2.5),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        suffixIcon: Padding(
+                          padding: EdgeInsets.only(right: 8),
+                          child: IconButton(
                             onPressed: () {},
                             icon: SvgPicture.asset(
                               'assets/Check.svg',
                             ),
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -173,16 +179,24 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: light08, width: 2.5),
-                              borderRadius: BorderRadius.circular(10)),
-                          suffixIcon: IconButton(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: light08, width: 2.5),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: light08, width: 2.5),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        suffixIcon: Padding(
+                          padding: EdgeInsets.only(right: 8),
+                          child: IconButton(
                             onPressed: () {},
                             icon: SvgPicture.asset(
                               'assets/Check.svg',
                             ),
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -197,6 +211,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: _passwordController,
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: light08, width: 2.5),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: light08, width: 2.5),
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -223,6 +241,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               SizedBox(height: 170),
+              Spacer(),
               SizedBox(
                 width: 315,
                 child: ElevatedButton(
@@ -251,6 +270,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
+              SizedBox(height: 40),
             ],
           ),
         ),

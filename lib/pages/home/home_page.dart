@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tripus/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:tripus/colors.dart';
 import 'package:tripus/pages/home/landmarks.dart';
 import 'package:tripus/pages/home/routes.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const HomePage(),
-    );
-  }
-}
+import 'package:tripus/main.dart';
+import 'package:tripus/pages/map/map_page.dart';
+import 'package:tripus/pages/polaroid/polaroid.dart';
+import 'package:tripus/pages/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,14 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageStatet extends State<HomePage> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,11 +62,22 @@ class _HomePageStatet extends State<HomePage> {
                         ),
                       ],
                     ),
-                    Container(
-                      width: 123,
-                      height: 144,
-                      color: Colors.black12,
-                      margin: EdgeInsets.only(top: 50),
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                          width: 150,
+                          margin: EdgeInsets.only(top: 40),
+                          child: Image.asset('assets/mascot.png'),
+                        ),
+                        Positioned(
+                          bottom: -50,
+                          child: Image.asset(
+                            'assets/forest.png',
+                            width: 396,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -227,60 +223,65 @@ class _HomePageStatet extends State<HomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/home_icon.svg',
-              width: 24,
-              height: 24,
-              color:
-                  _selectedIndex == 0 ? Color(0xFF0050FF) : Color(0xFFD9D9D9),
-            ),
-            label: 'Home',
+      bottomNavigationBar: Container(
+        width: double.infinity,
+        height: 85,
+        color: Colors.white,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => const HomePage(),
+                    ),
+                  );
+                },
+                icon:
+                    SvgPicture.asset('assets/home_icon.svg', color: MainColor),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => const MapPage(),
+                    ),
+                  );
+                },
+                icon: SvgPicture.asset('assets/map_icon.svg'),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => const PolaroidPage(),
+                    ),
+                  );
+                },
+                icon: SvgPicture.asset('assets/polaroid_icon.svg'),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => const ProfilePage(),
+                    ),
+                  );
+                },
+                icon: SvgPicture.asset('assets/myPage_icon.svg'),
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/map_icon.svg',
-              width: 24,
-              height: 24,
-              color:
-                  _selectedIndex == 1 ? Color(0xFF0050FF) : Color(0xFFD9D9D9),
-            ),
-            label: 'Map',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/polaroid_icon.svg',
-              width: 24,
-              height: 24,
-              color:
-                  _selectedIndex == 2 ? Color(0xFF0050FF) : Color(0xFFD9D9D9),
-            ),
-            label: 'Polaroid',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/myPage_icon.svg',
-              width: 24,
-              height: 24,
-              color:
-                  _selectedIndex == 3 ? Color(0xFF0050FF) : Color(0xFFD9D9D9),
-            ),
-            label: 'My page',
-          ),
-        ],
+        ),
       ),
     );
   }
 }
 
+// 팝업창 구현
 class CustomButton extends StatelessWidget {
   const CustomButton({super.key});
 
