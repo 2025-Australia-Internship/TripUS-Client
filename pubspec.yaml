@@ -37,6 +37,9 @@ dependencies:
     flutter_svg: ^1.0.0
     image_picker: ^0.8.7
 
+    flutter_map: ^4.0.0
+    latlong2: ^0.8.1
+
 dev_dependencies:
     flutter_test:
         sdk: flutter
