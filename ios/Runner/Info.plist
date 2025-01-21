@@ -46,19 +46,33 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 
-	<!-- image picker 권한 설정 -->
+	<!-- 권한 설정 -->
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera to take pictures.</string>
-	<string>카메라 사용에 필요합니다.</string>
-
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need access to your microphone to record audio.</string>
-	<string>마이크 사용에 필요합니다.</string>
-
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library to select pictures.</string>
-	<string>사진 라이브러리 사용에 필요합니다.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need access to your photo library to save pictures.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need access to your location to provide location-based features.</string>
 
-	<key>UILaunchStoryboardName</key>
+	<!-- 네트워크 설정 -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>127.0.0.1</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSAllowsArbitraryLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 </dict>
 </plist>
