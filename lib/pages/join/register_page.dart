@@ -23,163 +23,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
-  // TODO : 나중에 색 수정하기
-  void showSnackBar(BuildContext context, String message,
-      {bool isError = true}) {
-    final snackBar = SnackBar(
-      behavior: SnackBarBehavior.floating,
-      content: Row(
-        children: [
-          Icon(
-            isError ? Icons.error_outline : Icons.check_circle_outline,
-            color: Colors.white,
-          ),
-          SizedBox(width: 8),
-          Text(
-            message,
-            style: TextStyle(color: Colors.white),
-          ),
-        ],
-      ),
-      backgroundColor: isError ? Color(0xffFA7A7A) : Color(0xff4CAF50),
-      duration: Duration(seconds: 30),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  Future<void> validateAndSignup(BuildContext context) async {
-    if (_textController.text.isEmpty ||
-        _emailController.text.isEmpty ||
-        _passwordController.text.isEmpty) {
-      showSnackBar(context, 'Please enter all fields.');
-      return;
-    }
-
-    // TODO : 이미지 불러오기
-    final apiUrl = "${dotenv.env['BASE_URL']}/auth/register";
-    final Map<String, String> data = {
-      "username": _textController.text,
-      "email": _emailController.text,
-      "password": _passwordController.text,
-      "profile_image": ""
-    };
-
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {"Content-type": "application/json"},
-        body: jsonEncode(data),
-      );
-
-      if (response.statusCode == 201) {
-        if (context.mounted) {
-          showSnackBar(context, "Registration successful!", isError: false);
-
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const SuccessPage()),
-          );
-        }
-      } else {
-        final responseData = jsonDecode(response.body);
-        if (context.mounted) {
-          showSnackBar(context, responseData['message'] ?? "Unknoewn error");
-        }
-      }
-    } catch (error) {
-      if (context.mounted) {
-        showSnackBar(context, 'Error: $error');
-      }
-    }
-  }
-
-  // 중복 체크
-  Future<bool> checkUserEmail(String email) async {
-    final apiUrl = "${dotenv.env['BASE_URL']}/auth/check-email";
-
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {'Content-type': 'application/json'},
-        body: jsonEncode({"email": email}),
-      );
-
-      if (response.statusCode == 201) {
-        final responsData = jsonDecode(response.body);
-        return responsData['isAvailable'] ?? false;
-      } else {
-        throw new Exception("Failed to check email");
-      }
-    } catch (error) {
-      return false;
-    }
-  }
-
-  Future<bool> checkUsername(String username) async {
-    final apiUrl = "${dotenv.env['BASE_URL']}/auth/check-username";
-
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {'Content-type': 'application/json'},
-        body: jsonEncode({"username": username}),
-      );
-
-      if (response.statusCode == 201) {
-        final responsData = jsonDecode(response.body);
-        return responsData['isAvailable'] ?? false;
-      } else {
-        throw new Exception("Failed to check username");
-      }
-    } catch (error) {
-      print("error $error");
-      return false;
-    }
-  }
-
-  void checkEmailAndShow(String email) async {
-    if (email.isEmpty) {
-      showSnackBar(context, 'Please enter an email.');
-      return;
-    }
-
-    bool isAvailable = await checkUserEmail(email);
-    if (isAvailable) {
-      showSnackBar(context, 'Email is available!', isError: false);
-    } else {
-      showSnackBar(context, 'Email is already in use.');
-    }
-  }
-
-  void checkUsernameAndShow(String username) async {
-    if (username.isEmpty) {
-      showSnackBar(context, 'Please enter a username.');
-      return;
-    }
-
-    bool isAvailable = await checkUsername(username);
-    if (isAvailable) {
-      showSnackBar(context, 'Username is available!', isError: false);
-    } else {
-      showSnackBar(context, 'Username is already in use.');
-    }
-  }
-
-  File? _selectedImage; // 선택한 이미지를 저장할 변수
-
-  final ImagePicker _picker = ImagePicker();
-
-  // 이미지 선택 함수
-  Future<void> _pickImage() async {
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _selectedImage = File(pickedFile.path);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -371,5 +214,162 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+
+  Future<void> validateAndSignup(BuildContext context) async {
+    if (_textController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _passwordController.text.isEmpty) {
+      showSnackBar(context, 'Please enter all fields.');
+      return;
+    }
+
+    // TODO : 이미지 불러오기
+    final apiUrl = "${dotenv.env['BASE_URL']}/auth/register";
+    final Map<String, String> data = {
+      "username": _textController.text,
+      "email": _emailController.text,
+      "password": _passwordController.text,
+      "profile_image": ""
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {"Content-type": "application/json"},
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 201) {
+        if (context.mounted) {
+          showSnackBar(context, "Registration successful!", isError: false);
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const SuccessPage()),
+          );
+        }
+      } else {
+        final responseData = jsonDecode(response.body);
+        if (context.mounted) {
+          showSnackBar(context, responseData['message'] ?? "Unknoewn error");
+        }
+      }
+    } catch (error) {
+      if (context.mounted) {
+        showSnackBar(context, 'Error: $error');
+      }
+    }
+  }
+
+  // 중복 체크
+  Future<bool> checkUserEmail(String email) async {
+    final apiUrl = "${dotenv.env['BASE_URL']}/auth/check-email";
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-type': 'application/json'},
+        body: jsonEncode({"email": email}),
+      );
+
+      if (response.statusCode == 201) {
+        final responsData = jsonDecode(response.body);
+        return responsData['isAvailable'] ?? false;
+      } else {
+        throw new Exception("Failed to check email");
+      }
+    } catch (error) {
+      return false;
+    }
+  }
+
+  Future<bool> checkUsername(String username) async {
+    final apiUrl = "${dotenv.env['BASE_URL']}/auth/check-username";
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-type': 'application/json'},
+        body: jsonEncode({"username": username}),
+      );
+
+      if (response.statusCode == 201) {
+        final responsData = jsonDecode(response.body);
+        return responsData['isAvailable'] ?? false;
+      } else {
+        throw new Exception("Failed to check username");
+      }
+    } catch (error) {
+      print("error $error");
+      return false;
+    }
+  }
+
+  void checkEmailAndShow(String email) async {
+    if (email.isEmpty) {
+      showSnackBar(context, 'Please enter an email.');
+      return;
+    }
+
+    bool isAvailable = await checkUserEmail(email);
+    if (isAvailable) {
+      showSnackBar(context, 'Email is available!', isError: false);
+    } else {
+      showSnackBar(context, 'Email is already in use.');
+    }
+  }
+
+  void checkUsernameAndShow(String username) async {
+    if (username.isEmpty) {
+      showSnackBar(context, 'Please enter a username.');
+      return;
+    }
+
+    bool isAvailable = await checkUsername(username);
+    if (isAvailable) {
+      showSnackBar(context, 'Username is available!', isError: false);
+    } else {
+      showSnackBar(context, 'Username is already in use.');
+    }
+  }
+
+  File? _selectedImage; // 선택한 이미지를 저장할 변수
+
+  final ImagePicker _picker = ImagePicker();
+
+  // 이미지 선택 함수
+  Future<void> _pickImage() async {
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  // TODO : 나중에 색 수정하기
+  void showSnackBar(BuildContext context, String message,
+      {bool isError = true}) {
+    final snackBar = SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: Row(
+        children: [
+          Icon(
+            isError ? Icons.error_outline : Icons.check_circle_outline,
+            color: Colors.white,
+          ),
+          SizedBox(width: 8),
+          Text(
+            message,
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
+      backgroundColor: isError ? Color(0xffFA7A7A) : Color(0xff4CAF50),
+      duration: Duration(seconds: 30),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
