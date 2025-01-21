@@ -57,13 +57,6 @@ class _LoginPageState extends State<LoginPage> {
                           borderSide: BorderSide(color: light08, width: 2.5),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.clear_rounded,
-                            color: light03,
-                          ),
-                        ),
                       ),
                     ),
                     SizedBox(height: 20),
@@ -81,13 +74,6 @@ class _LoginPageState extends State<LoginPage> {
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: light08, width: 2.5),
                           borderRadius: BorderRadius.circular(10),
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.clear_rounded,
-                            color: light03,
-                          ),
                         ),
                       ),
                     ),
