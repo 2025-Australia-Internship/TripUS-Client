@@ -9,7 +9,7 @@ class LandmarkPage extends StatelessWidget {
 
   // 이미지 데이터
   final List<LandmarkOption> landmarks = [
-    LandmarkOption(name: 'Landmark 1', icon: 'assets/badge01.png'),
+    LandmarkOption(name: 'Melbourne Polytechnic', icon: 'assets/badge01.png'),
     LandmarkOption(name: 'Melbourne museum', icon: 'assets/badge02.png'),
     LandmarkOption(name: 'Melbourne Park', icon: 'assets/badge03.png'),
     LandmarkOption(name: 'Landmark 4', icon: 'assets/badge04.png'),
