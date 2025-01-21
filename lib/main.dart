@@ -73,8 +73,33 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-class BottomNavigation extends StatelessWidget {
-  const BottomNavigation({Key? key}) : super(key: key);
+class BottomNavigation extends StatefulWidget {
+  final int initialIndex;
+
+  const BottomNavigation({
+    Key? key,
+    required this.initialIndex,
+  }) : super(key: key);
+
+  @override
+  _BottomNavigationState createState() => _BottomNavigationState();
+}
+
+class _BottomNavigationState extends State<BottomNavigation> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    HomePage(),
+    MapPage(),
+    PolaroidPage(),
+    ProfilePage(),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex; // 초기 인덱스 설정
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,31 +108,33 @@ class BottomNavigation extends StatelessWidget {
       height: 85,
       color: Colors.white,
       child: Padding(
-        padding: EdgeInsets.only(bottom: 15),
+        padding: const EdgeInsets.only(bottom: 15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildIcon(context, 'assets/home_icon.svg', const HomePage()),
-            _buildIcon(context, 'assets/map_icon.svg', const MapPage()),
-            _buildIcon(
-                context, 'assets/polaroid_icon.svg', const PolaroidPage()),
-            _buildIcon(context, 'assets/myPage_icon.svg', const ProfilePage()),
+            _buildIcon(context, 0, 'assets/home_icon.svg'),
+            _buildIcon(context, 1, 'assets/map_icon.svg'),
+            _buildIcon(context, 2, 'assets/polaroid_icon.svg'),
+            _buildIcon(context, 3, 'assets/myPage_icon.svg'),
           ],
         ),
       ),
     );
   }
 
-  IconButton _buildIcon(BuildContext context, String iconPath, Widget page) {
+  IconButton _buildIcon(BuildContext context, int index, String iconPath) {
     return IconButton(
       onPressed: () {
+        setState(() {
+          _selectedIndex = index;
+        });
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (BuildContext context) => page),
+          MaterialPageRoute(builder: (BuildContext context) => _pages[index]),
         );
       },
       icon: SvgPicture.asset(
         iconPath,
-        color: MainColor,
+        color: _selectedIndex == index ? MainColor : grey02,
       ),
     );
   }

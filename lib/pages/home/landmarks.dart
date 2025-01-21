@@ -9,11 +9,12 @@ class LandmarkPage extends StatelessWidget {
 
   // 이미지 데이터
   final List<LandmarkOption> landmarks = [
-    LandmarkOption(name: 'Landmark 1', icon: 'assets/landmark1.png'),
-    LandmarkOption(name: 'Landmark 2', icon: 'assets/landmark2.png'),
-    LandmarkOption(name: 'Landmark 3', icon: 'assets/landmark3.png'),
-    LandmarkOption(name: 'Landmark 4', icon: 'assets/landmark4.png'),
-    LandmarkOption(name: 'Landmark 5', icon: 'assets/landmark5.png'),
+    LandmarkOption(name: 'Landmark 1', icon: 'assets/badge01.png'),
+    LandmarkOption(name: 'Melbourne museum', icon: 'assets/badge02.png'),
+    LandmarkOption(name: 'Melbourne Park', icon: 'assets/badge03.png'),
+    LandmarkOption(name: 'Landmark 4', icon: 'assets/badge04.png'),
+    LandmarkOption(
+        name: 'National Gallery of Victoria', icon: 'assets/badge05.png'),
   ];
 
   @override
@@ -24,7 +25,7 @@ class LandmarkPage extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Landmark',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
         ),
         leading: IconButton(
           onPressed: () {
@@ -37,10 +38,11 @@ class LandmarkPage extends StatelessWidget {
       body: Container(
         width: double.infinity,
         color: Colors.white,
+        margin: EdgeInsets.only(top: 20, left: 20),
         child: Wrap(
-          spacing: 10, // 가로 간격
-          runSpacing: 15, // 세로 간격
-          alignment: WrapAlignment.center,
+          spacing: 30,
+          runSpacing: 30,
+          alignment: WrapAlignment.start,
           children: landmarks.map((landmark) {
             return LandmarkCard(
               name: landmark.name,
@@ -49,7 +51,7 @@ class LandmarkPage extends StatelessWidget {
           }).toList(),
         ),
       ),
-      bottomNavigationBar: const BottomNavigation(),
+      bottomNavigationBar: const BottomNavigation(initialIndex: 0),
     );
   }
 }
@@ -82,15 +84,14 @@ class LandmarkCard extends StatelessWidget {
         children: [
           Image.asset(
             iconPath,
-            width: 65,
-            height: 65,
+            width: 85,
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 5),
           Text(
             name,
             style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
             ),
             textAlign: TextAlign.center,
           ),
