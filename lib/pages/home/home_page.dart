@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 import 'package:tripus/colors.dart';
+import 'package:tripus/main.dart';
 import 'package:tripus/pages/home/landmarks.dart';
 import 'package:tripus/pages/home/routes.dart';
-
-import 'package:tripus/main.dart';
-import 'package:tripus/pages/map/map_page.dart';
-import 'package:tripus/pages/polaroid/polaroid.dart';
-import 'package:tripus/pages/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -170,7 +168,7 @@ class _HomePageStatet extends State<HomePage> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {
+                            onDoubleTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -179,8 +177,20 @@ class _HomePageStatet extends State<HomePage> {
                             },
                             child: Container(
                               height: 170,
-                              color: Color(0xFFD9D9D9),
                               margin: EdgeInsets.only(top: 10),
+                              child: FlutterMap(
+                                options: MapOptions(
+                                  center: LatLng(-37.8136, 144.9631), // 멜버른
+                                  zoom: 15.0,
+                                ),
+                                children: [
+                                  TileLayer(
+                                    urlTemplate:
+                                        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                    subdomains: ['a', 'b', 'c'], // OSM 기본 타일
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -208,8 +218,38 @@ class _HomePageStatet extends State<HomePage> {
                           ),
                           Container(
                             height: 170,
-                            color: Color(0xFFD9D9D9),
                             margin: EdgeInsets.only(top: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  width: 133,
+                                  color: grey02,
+                                ),
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width: 131,
+                                      height: 80,
+                                      color: grey02,
+                                    ),
+                                    Container(
+                                      width: 131,
+                                      height: 80,
+                                      color: grey03,
+                                      child: IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(Icons.more_horiz,
+                                            color: grey02),
+                                        iconSize: 35,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -265,6 +305,18 @@ class CustomButton extends StatelessWidget {
   }
 }
 
+class BackgroundOption {
+  final String name;
+  final String icon;
+  final bool isLocked;
+
+  BackgroundOption({
+    required this.name,
+    required this.icon,
+    this.isLocked = false,
+  });
+}
+
 class BackgroundSelectionDialog extends StatefulWidget {
   final Function(String) onBackgroundSelected;
 
@@ -282,9 +334,12 @@ class _BackgroundSelectionDialogState extends State<BackgroundSelectionDialog> {
   final List<BackgroundOption> backgrounds = [
     BackgroundOption(name: 'None', icon: 'assets/none_icon.png'),
     BackgroundOption(name: 'Forest', icon: 'assets/forest_icon.png'),
-    BackgroundOption(name: 'Flower', icon: 'assets/flower_icon.png'),
-    BackgroundOption(name: 'Spring', icon: 'assets/spring_icon.png'),
-    BackgroundOption(name: 'Stars', icon: 'assets/stars_icon.png'),
+    BackgroundOption(
+        name: 'Flower', icon: 'assets/flower_icon.png', isLocked: true),
+    BackgroundOption(
+        name: 'Spring', icon: 'assets/spring_icon.png', isLocked: true),
+    BackgroundOption(
+        name: 'Stars', icon: 'assets/stars_icon.png', isLocked: true),
   ];
 
   @override
@@ -294,78 +349,112 @@ class _BackgroundSelectionDialogState extends State<BackgroundSelectionDialog> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      child: SizedBox(
+      child: Container(
         width: 315,
+        padding: EdgeInsets.all(10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(width: 48),
-                  Text(
-                    'Background',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(width: 48),
+                const Text(
+                  'Background',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 5),
-                    child: IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             Padding(
-              padding: EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.only(bottom: 10),
               child: Wrap(
                 spacing: 5,
                 runSpacing: 10,
-                children: backgrounds
-                    .map((background) => GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedBackground = background.name;
-                            });
-                            widget.onBackgroundSelected(background.name);
-                            Navigator.of(context).pop();
-                          },
-                          child: Container(
-                            width: 90,
-                            height: 115,
-                            decoration: BoxDecoration(
-                              color: selectedBackground == background.name
-                                  ? grey01
-                                  : Colors.white,
-                              borderRadius: BorderRadius.circular(8),
+                children: backgrounds.map((background) {
+                  final isLocked = background.isLocked;
+
+                  return GestureDetector(
+                    onTap: () {
+                      if (isLocked) {
+                        // 잠금 상태에서는 선택 불가
+                        ScaffoldMessenger.of(Navigator.of(context).context)
+                            .showSnackBar(
+                          SnackBar(
+                            content: const Text(
+                              'This background is locked.',
+                              style: TextStyle(color: Colors.white), // 텍스트 색상
                             ),
-                            padding: EdgeInsets.only(top: 10),
-                            child: Column(
-                              children: [
-                                Image.asset(
+                            backgroundColor: Colors.red, // 배경색 빨간색
+                            behavior:
+                                SnackBarBehavior.floating, // 스낵바가 떠있는 형태로 표시
+                            duration: const Duration(seconds: 1), // 표시 시간
+                          ),
+                        );
+                      } else {
+                        setState(() {
+                          selectedBackground = background.name;
+                        });
+                        widget.onBackgroundSelected(background.name);
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: 90,
+                          height: 115,
+                          decoration: BoxDecoration(
+                            color: selectedBackground == background.name
+                                ? grey01
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Column(
+                            children: [
+                              Opacity(
+                                opacity: isLocked ? 0.7 : 1.0, // 잠금 상태 불투명도
+                                child: Image.asset(
                                   background.icon,
                                   width: 65,
                                   height: 65,
                                 ),
-                                SizedBox(height: 10),
-                                Text(
-                                  background.name,
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                background.name,
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                              ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (isLocked)
+                          Positioned(
+                            top: 32.5, // 중앙 위에 적절히 배치
+                            child: Icon(
+                              Icons.lock, // 자물쇠 아이콘
+                              color: dark02, // 자물쇠 색상
+                              size: 24,
                             ),
                           ),
-                        ))
-                    .toList(),
+                      ],
+                    ),
+                  );
+                }).toList(),
               ),
             ),
           ],
@@ -373,14 +462,4 @@ class _BackgroundSelectionDialogState extends State<BackgroundSelectionDialog> {
       ),
     );
   }
-}
-
-class BackgroundOption {
-  final String name;
-  final String icon;
-
-  BackgroundOption({
-    required this.name,
-    required this.icon,
-  });
 }
