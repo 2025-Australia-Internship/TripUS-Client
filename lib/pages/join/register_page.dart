@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,6 +24,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _textController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  String? _base64Image;
+  File? _selectedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +91,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       radius: 20,
                       backgroundColor: Color(0xffD9D9D9),
                       child: IconButton(
-                        onPressed: _pickImage,
+                        onPressed: pickImage,
                         icon: Icon(Icons.camera_alt),
                         color: MainColor,
                         iconSize: 18,
@@ -247,21 +250,23 @@ class _RegisterPageState extends State<RegisterPage> {
       return;
     }
 
-    // TODO : 이미지 불러오기
     final apiUrl = "${dotenv.env['BASE_URL']}/auth/register";
-    final Map<String, String> data = {
+    final Map<String, dynamic> data = {
       "username": _textController.text,
       "email": _emailController.text,
       "password": _passwordController.text,
-      "profile_image": ""
+      "profile_image": _base64Image
     };
 
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
-        headers: {"Content-type": "application/json"},
+        headers: {"Content-Type": "application/json"},
         body: jsonEncode(data),
       );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
       if (response.statusCode == 201) {
         if (context.mounted) {
@@ -279,6 +284,7 @@ class _RegisterPageState extends State<RegisterPage> {
         }
       }
     } catch (error) {
+      print('Error during registration: $error');
       if (context.mounted) {
         showSnackBar(context, 'Error: $error');
       }
@@ -357,17 +363,18 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  File? _selectedImage; // 선택한 이미지를 저장할 변수
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-  final ImagePicker _picker = ImagePicker();
+    if (image != null) {
+      final File imageFile = File(image.path);
+      final Uint8List imageBytes = await imageFile.readAsBytes();
+      final String base64Image = base64Encode(imageBytes);
 
-  // 이미지 선택 함수
-  Future<void> _pickImage() async {
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
       setState(() {
-        _selectedImage = File(pickedFile.path);
+        _selectedImage = imageFile;
+        _base64Image = base64Image;
       });
     }
   }
