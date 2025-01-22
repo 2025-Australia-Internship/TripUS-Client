@@ -38,7 +38,7 @@ class LandmarkPage extends StatelessWidget {
       body: Container(
         width: double.infinity,
         color: Colors.white,
-        margin: EdgeInsets.only(top: 20, left: 20),
+        margin: EdgeInsets.only(top: 20, left: 6),
         child: Wrap(
           spacing: 30,
           runSpacing: 30,
