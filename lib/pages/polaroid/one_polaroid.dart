@@ -5,7 +5,16 @@ import 'package:tripus/colors.dart';
 import 'package:tripus/main.dart';
 
 class OnePolaroid extends StatefulWidget {
-  const OnePolaroid({super.key});
+  final String photoUrl;
+  final String caption;
+  final Color backgroundColor;
+
+  const OnePolaroid({
+    Key? key,
+    required this.photoUrl,
+    required this.caption,
+    required this.backgroundColor,
+  }) : super(key: key);
 
   @override
   State<OnePolaroid> createState() => _OnePolaroidState();
@@ -39,7 +48,7 @@ class _OnePolaroidState extends State<OnePolaroid> {
           width: 300,
           height: 460,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: widget.backgroundColor,
             boxShadow: [
               BoxShadow(
                 color: grey02,
@@ -49,13 +58,35 @@ class _OnePolaroidState extends State<OnePolaroid> {
               ),
             ],
           ),
-          child: Center(
-            child: Container(
-              margin: EdgeInsets.only(top: 30),
-              width: 260,
-              height: 300,
-              color: grey01,
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // 이미지 표시
+              Container(
+                width: 260,
+                height: 300,
+                decoration: BoxDecoration(
+                  color: grey01,
+                  image: DecorationImage(
+                    image: NetworkImage(widget.photoUrl),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              // 캡션 표시
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  widget.caption,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           ),
         ),
       ),

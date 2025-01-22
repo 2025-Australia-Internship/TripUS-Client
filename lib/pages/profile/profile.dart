@@ -294,37 +294,56 @@ class _ProfilePageStatet extends State<ProfilePage> {
                     SizedBox(height: 15),
                     Padding(
                       padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                        '한국어',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
+                      child: GestureDetector(
+                        onTap: () {
+                          // TODO: 언어 변경 로직 구현
+                        },
+                        child: Text(
+                          '한국어',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
                     SizedBox(height: 18),
                     Padding(
                       padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                        'English',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
+                      child: GestureDetector(
+                        onTap: () {
+                          // TODO: 언어 변경 로직 구현
+                        },
+                        child: Text(
+                          'English',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: MainColor, // 버튼처럼 보이도록 색상 지정
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              Text(
-                '로그아웃',
-                style: TextStyle(
-                  color: Color(0xffFF5555),
-                  fontFamily: 'Pretendard',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
+              GestureDetector(
+                onTap: () async {
+                  // TODO : 로그아웃 동작
+                  const storage = FlutterSecureStorage();
+                  await storage.delete(key: 'jwt'); // JWT 삭제
+                  // TODO : 로그인 화면으로 이동
+                  print('로그아웃 완료');
+                },
+                child: Text(
+                  'log out',
+                  style: TextStyle(
+                    color: error,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),

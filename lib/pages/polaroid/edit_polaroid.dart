@@ -10,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tripus/colors.dart';
 import 'package:tripus/main.dart';
 import 'package:tripus/pages/map/loding_AI.dart';
+import 'package:tripus/pages/polaroid/one_polaroid.dart';
 
 class EditPolaroid extends StatefulWidget {
   final File selectedImage;
@@ -33,6 +34,69 @@ class _EditPolaroidState extends State<EditPolaroid> {
   void dispose() {
     _captionController.dispose();
     super.dispose();
+  }
+
+  Future<void> savePolaroid() async {
+    final apiUrl = "${dotenv.env['BASE_URL']}/polaroids";
+
+    const storage = FlutterSecureStorage();
+    final accessToken = await storage.read(key: 'jwt');
+
+    if (accessToken == null) {
+      print("Access token not found");
+      return;
+    }
+
+    try {
+      final Map<String, dynamic> polaroidData = {
+        'photo_url': widget.base64Image,
+        'caption': _captionController.text,
+        'color': '#${_color.value.toRadixString(16).padLeft(8, '0')}',
+      };
+
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(polaroidData),
+      );
+
+      if (response.statusCode == 201) {
+        final responseBody = jsonDecode(response.body);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => LodingAiPage(
+              photoUrl: widget.base64Image,
+              caption: _captionController.text,
+              backgroundColor: _color,
+              onComplete: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => OnePolaroid(
+                      photoUrl: widget.base64Image,
+                      caption: _captionController.text,
+                      backgroundColor: _color,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      } else {
+        print('Failed to save Polaroid: ${response.statusCode}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to save Polaroid.')),
+        );
+      }
+    } catch (error) {
+      print('Error saving Polaroid: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An error occurred while saving Polaroid.')),
+      );
+    }
   }
 
   @override
@@ -129,18 +193,7 @@ class _EditPolaroidState extends State<EditPolaroid> {
               SizedBox(
                 width: 320,
                 child: ElevatedButton(
-                  onPressed: () async {
-                    // TODO : AI 분석 기능 구현
-                    bool isSuccess = await savePolaroid();
-
-                    if (isSuccess) {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => LodingAiPage(),
-                        ),
-                      );
-                    }
-                  },
+                  onPressed: savePolaroid,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF246BFD),
                     minimumSize: Size(double.infinity, 50),
@@ -158,6 +211,7 @@ class _EditPolaroidState extends State<EditPolaroid> {
                   ),
                 ),
               ),
+              SizedBox(height: 20),
             ],
           ),
         ),
@@ -178,67 +232,5 @@ class _EditPolaroidState extends State<EditPolaroid> {
         backgroundColor: color,
       ),
     );
-  }
-
-  Future<bool> savePolaroid() async {
-    final apiUrl = "${dotenv.env['BASE_URL']}/polaroids";
-
-    const storage = FlutterSecureStorage();
-    final accessToken = await storage.read(key: 'jwt');
-
-    if (accessToken == null) {
-      print("Access token not found");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Authentication failed. Please log in again.')),
-      );
-      return false;
-    }
-
-    try {
-      // 색상 값 변환
-      String formattedColor =
-          '#${_color.value.toRadixString(16).substring(2).toUpperCase()}';
-
-      // 요청 데이터 생성
-      final Map<String, dynamic> polaroidData = {
-        'photo_url': widget.base64Image, // Base64 이미지 데이터
-        'caption': _captionController.text,
-        'color':
-            '#${_color.value.toRadixString(16).substring(2).toUpperCase()}',
-      };
-
-      // 요청 데이터 확인
-      print("Request Data: $polaroidData");
-
-      // POST 요청
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          'Authorization': 'Bearer $accessToken', // JWT 토큰
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(polaroidData),
-      );
-
-      if (response.statusCode == 201) {
-        print('Polaroid saved successfully');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Polaroid saved successfully!')),
-        );
-        return true;
-      } else {
-        print('Failed to save Polaroid: ${response.statusCode}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save Polaroid.')),
-        );
-        return false;
-      }
-    } catch (error) {
-      print('Error saving Polaroid: $error');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred while saving Polaroid.')),
-      );
-      return false;
-    }
   }
 }

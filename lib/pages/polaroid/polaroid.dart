@@ -133,7 +133,7 @@ class _PolaroidPageState extends State<PolaroidPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => OnePolaroid()),
+                                builder: (context) => const ManyPolaroid()),
                           );
                         },
                         child: Container(

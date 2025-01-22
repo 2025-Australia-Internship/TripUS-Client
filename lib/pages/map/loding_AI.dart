@@ -7,14 +7,25 @@ import 'package:tripus/colors.dart';
 import 'package:tripus/pages/polaroid/one_polaroid.dart';
 
 class LodingAiPage extends StatefulWidget {
-  const LodingAiPage({super.key});
+  final String photoUrl;
+  final String caption;
+  final Color backgroundColor;
+  final VoidCallback onComplete;
+
+  const LodingAiPage({
+    Key? key,
+    required this.photoUrl,
+    required this.caption,
+    required this.backgroundColor,
+    required this.onComplete,
+  }) : super(key: key);
 
   @override
   State<LodingAiPage> createState() => _LodingAiPageState();
 }
 
 class _LodingAiPageState extends State<LodingAiPage> {
-  String message = 'AI is checking the photo.'; // 초기 문구
+  String message = 'AI is checking the photo.';
 
   @override
   void initState() {
@@ -29,12 +40,8 @@ class _LodingAiPageState extends State<LodingAiPage> {
         message = 'Polaroid has been created.';
       });
 
-      // 2초 후에 OnePolaroid 페이지로 이동
-      Timer(Duration(seconds: 2), () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => OnePolaroid()),
-        );
-      });
+      // 2초 후에 onComplete 콜백 호출
+      Timer(Duration(seconds: 2), widget.onComplete);
     });
   }
 
@@ -57,7 +64,6 @@ class _LodingAiPageState extends State<LodingAiPage> {
           ],
         ),
       ),
-      bottomNavigationBar: const BottomNavigation(initialIndex: 1),
     );
   }
 }
