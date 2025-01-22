@@ -12,8 +12,6 @@ class OnePolaroid extends StatefulWidget {
 }
 
 class _OnePolaroidState extends State<OnePolaroid> {
-  Color _color = Colors.white;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,19 +39,21 @@ class _OnePolaroidState extends State<OnePolaroid> {
           width: 300,
           height: 460,
           decoration: BoxDecoration(
-            color: _color,
+            color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.grey,
+                color: grey02,
                 blurRadius: 5,
-                spreadRadius: 5,
-                offset: Offset(5, 5),
+                spreadRadius: 3,
+                offset: Offset(2, 2),
               ),
             ],
           ),
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(20, 30, 20, 100),
+          child: Center(
             child: Container(
+              margin: EdgeInsets.only(top: 30),
+              width: 260,
+              height: 300,
               color: grey01,
             ),
           ),

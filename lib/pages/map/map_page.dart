@@ -43,6 +43,7 @@ class _MapPageState extends State<MapPage> {
         MaterialPageRoute(
           builder: (context) => EditPolaroid(
             selectedImage: _selectedImage!,
+            base64Image: _base64Image!,
           ),
         ),
       );

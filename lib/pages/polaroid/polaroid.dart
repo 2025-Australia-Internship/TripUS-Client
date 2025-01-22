@@ -20,27 +20,27 @@ class PolaroidPage extends StatefulWidget {
 class _PolaroidPageState extends State<PolaroidPage> {
   final ImagePicker _picker = ImagePicker();
 
-  Future<void> _pickImage() async {
-    try {
-      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  // Future<void> _pickImage() async {
+  //   try {
+  //     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
-      if (image != null) {
-        // 이미지가 선택되면 EditPolaroid 페이지로 이동
-        if (mounted) {
-          // context 사용 전에 위젯이 여전히 트리에 마운트되어 있는지 확인
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) => EditPolaroid(
-                selectedImage: File(image.path), // EditPolaroid에 선택된 이미지 전달
-              ),
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      print('이미지 선택 중 오류 발생: $e');
-    }
-  }
+  //     if (image != null) {
+  //       // 이미지가 선택되면 EditPolaroid 페이지로 이동
+  //       if (mounted) {
+  //         // context 사용 전에 위젯이 여전히 트리에 마운트되어 있는지 확인
+  //         Navigator.of(context).push(
+  //           MaterialPageRoute(
+  //             builder: (BuildContext context) => EditPolaroid(
+  //               selectedImage: File(image.path), // EditPolaroid에 선택된 이미지 전달
+  //             ),
+  //           ),
+  //         );
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print('이미지 선택 중 오류 발생: $e');
+  //   }
+  //}
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +105,8 @@ class _PolaroidPageState extends State<PolaroidPage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: IconButton(
-                          onPressed: _pickImage,
+                          //onPressed: _pickImage,
+                          onPressed: () {},
                           icon: Icon(Icons.camera_alt),
                           iconSize: 35,
                         ),
