@@ -1,19 +1,74 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:tripus/colors.dart';
 import 'package:tripus/main.dart';
 
-class MapDetail extends StatefulWidget {
-  const MapDetail({super.key});
+class LandmarkDetails extends StatefulWidget {
+  final int id; // 전달받은 랜드마크 ID
+
+  const LandmarkDetails({super.key, required this.id});
 
   @override
-  State<MapDetail> createState() => _MapDetailState();
+  State<LandmarkDetails> createState() => _LandmarkDetailsState();
 }
 
-class _MapDetailState extends State<MapDetail> {
+class _LandmarkDetailsState extends State<LandmarkDetails> {
+  Map<String, dynamic>? landmarkData;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchLandmarkData();
+  }
+
+  Future<void> fetchLandmarkData() async {
+    final apiUrl = "${dotenv.env['BASE_URL']}/landmarks/${widget.id}";
+
+    try {
+      final response = await http.get(
+        Uri.parse(apiUrl),
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          landmarkData = json.decode(response.body);
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load landmark data');
+      }
+    } catch (error) {
+      print('Error fetching data: $error');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(), // 로딩페이지
+        ),
+      );
+    }
+
+    if (landmarkData == null) {
+      return Scaffold(
+        body: Center(
+          child: Text('Failed to load data'),
+        ),
+      );
+    }
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -27,7 +82,7 @@ class _MapDetailState extends State<MapDetail> {
               height: 200,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/melbourne_polytechnic.png'),
+                  image: AssetImage(landmarkData!['image']),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -40,16 +95,15 @@ class _MapDetailState extends State<MapDetail> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      color: Colors.white,
+                      color: dark08,
                       icon: Icon(Icons.arrow_back_ios_new_rounded),
                     ),
                   ),
                   Positioned(
                     bottom: -50,
                     right: 30,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: grey02,
+                    child: Image(
+                      image: AssetImage(landmarkData!['symbol']),
                     ),
                   ),
                 ],
@@ -70,31 +124,28 @@ class _MapDetailState extends State<MapDetail> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Melbourne Polytechnic',
+                              landmarkData!['name'],
                               style: TextStyle(
                                 color: MainColor,
-                                fontFamily: 'Pretendard',
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             SizedBox(height: 4),
                             Text(
-                              'Australia, Melbourne 77 St Georges Rd, Preston VIC 3072',
+                              landmarkData!['address'],
                               style: TextStyle(
                                 color: light05,
-                                fontFamily: 'Pretendard',
-                                fontSize: 13,
+                                fontSize: 15,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                             SizedBox(height: 8),
                             Text(
-                              'Information of this landmarkInformation of this landmarkInformation of this landmarkInformation of this landmarkInformation of this landmarkInformation of this landmarkInformation of this landmarkInformation of this landmarkInformation of this landmarkInformation of this landmark',
+                              landmarkData!['description'],
                               style: TextStyle(
                                 color: dark06,
-                                fontFamily: 'Pretendard',
-                                fontSize: 10,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -110,15 +161,14 @@ class _MapDetailState extends State<MapDetail> {
                                   onTap: () {},
                                   child: Icon(
                                     Icons.favorite,
-                                    color: Color(0xffFF5555),
+                                    color: error,
                                     size: 24,
                                   ),
                                 ),
                                 Text(
-                                  '1,234',
+                                  '123',
                                   style: TextStyle(
-                                    color: Color(0xffFF5555),
-                                    fontFamily: 'Pretendard',
+                                    color: error,
                                     fontSize: 10,
                                   ),
                                 ),
@@ -140,7 +190,6 @@ class _MapDetailState extends State<MapDetail> {
                                 Text(
                                   '567',
                                   style: TextStyle(
-                                    fontFamily: 'Pretendard',
                                     fontSize: 10,
                                   ),
                                 ),
@@ -156,45 +205,39 @@ class _MapDetailState extends State<MapDetail> {
                   SizedBox(height: 10),
                   Text(
                     'My memories',
-                    style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(height: 13),
-                  Text(
-                    '2024.12.25',
-                    style: TextStyle(
-                        color: MainColor,
-                        fontFamily: 'Pretendard',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    width: 90,
-                    height: 140,
-                    color: grey02,
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 70,
-                          height: 95,
-                          color: grey01,
-                          margin: EdgeInsets.only(bottom: 5),
-                        ),
-                        Text(
-                          'Today, I am happy:)',
-                          style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: 5,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // SizedBox(height: 13),
+                  // Text(
+                  //   '2024.12.25',
+                  //   style: TextStyle(
+                  //       color: MainColor,
+                  //       fontSize: 12,
+                  //       fontWeight: FontWeight.w500),
+                  // ),
+                  // SizedBox(height: 10),
+                  // Container(
+                  //   width: 90,
+                  //   height: 140,
+                  //   color: grey02,
+                  //   padding: EdgeInsets.all(10),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Container(
+                  //         width: 70,
+                  //         height: 95,
+                  //         color: grey01,
+                  //         margin: EdgeInsets.only(bottom: 5),
+                  //       ),
+                  //       Text(
+                  //         'Today, I am happy:)',
+                  //         style: TextStyle(
+                  //             fontSize: 5, fontWeight: FontWeight.w400),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),

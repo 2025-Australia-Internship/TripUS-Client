@@ -265,9 +265,9 @@ class _HomePageStatet extends State<HomePage> {
                   ],
                 ),
               ),
-              if (selectedBackground != 'None') // 선택된 배경이 None이 아닐 때만 표시
+              if (selectedBackground != 'None')
                 Positioned(
-                  top: 160,
+                  bottom: 650,
                   child: Image.asset(
                     'assets/$selectedBackground.png', // 선택된 배경 경로
                     width: 400,

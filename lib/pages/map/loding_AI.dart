@@ -20,7 +20,7 @@ class _LodingAiPageState extends State<LodingAiPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/checking_AI.png'),
+            Image.asset('assets/checking_mascot.png'),
             Text(
               'AI is checking the photo',
               style: TextStyle(
