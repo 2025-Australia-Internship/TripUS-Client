@@ -7,6 +7,7 @@ import 'package:tripus/colors.dart';
 import 'package:tripus/main.dart';
 import 'package:tripus/pages/home/landmarks.dart';
 import 'package:tripus/pages/home/routes.dart';
+import 'package:tripus/pages/map/loding_AI.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -48,7 +49,14 @@ class _HomePageStatet extends State<HomePage> {
                                 radius: 20,
                                 backgroundColor: light08,
                                 child: IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            const LodingAiPage(),
+                                      ),
+                                    );
+                                  },
                                   icon: SvgPicture.asset(
                                     'assets/friends.svg',
                                     width: 20,
@@ -334,8 +342,7 @@ class _BackgroundSelectionDialogState extends State<BackgroundSelectionDialog> {
   final List<BackgroundOption> backgrounds = [
     BackgroundOption(name: 'None', icon: 'assets/none_icon.png'),
     BackgroundOption(name: 'Forest', icon: 'assets/forest_icon.png'),
-    BackgroundOption(
-        name: 'Flower', icon: 'assets/flower_icon.png', isLocked: true),
+    BackgroundOption(name: 'Flower', icon: 'assets/flower_icon.png'),
     BackgroundOption(
         name: 'Spring', icon: 'assets/spring_icon.png', isLocked: true),
     BackgroundOption(
@@ -392,12 +399,12 @@ class _BackgroundSelectionDialogState extends State<BackgroundSelectionDialog> {
                           SnackBar(
                             content: const Text(
                               'This background is locked.',
-                              style: TextStyle(color: Colors.white), // 텍스트 색상
+                              style: TextStyle(color: Colors.white),
                             ),
-                            backgroundColor: Colors.red, // 배경색 빨간색
+                            backgroundColor: Colors.red,
                             behavior:
                                 SnackBarBehavior.floating, // 스낵바가 떠있는 형태로 표시
-                            duration: const Duration(seconds: 1), // 표시 시간
+                            duration: const Duration(seconds: 1),
                           ),
                         );
                       } else {

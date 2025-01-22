@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart';
 
 import 'package:tripus/colors.dart';
 import 'package:tripus/main.dart';
+import 'package:tripus/pages/map/loding_AI.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -93,7 +94,14 @@ class _MapPageState extends State<MapPage> {
                                   radius: 20,
                                   backgroundColor: light08,
                                   child: IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              const LodingAiPage(),
+                                        ),
+                                      );
+                                    },
                                     icon: Icon(
                                       Icons.camera_alt,
                                       color: light04,

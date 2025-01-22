@@ -4,22 +4,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tripus/colors.dart';
 import 'package:tripus/main.dart';
 
-class OnedayPolaroid extends StatefulWidget {
-  const OnedayPolaroid({super.key});
+class ManyPolaroid extends StatefulWidget {
+  const ManyPolaroid({super.key});
 
   @override
-  State<OnedayPolaroid> createState() => _OnedayPolaroidState();
+  State<ManyPolaroid> createState() => _ManyPolaroidState();
 }
 
-class _OnedayPolaroidState extends State<OnedayPolaroid> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+class _ManyPolaroidState extends State<ManyPolaroid> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

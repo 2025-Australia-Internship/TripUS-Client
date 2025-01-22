@@ -3,8 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:tripus/colors.dart';
 import 'package:tripus/main.dart';
-import 'package:tripus/pages/polaroid/oneday_polaroid.dart';
+import 'package:tripus/pages/polaroid/many_polaroid.dart';
 import 'package:tripus/pages/polaroid/edit_polaroid.dart';
+import 'package:tripus/pages/polaroid/one_polaroid.dart';
 
 class PolaroidPage extends StatefulWidget {
   const PolaroidPage({super.key});
@@ -94,7 +95,7 @@ class _PolaroidPageState extends State<PolaroidPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => OnedayPolaroid()),
+                                builder: (context) => ManyPolaroid()),
                           );
                         },
                         child: Container(
@@ -111,7 +112,7 @@ class _PolaroidPageState extends State<PolaroidPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => OnedayPolaroid()),
+                                builder: (context) => OnePolaroid()),
                           );
                         },
                         child: Container(

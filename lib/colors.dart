@@ -27,4 +27,4 @@ const grey03 = Color(0xffC1C1C1);
 const grey04 = Color(0xffB1B1B1);
 const grey05 = Color(0xff5A5A5A);
 
-const red = Color(0xffFF5555);
+const error = Color(0xffFF5555);
