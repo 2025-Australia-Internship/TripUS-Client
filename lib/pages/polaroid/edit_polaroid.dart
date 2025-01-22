@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:tripus/colors.dart';
 import 'package:tripus/main.dart';
+import 'package:tripus/pages/map/loding_AI.dart';
 
 class EditPolaroid extends StatefulWidget {
   final File selectedImage;
@@ -55,26 +56,27 @@ class _EditPolaroidState extends State<EditPolaroid> {
           color: Colors.white,
           child: Column(
             children: [
-              SizedBox(height: 30),
               Container(
-                width: 300,
-                height: 460,
+                width: 320,
+                height: 450,
+                margin: EdgeInsets.only(top: 20),
                 decoration: BoxDecoration(
                   color: _color,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey,
+                      color: grey02,
                       blurRadius: 5,
                       spreadRadius: 3,
-                      offset: Offset(3, 5),
+                      offset: Offset(2, 2),
                     ),
                   ],
                 ),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(20, 30, 20, 20),
+                    Center(
                       child: Container(
+                        margin: EdgeInsets.only(top: 30),
+                        width: 260,
                         height: 300,
                         color: grey01,
                         child: Image.file(
@@ -84,14 +86,17 @@ class _EditPolaroidState extends State<EditPolaroid> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 30),
                       child: TextField(
                         controller: _captionController,
                         decoration: InputDecoration(
                           hintText: 'Write your comment here',
                           border: InputBorder.none,
                         ),
-                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.left,
                         maxLines: 3,
                       ),
                     ),
@@ -114,11 +119,16 @@ class _EditPolaroidState extends State<EditPolaroid> {
                 ),
               ),
               SizedBox(height: 20),
-              Padding(
-                padding: EdgeInsets.all(16),
+              SizedBox(
+                width: 320,
                 child: ElevatedButton(
                   onPressed: () {
-                    // AI 분석 기능 구현
+                    // TODO : AI 분석 기능 구현
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => LodingAiPage(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF246BFD),

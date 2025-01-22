@@ -334,8 +334,7 @@ class _BackgroundSelectionDialogState extends State<BackgroundSelectionDialog> {
   final List<BackgroundOption> backgrounds = [
     BackgroundOption(name: 'None', icon: 'assets/none_icon.png'),
     BackgroundOption(name: 'Forest', icon: 'assets/forest_icon.png'),
-    BackgroundOption(
-        name: 'Flower', icon: 'assets/flower_icon.png', isLocked: true),
+    BackgroundOption(name: 'Flower', icon: 'assets/flower_icon.png'),
     BackgroundOption(
         name: 'Spring', icon: 'assets/spring_icon.png', isLocked: true),
     BackgroundOption(

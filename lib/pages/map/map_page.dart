@@ -3,10 +3,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+import 'dart:io';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:tripus/colors.dart';
 import 'package:tripus/main.dart';
 import 'package:tripus/pages/map/landmark_details.dart';
-import 'package:tripus/pages/map/loding_AI.dart';
+import 'package:tripus/pages/polaroid/edit_polaroid.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -17,6 +22,32 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   String? selectedMarker;
+  String? _base64Image;
+  File? _selectedImage;
+
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      final File imageFile = File(image.path);
+      final Uint8List imageBytes = await imageFile.readAsBytes();
+      final String base64Image = base64Encode(imageBytes);
+
+      setState(() {
+        _selectedImage = imageFile;
+        _base64Image = base64Image;
+      });
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => EditPolaroid(
+            selectedImage: _selectedImage!,
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,12 +140,7 @@ class _MapPageState extends State<MapPage> {
                                     backgroundColor: light08,
                                     child: IconButton(
                                       onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                const LodingAiPage(),
-                                          ),
-                                        );
+                                        pickImage();
                                       },
                                       icon: Icon(
                                         Icons.camera_alt,
@@ -210,12 +236,7 @@ class _MapPageState extends State<MapPage> {
                                     backgroundColor: light08,
                                     child: IconButton(
                                       onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                const LodingAiPage(),
-                                          ),
-                                        );
+                                        pickImage();
                                       },
                                       icon: Icon(
                                         Icons.camera_alt,
@@ -313,12 +334,7 @@ class _MapPageState extends State<MapPage> {
                                     backgroundColor: light08,
                                     child: IconButton(
                                       onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                const LodingAiPage(),
-                                          ),
-                                        );
+                                        pickImage();
                                       },
                                       icon: Icon(
                                         Icons.camera_alt,
@@ -414,12 +430,7 @@ class _MapPageState extends State<MapPage> {
                                     backgroundColor: light08,
                                     child: IconButton(
                                       onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                const LodingAiPage(),
-                                          ),
-                                        );
+                                        pickImage();
                                       },
                                       icon: Icon(
                                         Icons.camera_alt,
