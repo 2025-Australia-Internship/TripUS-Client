@@ -11,6 +11,64 @@ import 'package:tripus/colors.dart';
 import 'package:tripus/main.dart';
 import 'package:tripus/pages/profile/edit_profile.dart';
 
+// base64 이미지 디코딩
+class Base64ImageWidget extends StatelessWidget {
+  final String base64String;
+  final double width;
+  final double height;
+  final BoxFit fit;
+
+  const Base64ImageWidget({
+    Key? key,
+    required this.base64String,
+    this.width = 55.0,
+    this.height = 55.0,
+    this.fit = BoxFit.cover,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (base64String.isEmpty) {
+      return Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          shape: BoxShape.circle,
+        ),
+        child: Icon(Icons.person, color: Colors.grey[400]),
+      );
+    }
+
+    try {
+      final bytes =
+          base64.decode(base64String.replaceAll(RegExp(r'[\n\r\s]'), ''));
+
+      return Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          image: DecorationImage(
+            image: MemoryImage(bytes),
+            fit: fit,
+          ),
+        ),
+      );
+    } catch (e) {
+      return Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          shape: BoxShape.circle,
+        ),
+        child: Icon(Icons.error, color: Colors.grey[400]),
+      );
+    }
+  }
+}
+
 class ProfilePageContent extends StatelessWidget {
   const ProfilePageContent({super.key});
 
@@ -108,19 +166,11 @@ class _ProfilePageStatet extends State<ProfilePage> {
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Container(
+                          Base64ImageWidget(
+                            base64String: profileImage,
                             width: 55,
                             height: 55,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                              image: profileImage.isNotEmpty
-                                  ? DecorationImage(
-                                      image: NetworkImage(profileImage),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : null,
-                            ),
+                            fit: BoxFit.cover,
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 25.0),
