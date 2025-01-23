@@ -18,6 +18,15 @@ class _EditProfilePageStatet extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Profile',
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+        ),
+        automaticallyImplyLeading: false,
+      ),
       resizeToAvoidBottomInset: false,
       body: Container(
         width: double.infinity,
@@ -25,16 +34,6 @@ class _EditProfilePageStatet extends State<EditProfilePage> {
         color: Colors.white,
         child: Column(
           children: [
-            SizedBox(height: 40),
-            Text(
-              'Edit Profile',
-              style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontWeight: FontWeight.w500,
-                fontSize: 23,
-              ),
-            ),
-            SizedBox(height: 30),
             Container(
               width: 90,
               height: 90,

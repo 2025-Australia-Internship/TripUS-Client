@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:tripus/colors.dart';
 import 'package:tripus/main.dart';
@@ -12,7 +11,7 @@ class LandmarkPage extends StatelessWidget {
     LandmarkOption(name: 'Melbourne Polytechnic', icon: 'assets/badge01.png'),
     LandmarkOption(name: 'Melbourne museum', icon: 'assets/badge02.png'),
     LandmarkOption(name: 'Melbourne Park', icon: 'assets/badge03.png'),
-    LandmarkOption(name: 'Landmark 4', icon: 'assets/badge04.png'),
+    LandmarkOption(name: 'Landmark', icon: 'assets/badge04.png'),
     LandmarkOption(
         name: 'National Gallery of Victoria', icon: 'assets/badge05.png'),
   ];
@@ -25,7 +24,7 @@ class LandmarkPage extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Landmark',
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
         ),
         leading: IconButton(
           onPressed: () {
@@ -35,10 +34,8 @@ class LandmarkPage extends StatelessWidget {
           icon: Icon(Icons.arrow_back_ios_new_rounded),
         ),
       ),
-      body: Container(
-        width: double.infinity,
-        color: Colors.white,
-        margin: EdgeInsets.only(top: 20, left: 6),
+      body: Center(
+        heightFactor: 1.1,
         child: Wrap(
           spacing: 30,
           runSpacing: 30,

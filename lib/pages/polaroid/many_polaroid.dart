@@ -1,8 +1,12 @@
+import 'dart:io';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:tripus/colors.dart';
 import 'package:tripus/main.dart';
+import 'package:tripus/pages/polaroid/edit_polaroid.dart';
 
 class ManyPolaroid extends StatefulWidget {
   const ManyPolaroid({super.key});
@@ -12,16 +16,47 @@ class ManyPolaroid extends StatefulWidget {
 }
 
 class _ManyPolaroidState extends State<ManyPolaroid> {
+  String? _base64Image;
+  File? _selectedImage;
+
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      final File imageFile = File(image.path);
+      final Uint8List imageBytes = await imageFile.readAsBytes();
+      final String base64Image = base64Encode(imageBytes);
+
+      setState(() {
+        _selectedImage = imageFile;
+        _base64Image = base64Image;
+      });
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => EditPolaroid(
+            selectedImage: _selectedImage!,
+            base64Image: _base64Image!,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+      ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         color: Colors.white,
         child: Column(
           children: [
-            SizedBox(height: 50),
             Container(
               width: 315,
               height: 190,
@@ -69,7 +104,7 @@ class _ManyPolaroidState extends State<ManyPolaroid> {
                     height: 105,
                     color: grey01,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: pickImage,
                       icon: Icon(Icons.add),
                       iconSize: 25,
                     ),
