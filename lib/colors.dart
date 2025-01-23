@@ -28,3 +28,10 @@ const grey04 = Color(0xffB1B1B1);
 const grey05 = Color(0xff5A5A5A);
 
 const error = Color(0xffFF5555);
+
+const red = Color(0xffFF6D6D);
+const orange = Color(0xffFFCB71);
+const yellow = Color(0xffFDFF72);
+const green = Color(0xff9BFF76);
+const blue = Color(0xff8DE8FF);
+const purple = Color(0xffCE7BFF);
