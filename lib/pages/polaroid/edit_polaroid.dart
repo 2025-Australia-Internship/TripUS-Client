@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -29,6 +30,45 @@ class EditPolaroid extends StatefulWidget {
 class _EditPolaroidState extends State<EditPolaroid> {
   Color _color = Colors.white;
   TextEditingController _captionController = TextEditingController();
+
+  Future<String> imageToBase64(File selectedImage) async {
+    Uint8List imageBytes = await selectedImage.readAsBytes();
+    return base64Encode(imageBytes);
+  }
+
+  Future<void> createPolaroid(BuildContext context) async {
+    try {
+      final Uint8List imageBytes = await widget.selectedImage.readAsBytes();
+      final String base64Image = base64Encode(imageBytes);
+
+      const storage = FlutterSecureStorage();
+      final accessToken = await storage.read(key: 'jwt');
+
+      final apiUrl = '${dotenv.env['BASE_URL']}/polaroids';
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: jsonEncode({
+          'photo_url': base64Image,
+          'caption': _captionController.text,
+          'backgroundColor': _color.value.toRadixString(16),
+        }),
+      );
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 201) {
+        showSnackBar(context, '폴라로이드가 생성되었습니다', isError: false);
+      } else {
+        showSnackBar(context, '폴라로이드 생성에 실패했습니다');
+      }
+    } catch (error) {
+      showSnackBar(context, '오류가 발생했습니다: ${error.toString()}');
+    }
+  }
 
   @override
   void dispose() {
@@ -76,6 +116,7 @@ class _EditPolaroidState extends State<EditPolaroid> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => OnePolaroid(
+                      // polaroidId 수정 필요
                       polaroidId: 1,
                       photoUrl: widget.base64Image,
                       caption: _captionController.text,
@@ -204,7 +245,7 @@ class _EditPolaroidState extends State<EditPolaroid> {
                     ),
                   ),
                   child: Text(
-                    'Get AI Analyze',
+                    'Create Polaroid',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -230,9 +271,32 @@ class _EditPolaroidState extends State<EditPolaroid> {
         });
       },
       child: CircleAvatar(
-        radius: 20, // 크기를 줄임
+        radius: 20,
         backgroundColor: color,
       ),
     );
+  }
+
+  void showSnackBar(BuildContext context, String message,
+      {bool isError = true}) {
+    final snackBar = SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: Row(
+        children: [
+          Icon(
+            isError ? Icons.error_outline : Icons.check_circle_outline,
+            color: Colors.white,
+          ),
+          SizedBox(width: 8),
+          Text(
+            message,
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
+      backgroundColor: isError ? Color(0xffFA7A7A) : Color(0xff4CAF50),
+      duration: Duration(seconds: 3),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
