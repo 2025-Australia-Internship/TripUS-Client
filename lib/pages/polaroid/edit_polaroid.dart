@@ -72,9 +72,11 @@ class _EditPolaroidState extends State<EditPolaroid> {
               caption: _captionController.text,
               backgroundColor: _color,
               onComplete: () {
-                Navigator.of(context).push(
+                Navigator.pushReplacement(
+                  context,
                   MaterialPageRoute(
                     builder: (context) => OnePolaroid(
+                      polaroidId: 1,
                       photoUrl: widget.base64Image,
                       caption: _captionController.text,
                       backgroundColor: _color,
