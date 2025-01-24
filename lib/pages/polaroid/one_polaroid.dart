@@ -17,8 +17,8 @@ class Base64ImageWidget extends StatelessWidget {
   const Base64ImageWidget({
     Key? key,
     required this.base64String,
-    this.width = 55.0,
-    this.height = 55.0,
+    this.width = 260.0,
+    this.height = 300.0,
     this.fit = BoxFit.cover,
   }) : super(key: key);
 
@@ -30,7 +30,6 @@ class Base64ImageWidget extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           color: Colors.grey[200],
-          shape: BoxShape.circle,
         ),
         child: Icon(Icons.person, color: Colors.grey[400]),
       );
@@ -43,7 +42,6 @@ class Base64ImageWidget extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          shape: BoxShape.circle,
           image: DecorationImage(
             image: MemoryImage(bytes),
             fit: fit,
@@ -56,7 +54,6 @@ class Base64ImageWidget extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           color: Colors.grey[200],
-          shape: BoxShape.circle,
         ),
         child: Icon(Icons.error, color: Colors.grey[400]),
       );
@@ -80,6 +77,7 @@ class OnePolaroid extends StatefulWidget {
 }
 
 class _OnePolaroidState extends State<OnePolaroid> {
+  int? polaroidId; // State에서 관리하는 폴라로이드 ID
   String photoUrl = '';
   String caption = '';
   Color backgroundColor = Colors.white;
@@ -88,19 +86,43 @@ class _OnePolaroidState extends State<OnePolaroid> {
   @override
   void initState() {
     super.initState();
-    loadUserProfile(); // fetchPolaroidId는 제거하고 바로 loadUserProfile 호출
+    fetchPolaroidId();
+  }
+
+  Future<void> fetchPolaroidId() async {
+    final String apiUrl =
+        '${dotenv.env['BASE_URL']}/polaroids/${widget.polaroidId}';
+
+    const storage = FlutterSecureStorage();
+    final accessToken = await storage.read(key: 'jwt');
+
+    final response = await http.get(
+      Uri.parse(apiUrl),
+      headers: {'Authorization': 'Bearer $accessToken'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final fetchedPolaroidId = data['id']; // API에서 ID를 받아오기
+      setState(() {
+        polaroidId = fetchedPolaroidId;
+      });
+    } else {
+      print('Failed to load polaroid IDs');
+    }
   }
 
   Future<void> loadUserProfile() async {
+    if (polaroidId == null) return; // polaroidId가 없으면 return
+
     try {
-      final String apiUrl =
-          '${dotenv.env['BASE_URL']}/polaroids/${widget.polaroidId}';
+      final String apiUrl = '${dotenv.env['BASE_URL']}/polaroids/$polaroidId';
 
       const storage = FlutterSecureStorage();
       final accessToken = await storage.read(key: 'jwt');
 
       if (accessToken == null) {
-        print("Access token not found");
+        print("access token not found");
         return;
       }
 
@@ -167,15 +189,16 @@ class _OnePolaroidState extends State<OnePolaroid> {
           child: isLoading
               ? Center(child: CircularProgressIndicator())
               : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    SizedBox(height: 20),
                     Base64ImageWidget(
                       base64String: photoUrl,
-                      width: 55,
-                      height: 55,
+                      width: 260,
+                      height: 300,
                       fit: BoxFit.cover,
                     ),
                     SizedBox(height: 10),
+                    // 캡션 표시
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
@@ -184,7 +207,7 @@ class _OnePolaroidState extends State<OnePolaroid> {
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.left,
                       ),
                     ),
                   ],

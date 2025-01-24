@@ -32,7 +32,7 @@ class _HomePageStatet extends State<HomePage> {
                 color: Colors.white,
                 child: Column(
                   children: [
-                    SizedBox(height: 40),
+                    SizedBox(height: 60),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -79,7 +79,7 @@ class _HomePageStatet extends State<HomePage> {
               ),
               Container(
                 width: double.infinity,
-                margin: EdgeInsets.only(top: 280),
+                margin: EdgeInsets.only(top: 300),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -222,9 +222,9 @@ class _HomePageStatet extends State<HomePage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
+                                SizedBox(
                                   width: 133,
-                                  color: grey02,
+                                  child: Image.asset('assets/sample1.png'),
                                 ),
                                 Column(
                                   mainAxisAlignment:
@@ -233,17 +233,22 @@ class _HomePageStatet extends State<HomePage> {
                                     Container(
                                       width: 131,
                                       height: 80,
-                                      color: grey02,
+                                      child: Image.asset('assets/sample2.png'),
                                     ),
                                     Container(
                                       width: 131,
                                       height: 80,
-                                      color: grey03,
-                                      child: IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.more_horiz,
-                                            color: grey02),
-                                        iconSize: 35,
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Image.asset('assets/sample3.png'),
+                                          IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(Icons.more_horiz,
+                                                color: grey02),
+                                            iconSize: 35,
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],

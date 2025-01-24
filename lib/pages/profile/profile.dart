@@ -138,25 +138,25 @@ class _ProfilePageStatet extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          'Profile',
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+        ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
           color: Colors.white,
           child: Column(
             children: [
-              SizedBox(height: 30),
-              Text(
-                'Profile',
-                style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 23,
-                ),
-              ),
               Container(
                 width: 315,
                 height: 96,
-                margin: EdgeInsets.only(top: 30, bottom: 15),
+                margin: EdgeInsets.only(bottom: 15),
                 decoration: BoxDecoration(
                   color: light08,
                   borderRadius: BorderRadius.circular(10),

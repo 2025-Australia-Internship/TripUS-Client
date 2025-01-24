@@ -45,23 +45,23 @@ class _PolaroidPageState extends State<PolaroidPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          'My Polaroids',
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+        ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         color: Colors.white,
         child: Column(
           children: [
-            SizedBox(height: 30),
-            Text(
-              'My Polaroids',
-              style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontWeight: FontWeight.w500,
-                fontSize: 18,
-              ),
-            ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: Column(
                 children: [
                   Row(
