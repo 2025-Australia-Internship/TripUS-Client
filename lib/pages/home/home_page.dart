@@ -33,6 +33,10 @@ class _HomePageStatet extends State<HomePage> {
                 margin: EdgeInsets.only(top: 60),
                 child: Column(
                   children: [
+<<<<<<< HEAD
+=======
+                    SizedBox(height: 60),
+>>>>>>> 2a836dabb34426b45bb2e51af518f4ac311f52bc
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -238,7 +242,10 @@ class _HomePageStatet extends State<HomePage> {
                                     Container(
                                       width: 131,
                                       height: 80,
+<<<<<<< HEAD
                                       color: grey03,
+=======
+>>>>>>> 2a836dabb34426b45bb2e51af518f4ac311f52bc
                                       child: Stack(
                                         alignment: Alignment.center,
                                         children: [

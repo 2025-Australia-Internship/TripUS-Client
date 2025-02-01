@@ -140,11 +140,11 @@ class _ProfilePageStatet extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        centerTitle: true,
         title: Text(
           'Profile',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
         ),
+        centerTitle: true,
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
@@ -156,7 +156,7 @@ class _ProfilePageStatet extends State<ProfilePage> {
               Container(
                 width: 315,
                 height: 96,
-                margin: EdgeInsets.only(top: 30, bottom: 15),
+                margin: EdgeInsets.only(bottom: 15),
                 decoration: BoxDecoration(
                   color: light08,
                   borderRadius: BorderRadius.circular(10),
