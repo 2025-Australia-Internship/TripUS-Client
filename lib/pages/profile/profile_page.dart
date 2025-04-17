@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:tripus/colors.dart';
+import 'package:tripus/constants/colors.dart';
 import 'package:tripus/main.dart';
 import 'package:tripus/pages/profile/edit_profile.dart';
 

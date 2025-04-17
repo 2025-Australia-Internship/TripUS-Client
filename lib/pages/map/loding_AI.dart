@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:tripus/main.dart';
-import 'package:tripus/colors.dart';
+import 'package:tripus/constants/colors.dart';
 import 'package:tripus/pages/polaroid/one_polaroid.dart';
 
 class LodingAiPage extends StatefulWidget {

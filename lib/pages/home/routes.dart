@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-import 'package:tripus/colors.dart';
+import 'package:tripus/constants/colors.dart';
 import 'package:tripus/main.dart';
 
 class RoutePage extends StatefulWidget {

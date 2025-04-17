@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:tripus/colors.dart';
+import 'package:tripus/constants/colors.dart';
 import 'package:tripus/main.dart';
 
 class LandmarkPage extends StatelessWidget {

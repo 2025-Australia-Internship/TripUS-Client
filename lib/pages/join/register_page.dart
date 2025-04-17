@@ -8,7 +8,7 @@ import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:tripus/colors.dart';
+import 'package:tripus/constants/colors.dart';
 import 'package:tripus/pages/home/home_page.dart';
 import 'package:tripus/pages/join/success_page.dart';
 import 'package:tripus/pages/join/login_page.dart';

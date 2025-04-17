@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:tripus/colors.dart';
+import 'package:tripus/constants/colors.dart';
 import 'package:tripus/main.dart';
 import 'package:tripus/pages/map/landmark_details.dart';
 import 'package:tripus/pages/polaroid/edit_polaroid.dart';
