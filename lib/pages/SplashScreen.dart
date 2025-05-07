@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tripus/constants/colors.dart';
-import 'package:tripus/pages/join/choose_page.dart';
+import 'package:tripus/routes/app_routes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,16 +11,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  static const Duration splashDuration = Duration(seconds: 3); // 3초 뒤 화면 전환
+
   @override
   void initState() {
     super.initState();
-    // 3초 뒤 화면 전환
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(splashDuration, () {
       if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const ChoosePage()),
-        );
+        Navigator.pushReplacementNamed(context, AppRoutes.auth);
       }
     });
   }
