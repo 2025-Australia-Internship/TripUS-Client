@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:tripus/routes/app_pages.dart';
 import 'package:tripus/constants/theme.dart';
 import 'package:tripus/pages/SplashScreen.dart';
 
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'TripUS',
       theme: AppTheme.lightTheme,
       home: const SplashScreen(),
+      routes: routes,
     );
   }
 }
