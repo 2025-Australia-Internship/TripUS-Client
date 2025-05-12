@@ -10,7 +10,7 @@ class ActiveButton extends StatelessWidget {
     super.key,
     required this.text,
     this.onPressed,
-    this.isEnabled = true,
+    this.isEnabled = false,
   });
 
   @override

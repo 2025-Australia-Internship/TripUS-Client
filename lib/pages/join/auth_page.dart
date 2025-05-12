@@ -47,7 +47,7 @@ class _AuthPageState extends State<AuthPage> {
                   backgroundColor: grey01,
                   color: MainColor,
                   onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.login);
+                    Navigator.pushNamed(context, AppRoutes.signUpEmail);
                   },
                 )),
             SizedBox(height: 40),

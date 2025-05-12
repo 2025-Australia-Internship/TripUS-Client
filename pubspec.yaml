@@ -54,6 +54,7 @@ dev_dependencies:
 flutter:
     assets:
         - assets/
+        - assets/join/
         - assets/config/.env
 
     fonts:
