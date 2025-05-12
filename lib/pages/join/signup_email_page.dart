@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:tripus/constants/colors.dart';
 import 'package:tripus/pages/home/home_page.dart';
-import 'package:tripus/pages/join/success_page.dart';
+import 'package:tripus/pages/join/signup_success.dart';
 import 'package:tripus/widgets/active_button.dart';
 import 'package:tripus/widgets/close_icon_button.dart';
 import 'package:tripus/widgets/appbar.dart';
@@ -135,7 +135,7 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
 
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const SuccessPage()),
+            MaterialPageRoute(builder: (context) => SignupSuccessPage()),
           );
         }
       } else {
