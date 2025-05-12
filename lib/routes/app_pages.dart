@@ -1,3 +1,4 @@
+import 'package:tripus/pages/home/home_page.dart';
 import 'package:tripus/pages/join/signup_email_page.dart';
 import 'package:tripus/pages/join/signup_password_page.dart';
 import 'package:tripus/routes/app_routes.dart';
@@ -9,4 +10,5 @@ final routes = {
   AppRoutes.login: (context) => const LoginPage(),
   AppRoutes.signUpEmail: (context) => const SignupEmailPage(),
   AppRoutes.signUpPassword: (context) => const SignupPasswordPage(),
+  AppRoutes.Home: (context) => const HomePage(),
 };
