@@ -7,6 +7,11 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:tripus/pages/home/home_page.dart';
+import 'package:tripus/routes/app_routes.dart';
+import 'package:tripus/widgets/appbar.dart';
+import 'package:tripus/widgets/close_icon_button.dart';
+import 'package:tripus/widgets/common_textfield.dart';
+import 'package:tripus/widgets/active_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,16 +21,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   // 안전하게 토큰을 저장하기 위한
   final FlutterSecureStorage storage = const FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
-    // AppBar 높이를 계산
-    final appBarHeight = AppBar().preferredSize.height;
+    final appBarHeight = AppBar().preferredSize.height; // AppBar 높이를 계산
 
     // 화면 전체 높이에서 AppBar와 SafeArea를 제외
     final bodyHeight = MediaQuery.of(context).size.height -
@@ -33,27 +37,13 @@ class _LoginPageState extends State<LoginPage> {
         MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text(
-          'Log in',
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 23),
+      appBar: CustomAppBar(
+        text: '로그인',
+        actionIcon: CloseIconButton(
+          onPressed: () {
+            Navigator.pushNamed(context, AppRoutes.home);
+          },
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const HomePage(),
-                ),
-              );
-            },
-            color: dark08,
-            icon: Icon(Icons.close_rounded),
-            iconSize: 25,
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -62,55 +52,19 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.white,
           child: Column(
             children: [
-              SizedBox(height: 30),
+              SizedBox(height: 40),
               SizedBox(
                 width: 315,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'E-mail',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    TextFormField(
+                    CommonTextfield(
+                      label: '이메일을 입력해주세요',
                       controller: _emailController,
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: light08, width: 2.5),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: light08, width: 2.5),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
                     ),
                     SizedBox(height: 20),
-                    Text(
-                      'Password',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    TextFormField(
+                    CommonTextfield(
+                      label: '비밀번호를 입력해주세요',
                       controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: light08, width: 2.5),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: light08, width: 2.5),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
                     ),
                   ],
                 ),
@@ -118,23 +72,11 @@ class _LoginPageState extends State<LoginPage> {
               Spacer(),
               SizedBox(
                 width: 315,
-                child: ElevatedButton(
-                  onPressed: () => login(context),
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: MainColor,
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    'Log in',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                child: ActiveButton(
+                  text: '로그인',
+                  onPressed: () {
+                    //TODO: 아이디 중복 확인 및 비밀번호 확인
+                  },
                 ),
               ),
               SizedBox(height: 40),
