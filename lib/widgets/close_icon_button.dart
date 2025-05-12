@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class BeforeIconButton extends StatelessWidget {
+class CloseIconButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color color;
   final double size;
 
-  const BeforeIconButton({
+  const CloseIconButton({
     super.key,
     required this.onPressed,
     this.color = Colors.black,
