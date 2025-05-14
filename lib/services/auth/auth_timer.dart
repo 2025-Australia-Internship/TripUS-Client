@@ -27,15 +27,18 @@ class AuthTimer {
     });
   }
 
+  // 타이머 정지
   void cancel() {
     _timer?.cancel();
   }
 
+  // 타이머 시간 포맷팅
   String formatTime() {
     final minutes = (secondsRemaining ~/ 60).toString();
     final sec = (secondsRemaining % 60).toString().padLeft(2, '0');
     return '$minutes:$sec';
   }
 
+  // 타이머가 실행되고 있는지
   bool get isRunning => _timer?.isActive ?? false;
 }
