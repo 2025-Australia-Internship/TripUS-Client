@@ -22,8 +22,11 @@ class SignupEmailPage extends StatefulWidget {
 class _SignupEmailPageState extends State<SignupEmailPage> {
   late final SignupEmailController _controller;
 
-  String? _statusMessage;
-  MessageType? _messageType;
+  String? _emailStatusMessage;
+  MessageType? _emailMessageType;
+
+  String? _codeStatusMessage;
+  MessageType? _codeMessageType;
 
   // 메서드 초기화
   @override
@@ -33,8 +36,8 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
     _controller.init(
       () {
         setState(() {
-          _statusMessage = '인증 시간이 만료되었습니다.';
-          _messageType = MessageType.error;
+          _codeStatusMessage = '인증 시간이 만료되었습니다.';
+          _codeMessageType = MessageType.error;
         });
       },
       () => setState(() {
@@ -55,16 +58,16 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
     final email = _controller.emailController.text.trim();
     if (email.isEmpty) {
       setState(() {
-        _statusMessage = '이메일을 먼저 입력해주세요';
-        _messageType = MessageType.error;
+        _emailStatusMessage = '이메일을 먼저 입력해주세요';
+        _emailMessageType = MessageType.error;
       });
       return;
     }
 
     _controller.sendCode();
     setState(() {
-      _statusMessage = '인증 코드를 전송하였습니다';
-      _messageType = MessageType.success;
+      _emailStatusMessage = '인증 코드를 전송하였습니다';
+      _emailMessageType = MessageType.success;
     });
   }
 
@@ -73,11 +76,11 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
     final result = _controller.verifyCode(input);
     setState(() {
       if (result) {
-        _statusMessage = '이메일 인증이 완료되었습니다';
-        _messageType = MessageType.success;
+        _codeStatusMessage = '이메일 인증이 완료되었습니다';
+        _codeMessageType = MessageType.success;
       } else {
-        _statusMessage = '인증 코드가 일치하지 않습니다';
-        _messageType = MessageType.error;
+        _codeStatusMessage = '인증 코드가 일치하지 않습니다';
+        _codeMessageType = MessageType.error;
       }
     });
   }
@@ -135,8 +138,8 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
                               label: '이메일을 입력해주세요',
                               controller: _controller.emailController,
                               onSuffixPressed: _sendCode,
-                              statusMessage: _statusMessage,
-                              messageType: _messageType,
+                              statusMessage: _emailStatusMessage,
+                              messageType: _emailMessageType,
                               suffixText: '인증하기',
                             ),
                             if (isSent)
@@ -147,8 +150,8 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
                                   return CommonTextfield(
                                     label: '인증번호를 입력해주세요',
                                     controller: _controller.codeController,
-                                    statusMessage: _statusMessage,
-                                    messageType: _messageType,
+                                    statusMessage: _codeStatusMessage,
+                                    messageType: _codeMessageType,
                                     onChanged: _checkCode,
                                     suffixText: timer,
                                     enabled: true,
