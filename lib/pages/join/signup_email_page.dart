@@ -97,11 +97,11 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
     return Scaffold(
       appBar: CustomAppBar(
         text: '회원가입',
-        actionIcon: CloseIconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, AppRoutes.signUpPassword);
-          },
-        ),
+        // actionIcon: CloseIconButton(
+        //   onPressed: () {
+        //     Navigator.pushNamed(context, AppRoutes.signUpPassword);
+        //   },
+        // ),
       ),
       body: SingleChildScrollView(
         child: Container(
