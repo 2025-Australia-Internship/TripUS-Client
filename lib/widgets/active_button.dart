@@ -15,22 +15,24 @@ class ActiveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final enabled = onPressed != null;
+
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         elevation: 0,
-        backgroundColor: isEnabled ? MainColor : grey01,
+        backgroundColor: enabled ? MainColor : grey01,
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      onPressed: isEnabled ? onPressed : null,
+      onPressed: onPressed,
       child: Text(
         text,
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w600,
-          color: isEnabled ? Colors.white : grey03,
+          color: enabled ? Colors.white : grey03,
         ),
       ),
     );

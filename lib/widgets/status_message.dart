@@ -29,7 +29,7 @@ class StatusMessage extends StatelessWidget {
       message,
       style: TextStyle(
         color: color,
-        fontSize: 11,
+        fontSize: 12,
         fontWeight: FontWeight.w400,
       ),
     );

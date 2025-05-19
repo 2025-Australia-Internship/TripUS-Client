@@ -28,6 +28,7 @@ const grey04 = Color(0xffB1B1B1);
 const grey05 = Color(0xff5A5A5A);
 
 const error = Color(0xffFF5555);
+const success = Color(0xff6DC445);
 
 const red = Color(0xffFF9999);
 const orange = Color(0xffFFDDA3);
