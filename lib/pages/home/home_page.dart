@@ -4,9 +4,11 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:tripus/constants/colors.dart';
-import 'package:tripus/main.dart';
 import 'package:tripus/pages/home/landmarks.dart';
 import 'package:tripus/pages/home/routes.dart';
+import 'package:tripus/widgets/background_button.dart';
+
+import 'package:tripus/widgets/bottom_navigation.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,66 +23,60 @@ class _HomePageStatet extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leadingWidth: 70,
+        leading: Padding(
+          padding: EdgeInsets.only(left: 30),
+          child: SizedBox(
+            width: 39,
+            height: 36,
+            child: SvgPicture.asset(
+              'assets/home/small_logo.svg',
+            ),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 30),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: light08,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: SvgPicture.asset(
+                      'assets/home/friends.svg',
+                      width: 20,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                BackgroundButton(
+                  onBackgroundSelected: (String background) {
+                    setState(() {
+                      selectedBackground = background;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
       body: Align(
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Stack(
-            clipBehavior: Clip.none,
             children: [
-              Container(
+              SizedBox(
                 width: double.infinity,
-                color: Colors.white,
-                margin: EdgeInsets.only(top: 60),
-                child: Column(
-                  children: [
-                    SizedBox(height: 60),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 30),
-                          child: SvgPicture.asset('assets/small_logo.svg'),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 30),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 20,
-                                backgroundColor: light08,
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: SvgPicture.asset(
-                                    'assets/friends.svg',
-                                    width: 20,
-                                  ),
-                                  color: MainColor,
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              CustomButton(
-                                onBackgroundSelected: (String background) {
-                                  setState(() {
-                                    selectedBackground = background;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      width: 150,
-                      margin: EdgeInsets.only(top: 40),
-                      child: Image.asset('assets/mascot.png'),
-                    ),
-                  ],
-                ),
+                child: Image.asset('assets/mascot.png'),
               ),
               Container(
                 width: double.infinity,
-                margin: EdgeInsets.only(top: 300),
+                margin: EdgeInsets.only(top: 180),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -277,195 +273,6 @@ class _HomePageStatet extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: const BottomNavigation(initialIndex: 0),
-    );
-  }
-}
-
-// 팝업창 구현
-class CustomButton extends StatelessWidget {
-  final Function(String) onBackgroundSelected;
-
-  const CustomButton({super.key, required this.onBackgroundSelected});
-
-  @override
-  Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: 20,
-      backgroundColor: light08,
-      child: IconButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return BackgroundSelectionDialog(
-                onBackgroundSelected: onBackgroundSelected,
-              );
-            },
-          );
-        },
-        icon: SvgPicture.asset(
-          'assets/edit.svg',
-          width: 20,
-        ),
-      ),
-    );
-  }
-}
-
-class BackgroundOption {
-  final String name;
-  final String icon;
-  final bool isLocked;
-
-  BackgroundOption({
-    required this.name,
-    required this.icon,
-    this.isLocked = false,
-  });
-}
-
-class BackgroundSelectionDialog extends StatefulWidget {
-  final Function(String) onBackgroundSelected;
-
-  const BackgroundSelectionDialog(
-      {super.key, required this.onBackgroundSelected});
-
-  @override
-  State<BackgroundSelectionDialog> createState() =>
-      _BackgroundSelectionDialogState();
-}
-
-class _BackgroundSelectionDialogState extends State<BackgroundSelectionDialog> {
-  String? selectedBackground;
-
-  final List<BackgroundOption> backgrounds = [
-    BackgroundOption(name: 'None', icon: 'assets/none_icon.png'),
-    BackgroundOption(name: 'Forest', icon: 'assets/forest_icon.png'),
-    BackgroundOption(name: 'Flower', icon: 'assets/flower_icon.png'),
-    BackgroundOption(
-        name: 'Spring', icon: 'assets/spring_icon.png', isLocked: true),
-    BackgroundOption(
-        name: 'Stars', icon: 'assets/stars_icon.png', isLocked: true),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Container(
-        width: 315,
-        padding: EdgeInsets.all(10),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const SizedBox(width: 48),
-                const Text(
-                  'Background',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 5),
-                  child: IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Wrap(
-                spacing: 2,
-                runSpacing: 10,
-                children: backgrounds.map((background) {
-                  final isLocked = background.isLocked;
-
-                  return GestureDetector(
-                    onTap: () {
-                      if (isLocked) {
-                        // 잠금 상태에서는 선택 불가
-                        ScaffoldMessenger.of(Navigator.of(context).context)
-                            .showSnackBar(
-                          SnackBar(
-                            content: const Text(
-                              'This background is locked.',
-                              style: TextStyle(color: Colors.white), // 텍스트 색상
-                            ),
-                            backgroundColor: Colors.red, // 배경색 빨간색
-                            behavior:
-                                SnackBarBehavior.floating, // 스낵바가 떠있는 형태로 표시
-                            duration: const Duration(seconds: 1), // 표시 시간
-                          ),
-                        );
-                      } else {
-                        setState(() {
-                          selectedBackground = background.name;
-                        });
-                        widget.onBackgroundSelected(background.name);
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          width: 90,
-                          height: 115,
-                          decoration: BoxDecoration(
-                            color: selectedBackground == background.name
-                                ? grey01
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Column(
-                            children: [
-                              Opacity(
-                                opacity: isLocked ? 0.7 : 1.0, // 잠금 상태 불투명도
-                                child: Image.asset(
-                                  background.icon,
-                                  width: 65,
-                                  height: 65,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                background.name,
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        if (isLocked)
-                          Positioned(
-                            top: 32.5, // 중앙 위에 적절히 배치
-                            child: Icon(
-                              Icons.lock, // 자물쇠 아이콘
-                              color: dark02, // 자물쇠 색상
-                              size: 24,
-                            ),
-                          ),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
