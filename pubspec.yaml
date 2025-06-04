@@ -55,6 +55,8 @@ flutter:
     assets:
         - assets/
         - assets/join/
+        - assets/home/
+        - assets/background/
         - assets/config/.env
 
     fonts:
