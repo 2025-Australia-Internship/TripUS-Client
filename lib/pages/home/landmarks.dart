@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:tripus/constants/colors.dart';
-
 import 'package:tripus/widgets/appbar.dart';
 import 'package:tripus/widgets/bottom_navigation.dart';
 

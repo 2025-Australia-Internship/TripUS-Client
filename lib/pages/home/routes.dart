@@ -3,8 +3,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:tripus/constants/colors.dart';
-import 'package:tripus/main.dart';
-
 import 'package:tripus/widgets/bottom_navigation.dart';
 
 class RoutePage extends StatefulWidget {
