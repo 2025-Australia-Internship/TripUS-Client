@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:tripus/constants/colors.dart';
-import 'package:tripus/main.dart';
+
+import 'package:tripus/widgets/appbar.dart';
+import 'package:tripus/widgets/bottom_navigation.dart';
 
 class LandmarkPage extends StatelessWidget {
   LandmarkPage({super.key});
@@ -19,20 +21,8 @@ class LandmarkPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text(
-          'Landmark',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          color: dark08,
-          icon: Icon(Icons.arrow_back_ios_new_rounded),
-        ),
+      appBar: CustomAppBar(
+        text: '랜드마크',
       ),
       body: Center(
         heightFactor: 1.1,

@@ -40,7 +40,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return Container(
       width: double.infinity,
       height: 85,
-      color: Colors.white,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: Offset(0, -2), // 위쪽 그림자 효과
+          ),
+        ],
+      ),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 15),
         child: Row(

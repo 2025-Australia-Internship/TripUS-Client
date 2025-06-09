@@ -5,6 +5,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:tripus/constants/colors.dart';
 import 'package:tripus/main.dart';
 
+import 'package:tripus/widgets/bottom_navigation.dart';
+
 class RoutePage extends StatefulWidget {
   const RoutePage({super.key});
 
@@ -30,6 +32,19 @@ class _RoutePageState extends State<RoutePage> {
                 subdomains: ['a', 'b', 'c'], // OSM 기본 타일
               ),
             ],
+          ),
+          Container(
+            height: 300, // 원하는 높이만큼만 덮도록 설정
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF6A6A6A).withOpacity(0.7),
+                  Colors.black.withOpacity(0.0),
+                ],
+              ),
+            ),
           ),
           Container(
             width: double.infinity,
