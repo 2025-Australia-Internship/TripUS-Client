@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tripus/constants/colors.dart';
 import 'package:tripus/models/landmark.dart';
-import 'package:tripus/widgets/custom_appbar.dart';
 import 'package:tripus/widgets/bottom_navigation.dart';
 import 'package:tripus/services/landmark/landmark_service.dart';
 import 'package:tripus/widgets/small_polaroid.dart';

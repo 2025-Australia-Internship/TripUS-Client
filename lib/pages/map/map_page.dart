@@ -9,8 +9,6 @@ import 'package:tripus/models/landmark.dart';
 import 'package:tripus/widgets/landmark_marker.dart';
 import 'package:tripus/widgets/bottom_navigation.dart';
 import 'package:tripus/pages/polaroid/edit_polaroid.dart';
-
-import 'package:tripus/routes/app_routes.dart';
 import 'package:tripus/services/landmark/landmark_service.dart';
 
 class MapPage extends StatefulWidget {
