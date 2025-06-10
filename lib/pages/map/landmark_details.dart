@@ -1,15 +1,13 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:tripus/constants/colors.dart';
-import 'package:tripus/main.dart';
+import 'package:tripus/models/landmark.dart';
+import 'package:tripus/widgets/custom_appbar.dart';
+import 'package:tripus/widgets/bottom_navigation.dart';
+import 'package:tripus/services/landmark/landmark_service.dart';
+import 'package:tripus/widgets/small_polaroid.dart';
 
 class LandmarkDetails extends StatefulWidget {
-  final int id; // 전달받은 랜드마크 ID
+  final int id;
 
   const LandmarkDetails({super.key, required this.id});
 
@@ -18,33 +16,25 @@ class LandmarkDetails extends StatefulWidget {
 }
 
 class _LandmarkDetailsState extends State<LandmarkDetails> {
-  Map<String, dynamic>? landmarkData;
+  Landmark? landmarkData;
   bool isLoading = true;
+  final _landmarkService = LandmarkService();
 
   @override
   void initState() {
     super.initState();
-    fetchLandmarkData();
+    loadLandmarkData();
   }
 
-  Future<void> fetchLandmarkData() async {
-    final apiUrl = "${dotenv.env['BASE_URL']}/landmarks/${widget.id}";
-
+  Future<void> loadLandmarkData() async {
     try {
-      final response = await http.get(
-        Uri.parse(apiUrl),
-      );
-
-      if (response.statusCode == 200) {
-        setState(() {
-          landmarkData = json.decode(response.body);
-          isLoading = false;
-        });
-      } else {
-        throw Exception('Failed to load landmark data');
-      }
-    } catch (error) {
-      print('Error fetching data: $error');
+      final result = await _landmarkService.getLandmarkById(widget.id);
+      setState(() {
+        landmarkData = result;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error loading landmark: $e');
       setState(() {
         isLoading = false;
       });
@@ -54,18 +44,14 @@ class _LandmarkDetailsState extends State<LandmarkDetails> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(), // 로딩페이지
-        ),
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
       );
     }
 
     if (landmarkData == null) {
-      return Scaffold(
-        body: Center(
-          child: Text('Failed to load data'),
-        ),
+      return const Scaffold(
+        body: Center(child: Text('Failed to load data')),
       );
     }
 
@@ -75,14 +61,16 @@ class _LandmarkDetailsState extends State<LandmarkDetails> {
         height: double.infinity,
         color: Colors.white,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               width: double.infinity,
-              height: 200,
+              height: 180,
+              margin:
+                  EdgeInsets.only(top: MediaQuery.of(context).padding.top + 8),
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(landmarkData!['image']),
+                  image: AssetImage(landmarkData!.image),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -90,27 +78,25 @@ class _LandmarkDetailsState extends State<LandmarkDetails> {
                 clipBehavior: Clip.none,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 20, left: 5),
+                    padding: const EdgeInsets.only(top: 15, left: 10),
                     child: IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      color: dark08,
-                      icon: Icon(Icons.arrow_back_ios_new_rounded),
+                      onPressed: () => Navigator.pop(context),
+                      color: Colors.white,
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded),
                     ),
                   ),
                   Positioned(
                     bottom: -50,
                     right: 30,
-                    child: Image(
-                      image: AssetImage(landmarkData!['symbol']),
+                    child: Image.asset(
+                      landmarkData!.symbol,
                     ),
                   ),
                 ],
               ),
             ),
             Container(
-              margin: EdgeInsets.all(30),
+              margin: const EdgeInsets.all(30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -124,26 +110,26 @@ class _LandmarkDetailsState extends State<LandmarkDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              landmarkData!['name'],
-                              style: TextStyle(
+                              landmarkData!.name,
+                              style: const TextStyle(
                                 color: MainColor,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 2),
                             Text(
-                              landmarkData!['address'],
-                              style: TextStyle(
+                              landmarkData!.address,
+                              style: const TextStyle(
                                 color: light05,
-                                fontSize: 15,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 10),
                             Text(
-                              landmarkData!['description'],
-                              style: TextStyle(
+                              landmarkData!.description,
+                              style: const TextStyle(
                                 color: dark06,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
@@ -154,97 +140,53 @@ class _LandmarkDetailsState extends State<LandmarkDetails> {
                       ),
                       Row(
                         children: [
-                          SizedBox(
-                            child: Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Icon(
-                                    Icons.favorite,
-                                    color: error,
-                                    size: 24,
-                                  ),
-                                ),
-                                Text(
-                                  '123',
-                                  style: TextStyle(
-                                    color: error,
-                                    fontSize: 10,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          Column(
+                            children: const [
+                              Icon(Icons.favorite, color: error, size: 24),
+                              Text('123',
+                                  style: TextStyle(color: error, fontSize: 10)),
+                            ],
                           ),
-                          SizedBox(width: 7),
-                          SizedBox(
-                            child: Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Icon(
-                                    Icons.bookmark_border,
-                                    color: grey04,
-                                    size: 24,
-                                  ),
-                                ),
-                                Text(
-                                  '567',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          const SizedBox(width: 7),
+                          Column(
+                            children: const [
+                              Icon(Icons.bookmark_border,
+                                  color: grey04, size: 24),
+                              Text('567', style: TextStyle(fontSize: 10)),
+                            ],
                           ),
                         ],
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
-                  Divider(thickness: 2, height: 1, color: grey03),
-                  SizedBox(height: 10),
-                  Text(
+                  const SizedBox(height: 15),
+                  const Divider(thickness: 2, color: grey03),
+                  const SizedBox(height: 10),
+                  const Text(
                     'My memories',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                  // SizedBox(height: 13),
-                  // Text(
-                  //   '2024.12.25',
-                  //   style: TextStyle(
-                  //       color: MainColor,
-                  //       fontSize: 12,
-                  //       fontWeight: FontWeight.w500),
-                  // ),
-                  // SizedBox(height: 10),
-                  // Container(
-                  //   width: 90,
-                  //   height: 140,
-                  //   color: grey02,
-                  //   padding: EdgeInsets.all(10),
-                  //   child: Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       Container(
-                  //         width: 70,
-                  //         height: 95,
-                  //         color: grey01,
-                  //         margin: EdgeInsets.only(bottom: 5),
-                  //       ),
-                  //       Text(
-                  //         'Today, I am happy:)',
-                  //         style: TextStyle(
-                  //             fontSize: 5, fontWeight: FontWeight.w400),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+                  const SizedBox(height: 15),
+                  Text(
+                    '2025.01.20',
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: MainColor),
+                  ),
+                  const SizedBox(height: 8),
+                  SmallPolaroid(
+                    text: 'I love Austraila!',
+                    image: Image.asset('assets/melbourne_museum.jpg'),
+                    color: red,
+                  ),
                 ],
               ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: const BottomNavigation(initialIndex: 1),
+      bottomNavigationBar: BottomNavigation(initialIndex: 1),
     );
   }
 }

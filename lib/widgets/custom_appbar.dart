@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:tripus/constants/colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String text;
+  final String? text;
   final Widget? actionIcon;
   final bool automaticallyImplyLeading;
 
   const CustomAppBar({
     super.key,
-    required this.text,
+    this.text,
     this.actionIcon,
     this.automaticallyImplyLeading = true,
   });
@@ -31,7 +31,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             )
           : null,
       title: Text(
-        text,
+        text ?? '',
         style: const TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 18,

@@ -1,0 +1,46 @@
+[
+    {
+        "id": 1,
+        "name": "Melbourne museum",
+        "_comment": "coordinates: -37.8033, 144.9714",
+        "coordinates": "-37.8033, 144.9714",
+        "address": "11 Nicholson Street Carlton Gardens, Melbourne, Victoria 3053 Australia",
+        "image": "assets/melbourne_museum.jpg",
+        "background_image": "assets/Forest.png",
+        "symbol": "assets/badge02.png",
+        "description": "공룡 화석부터 호주 원주민인 애버리진 관련 내용등 멜버른의 고대부터 현대까지의 역사를 전시한 박물관"
+    },
+    {
+        "id": 2,
+        "name": "Melbourne Park",
+        "_comment": "coordinates: -37.8211, 144.9784",
+        "coordinates": "-37.8200, 144.9784",
+        "address": "Melbourne VIC 3001  Australia",
+        "image": "assets/melbourne_park.jpg",
+        "background_image": "assets/Flower.png",
+        "symbol": "assets/badge03.png",
+        "description": "호주 스포츠의 중심이자 세계 3대 그랜드 슬램중 가장 먼저 개최되는 “호주 오픈”이 개최되는 곳"
+    },
+    {
+        "id": 3,
+        "name": "National Gallery of Victoria",
+        "_comment": "coordinates: -37.8225, 144.9689",
+        "coordinates": "-37.8090, 144.9820",
+        "address": "180 St Kilda Rd, Melbourne, Victoria 8006 Australia",
+        "image": "assets/national_gallery_of_victoria.jpg",
+        "background_image": "assets/stars.png",
+        "symbol": "assets/badge05.png",
+        "description": "1861년에 설립된 후 75,000개 이상의 작품으로 구성된 소 장품과 갤러리를 둘러볼 수 있는 국립 미술관"
+    },
+    {
+        "id": 4,
+        "name": "Melbourne polytechnic",
+        "_comment": "coordinates: -37.7747, 144.9980",
+        "coordinates": "-37.7878, 144.9840",
+        "address": "77 St Georges Rd, Preston VIC 3072 Australia",
+        "image": "assets/melbourne_polytechnic.png",
+        "background_image": "assets/spring.png",
+        "symbol": "assets/badge01.png",
+        "description": "오웬과 디맨을 만날 수 있는 특별한 장소로 호주미소녀들이 수업을 듣고 개발과 디자인을 하는 공간"
+    }
+]

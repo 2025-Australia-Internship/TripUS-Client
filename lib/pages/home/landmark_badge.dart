@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:tripus/widgets/appbar.dart';
+import 'package:tripus/widgets/custom_appbar.dart';
 import 'package:tripus/widgets/bottom_navigation.dart';
 
 class LandmarkPage extends StatelessWidget {
