@@ -11,6 +11,7 @@ class CommonTextfield extends StatelessWidget {
   final bool enabled;
   final String? statusMessage;
   final MessageType? messageType;
+  final bool obscureText;
 
   const CommonTextfield({
     super.key,
@@ -22,6 +23,7 @@ class CommonTextfield extends StatelessWidget {
     this.enabled = true,
     this.statusMessage,
     this.messageType,
+    this.obscureText = false,
   });
 
   @override
@@ -41,6 +43,7 @@ class CommonTextfield extends StatelessWidget {
           controller: controller,
           onChanged: onChanged,
           enabled: enabled,
+          obscureText: obscureText,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: light08, width: 2),
