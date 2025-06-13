@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tripus/routes/app_routes.dart';
 import 'package:tripus/constants/colors.dart';
 
-import 'package:tripus/widgets/appbar.dart';
+import 'package:tripus/widgets/custom_appbar.dart';
 import 'package:tripus/widgets/active_button.dart';
 import 'package:tripus/widgets/close_icon_button.dart';
 import 'package:tripus/widgets/common_textfield.dart';

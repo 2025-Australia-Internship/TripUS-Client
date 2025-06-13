@@ -58,6 +58,7 @@ flutter:
         - assets/home/
         - assets/background/
         - assets/config/.env
+        - assets/landmarks.json
 
     fonts:
         - family: Pretendard

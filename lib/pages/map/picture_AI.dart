@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tripus/constants/colors.dart';
 import 'package:tripus/main.dart';
 
+import 'package:tripus/widgets/bottom_navigation.dart';
+
 class AIPage extends StatefulWidget {
   const AIPage({super.key});
 

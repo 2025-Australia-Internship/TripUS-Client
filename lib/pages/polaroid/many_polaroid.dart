@@ -8,6 +8,8 @@ import 'package:tripus/constants/colors.dart';
 import 'package:tripus/main.dart';
 import 'package:tripus/pages/polaroid/edit_polaroid.dart';
 
+import 'package:tripus/widgets/bottom_navigation.dart';
+
 class ManyPolaroid extends StatefulWidget {
   const ManyPolaroid({super.key});
 

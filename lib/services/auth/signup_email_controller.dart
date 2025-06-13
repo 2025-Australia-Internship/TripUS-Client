@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'auth_service.dart';
+import 'auth_verifyCode.dart';
 import 'auth_timer.dart';
+import 'auth_service.dart';
 
 class SignupEmailController {
   final emailController = TextEditingController();
   final codeController = TextEditingController();
 
-  final AuthService _authService = AuthService();
+  final authService = AuthService();
+  final AuthVerifycode _authVerifycode = AuthVerifycode();
   late final AuthTimer _authTimer;
 
   // ValueNotifier : 값의 변화를 감지하고 자동으로 알림
@@ -27,13 +29,13 @@ class SignupEmailController {
 
   void reset() {
     _authTimer.cancel();
-    _authService.resetCode();
+    _authVerifycode.resetCode();
     isCodeSent.value = false;
     timerText.value = '0:00';
   }
 
   void sendCode() {
-    _authService.sendVerificationCode(); // 인증코드 생성
+    _authVerifycode.sendVerificationCode(); // 인증코드 생성
     _authTimer.start(); // 타이머 실시
     isCodeSent.value = true;
     isCodeVerified.value = false;
@@ -41,7 +43,7 @@ class SignupEmailController {
 
   // 인증 코드 비교
   bool verifyCode(String input) {
-    final isVerified = _authService.verifyCode(input);
+    final isVerified = _authVerifycode.verifyCode(input);
     if (isVerified) {
       _authTimer.cancel();
       isCodeVerified.value = true;

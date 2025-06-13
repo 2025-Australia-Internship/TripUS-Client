@@ -5,6 +5,13 @@ import 'package:tripus/constants/colors.dart';
 import 'package:tripus/main.dart';
 import 'package:tripus/pages/profile/profile_page.dart';
 
+import 'package:tripus/widgets/bottom_navigation.dart';
+import 'package:tripus/widgets/common_textfield.dart';
+import 'package:tripus/widgets/custom_appbar.dart';
+import 'package:tripus/widgets/primary_button.dart';
+import 'package:tripus/widgets/profile.dart';
+import 'package:tripus/widgets/profile_textfield.dart';
+
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
 
@@ -18,128 +25,56 @@ class _EditProfilePageStatet extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text(
-          'Profile',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
-        ),
+      appBar: CustomAppBar(
+        text: '프로필 편집',
         automaticallyImplyLeading: false,
       ),
-      resizeToAvoidBottomInset: false,
       body: Container(
         width: double.infinity,
         height: MediaQuery.of(context).size.height,
         color: Colors.white,
         child: Column(
           children: [
-            Container(
-              width: 90,
-              height: 90,
-              decoration: BoxDecoration(
-                color: light05,
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.camera_alt),
-                color: MainColor,
-                iconSize: 30,
-              ),
-            ),
+            SizedBox(height: 20),
+            Profile(),
             SizedBox(height: 30),
             SizedBox(
               width: 315,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Nickname',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: dark04,
-                    ),
+                  ProfileTextfield(
+                    label: '닉네임',
+                    onSuffixPressed: () {
+                      //TODO: 아이디 중복 확인
+                    },
+                    suffixText: '중복확인',
                   ),
                   SizedBox(height: 5),
-                  TextFormField(
-                    controller: _textController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: light09,
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: light09),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      suffixIcon: Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: SvgPicture.asset(
-                            'assets/Check.svg',
-                            width: 40,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Comment',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: dark04,
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  TextFormField(
-                    controller: _textController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: light09,
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: light09),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
+                  ProfileTextfield(
+                    label: '상태 메시지',
+                    onSuffixPressed: () {
+                      //TODO: 아이디 중복 확인
+                    },
                   ),
                 ],
               ),
             ),
             Spacer(),
             SizedBox(
-              width: 315,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => const ProfilePage(),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
+                width: 315,
+                child: PrimaryButton(
+                  text: '확인',
                   backgroundColor: MainColor,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Text(
-                  'Done',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
+                  color: Colors.white,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => const ProfilePage(),
+                      ),
+                    );
+                  },
+                )),
             SizedBox(height: 20)
           ],
         ),

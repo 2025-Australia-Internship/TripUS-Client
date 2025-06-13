@@ -9,6 +9,8 @@ import 'package:tripus/main.dart';
 import 'package:tripus/pages/polaroid/many_polaroid.dart';
 import 'package:tripus/pages/polaroid/edit_polaroid.dart';
 
+import 'package:tripus/widgets/bottom_navigation.dart';
+
 class PolaroidPage extends StatefulWidget {
   const PolaroidPage({super.key});
 

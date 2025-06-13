@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+import 'package:tripus/routes/app_routes.dart';
 import 'package:tripus/pages/home/routes.dart';
 import 'package:tripus/constants/colors.dart';
 import 'package:tripus/widgets/background_button.dart';
@@ -55,7 +56,9 @@ class _HomePageStatet extends State<HomePage> {
                             radius: 20,
                             backgroundColor: light08,
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushNamed(context, AppRoutes.friend);
+                              },
                               icon: SvgPicture.asset(
                                 'assets/home/friends.svg',
                                 width: 20,

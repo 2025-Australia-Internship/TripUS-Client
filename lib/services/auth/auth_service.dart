@@ -1,26 +1,28 @@
-import 'dart:math';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AuthService {
-  String? _generatedCode;
+  final String _baseUrl = 'http://<YOUR_BACKEND_URL>';
 
-  // 임의 코드 생성
-  String sendVerificationCode() {
-    final code = (100000 + Random().nextInt(900000)).toString();
-    _generatedCode = code;
-    print('발급된 인증코드: $code'); // 임시 코드 콘솔 출력
-    return code;
+  Future<Map<String, dynamic>> registerUser(
+      String email, String password) async {
+    final url = Uri.parse('$_baseUrl/auth/register');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'email': email,
+        'password': password,
+      }),
+    );
+
+    final data = json.decode(response.body);
+
+    if (response.statusCode == 201) {
+      return data; // 회원가입 성공
+    } else {
+      throw Exception(data['message'] ?? '회원가입 실패');
+    }
   }
-
-  // 인증 코드 비교
-  bool verifyCode(String input) {
-    return _generatedCode != null && _generatedCode == input;
-  }
-
-  // 코드 리셋
-  void resetCode() {
-    _generatedCode = null;
-  }
-
-  // 코드가 존재하는지 확인
-  bool get hasValidCode => _generatedCode != null;
 }

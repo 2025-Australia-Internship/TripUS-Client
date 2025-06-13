@@ -12,6 +12,10 @@ import 'package:tripus/constants/colors.dart';
 import 'package:tripus/main.dart';
 import 'package:tripus/pages/map/loding_AI.dart';
 import 'package:tripus/pages/polaroid/one_polaroid.dart';
+import 'package:tripus/widgets/custom_appbar.dart';
+import 'package:tripus/widgets/polaroid.dart';
+import 'package:tripus/widgets/bottom_navigation.dart';
+import 'package:tripus/widgets/primary_button.dart';
 
 class EditPolaroid extends StatefulWidget {
   final File selectedImage;
@@ -145,24 +149,8 @@ class _EditPolaroidState extends State<EditPolaroid> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          'My Polaroid',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.close, color: Colors.black),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
-        elevation: 0,
+      appBar: CustomAppBar(
+        text: '폴라로이드',
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -170,52 +158,11 @@ class _EditPolaroidState extends State<EditPolaroid> {
           color: Colors.white,
           child: Column(
             children: [
-              Container(
-                width: 320,
-                height: 450,
-                margin: EdgeInsets.only(top: 20),
-                decoration: BoxDecoration(
-                  color: _color,
-                  boxShadow: [
-                    BoxShadow(
-                      color: grey02,
-                      blurRadius: 5,
-                      spreadRadius: 3,
-                      offset: Offset(2, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Center(
-                      child: Container(
-                        margin: EdgeInsets.only(top: 30),
-                        width: 260,
-                        height: 300,
-                        color: grey01,
-                        child: Image.file(
-                          widget.selectedImage,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                      child: TextField(
-                        controller: _captionController,
-                        decoration: InputDecoration(
-                          hintText: 'Write your comment here',
-                          border: InputBorder.none,
-                        ),
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w500),
-                        textAlign: TextAlign.left,
-                        maxLines: 3,
-                      ),
-                    ),
-                  ],
-                ),
+              SizedBox(height: 25),
+              Polaroid(
+                text: '텍스트를 입력해주세요.',
+                image: Image.asset('assets/sample1.png'),
+                color: red,
               ),
               SizedBox(height: 30),
               Padding(
@@ -232,29 +179,15 @@ class _EditPolaroidState extends State<EditPolaroid> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
-              SizedBox(
-                width: 320,
-                child: ElevatedButton(
-                  onPressed: savePolaroid,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF246BFD),
-                    minimumSize: Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    'Create Polaroid',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
+              SizedBox(height: 30),
+              PrimaryButton(
+                text: '폴라로이드 제작하기',
+                backgroundColor: MainColor,
+                color: Colors.white,
+                onPressed: () {},
+                //Navigator.pushNamed(context, AppRoutes.one_polaroid),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 30),
             ],
           ),
         ),

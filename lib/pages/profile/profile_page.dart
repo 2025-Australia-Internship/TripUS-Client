@@ -5,11 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import 'package:tripus/widgets/bottom_navigation.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:tripus/constants/colors.dart';
 import 'package:tripus/main.dart';
 import 'package:tripus/pages/profile/edit_profile.dart';
+import 'package:tripus/widgets/custom_appbar.dart';
+import 'package:tripus/widgets/profile_box.dart';
+import 'package:tripus/routes/app_routes.dart';
 
 // base64 이미지 디코딩
 class Base64ImageWidget extends StatelessWidget {
@@ -138,131 +143,102 @@ class _ProfilePageStatet extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Profile',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-        ),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-      ),
       body: SingleChildScrollView(
         child: Container(
+          margin: EdgeInsets.only(top: 70),
           width: double.infinity,
           color: Colors.white,
           child: Column(
             children: [
-              Container(
-                width: 315,
-                height: 96,
-                margin: EdgeInsets.only(bottom: 15),
-                decoration: BoxDecoration(
-                  color: light08,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Base64ImageWidget(
-                            base64String: profileImage,
-                            width: 55,
-                            height: 55,
-                            fit: BoxFit.cover,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 25.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  username,
-                                  style: TextStyle(
-                                    color: dark04,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                Text(
-                                  email,
-                                  style: TextStyle(
-                                    color: Color(0xff909EB4),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      const EditProfilePage(),
-                                ),
-                              );
-                            },
-                            icon: SvgPicture.asset('assets/edit_profile.svg'),
-                          ),
-                        ],
+              Stack(
+                children: [
+                  ProfileBox(
+                    name: 'AU-COS',
+                    image: Image.asset('assets/melbourne_museum.jpg'),
+                    message: '오늘도 OZ한 하루!',
+                  ),
+                  Positioned(
+                    top: 35,
+                    right: 8,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppRoutes.editProfile);
+                      },
+                      icon: SvgPicture.asset(
+                        'assets/edit.svg',
+                        width: 20,
                       ),
+                    ),
+                  ),
+                ],
               ),
               Container(
                 width: 315,
-                height: _height,
-                padding: EdgeInsets.only(left: 20, top: 7),
+                padding: EdgeInsets.all(20),
+                margin: EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
                   color: light09,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/bookmark.svg',
-                                color: dark04,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'Bookmark',
-                                style: TextStyle(
-                                  color: dark04,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ],
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/bookmark.svg',
+                            color: dark04,
                           ),
-                        ),
-                        IconButton(
+                          SizedBox(width: 14),
+                          Text(
+                            'Bookmark',
+                            style: TextStyle(
+                              color: dark04,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    Divider(thickness: 2, height: 2, color: light08),
+                    SizedBox(height: 5),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Melbourne Polytechnic',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: dark04,
+                            ),
+                          ),
+                          IconButton(
                             onPressed: () {
-                              setState(() {
-                                if (_height != 355) {
-                                  _height = 355;
-                                } else {
-                                  _height = 65;
-                                }
-                              });
+                              Navigator.pushNamed(
+                                  context, AppRoutes.editProfile);
                             },
-                            icon: Icon(Icons.keyboard_arrow_down_rounded))
-                      ],
-                    )
+                            icon: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: dark04,
+                              size: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
               Container(
                 width: 315,
                 padding: EdgeInsets.all(20),
-                margin: EdgeInsets.only(top: 15, bottom: 30),
+                margin: EdgeInsets.symmetric(vertical: 5),
                 decoration: BoxDecoration(
                   color: light09,
                   borderRadius: BorderRadius.circular(10),
@@ -271,26 +247,29 @@ class _ProfilePageStatet extends State<ProfilePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.language,
-                          color: dark04,
-                          size: 20,
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          'Language',
-                          style: TextStyle(
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.language,
                             color: dark04,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
+                            size: 20,
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 10),
+                          Text(
+                            'Language',
+                            style: TextStyle(
+                              color: dark04,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 17),
-                    Divider(thickness: 1, height: 1, color: light05),
+                    SizedBox(height: 15),
+                    Divider(thickness: 2, height: 2, color: light08),
                     SizedBox(height: 15),
                     Padding(
                       padding: EdgeInsets.only(left: 10),
@@ -302,12 +281,13 @@ class _ProfilePageStatet extends State<ProfilePage> {
                           '한국어',
                           style: TextStyle(
                             fontSize: 13,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
+                            color: MainColor,
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 18),
+                    SizedBox(height: 10),
                     Padding(
                       padding: EdgeInsets.only(left: 10),
                       child: GestureDetector(
@@ -319,7 +299,7 @@ class _ProfilePageStatet extends State<ProfilePage> {
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w500,
-                            color: MainColor, // 버튼처럼 보이도록 색상 지정
+                            color: dark08, // 버튼처럼 보이도록 색상 지정
                           ),
                         ),
                       ),
@@ -327,6 +307,7 @@ class _ProfilePageStatet extends State<ProfilePage> {
                   ],
                 ),
               ),
+              SizedBox(height: 15),
               GestureDetector(
                 onTap: () async {
                   // TODO : 로그아웃 동작
@@ -336,11 +317,11 @@ class _ProfilePageStatet extends State<ProfilePage> {
                   print('로그아웃 완료');
                 },
                 child: Text(
-                  'log out',
+                  '로그아웃',
                   style: TextStyle(
                     color: error,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
