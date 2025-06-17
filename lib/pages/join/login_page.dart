@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:tripus/constants/colors.dart';
 import 'package:tripus/routes/app_routes.dart';
+
 import 'package:tripus/widgets/custom_appbar.dart';
-import 'package:tripus/widgets/close_icon_button.dart';
 import 'package:tripus/widgets/common_textfield.dart';
-import 'package:tripus/widgets/status_message.dart';
 import 'package:tripus/widgets/active_button.dart';
 
 import 'package:tripus/services/login_controller.dart';
@@ -42,9 +39,6 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: CustomAppBar(
         text: '로그인',
-        actionIcon: CloseIconButton(
-          onPressed: () => Navigator.pushNamed(context, AppRoutes.home),
-        ),
       ),
       body: SingleChildScrollView(
         child: Container(
