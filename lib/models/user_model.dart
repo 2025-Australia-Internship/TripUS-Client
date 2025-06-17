@@ -1,20 +1,20 @@
 class RegisterUser {
   final String email;
   final String password;
-  final String nickname;
-  final String? profileImageBase64;
+  final String username;
+  final String? profile_image;
 
   RegisterUser({
     required this.email,
     required this.password,
-    required this.nickname,
-    this.profileImageBase64,
+    required this.username,
+    this.profile_image,
   });
 
   Map<String, dynamic> toJson() => {
+        if (profile_image != null) 'profile_image': profile_image,
         'email': email,
         'password': password,
-        'nickname': nickname,
-        if (profileImageBase64 != null) 'profile_image': profileImageBase64,
+        'username': username,
       };
 }

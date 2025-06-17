@@ -42,7 +42,7 @@ class SignupSuccessPage extends StatelessWidget {
                 backgroundColor: MainColor,
                 color: Colors.white,
                 onPressed: () {
-                  Navigator.pushNamed(context, AppRoutes.login);
+                  Navigator.pushNamed(context, AppRoutes.auth);
                 },
               ),
             ),

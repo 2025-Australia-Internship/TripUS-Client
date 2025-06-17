@@ -34,11 +34,19 @@ class SignupEmailController {
     timerText.value = '0:00';
   }
 
-  void sendCode() {
+  Future<void> sendCode() async {
+    reset();
     _authVerifycode.sendVerificationCode(); // 인증코드 생성
     _authTimer.start(); // 타이머 실시
     isCodeSent.value = true;
     isCodeVerified.value = false;
+  }
+
+  // 인증 상태 초기화
+  void forceResetCodeSend() {
+    isCodeSent.value = false;
+    isCodeVerified.value = false;
+    timerText.value = '3:00';
   }
 
   // 인증 코드 비교
