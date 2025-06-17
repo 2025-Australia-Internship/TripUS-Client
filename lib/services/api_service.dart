@@ -54,4 +54,22 @@ class ApiService {
       throw Exception('Failed to register: ${response.body}');
     }
   }
+
+  // 로그인
+  static Future<Map<String, dynamic>> login(
+      String email, String password) async {
+    final uri = Uri.parse('$_baseUrl/api/auth/login');
+    final response = await http.post(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email, 'password': password}),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      final body = jsonDecode(response.body);
+      throw Exception(body['message'] ?? '로그인 실패');
+    }
+  }
 }
