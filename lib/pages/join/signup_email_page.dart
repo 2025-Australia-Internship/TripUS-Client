@@ -136,9 +136,8 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final appBarHeight = AppBar().preferredSize.height;
     final bodyHeight = MediaQuery.of(context).size.height -
-        appBarHeight -
+        AppBar().preferredSize.height -
         MediaQuery.of(context).padding.top;
 
     return Scaffold(
