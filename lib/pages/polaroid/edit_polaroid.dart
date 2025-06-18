@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tripus/constants/colors.dart';
 import 'package:tripus/widgets/custom_appbar.dart';
@@ -6,7 +9,9 @@ import 'package:tripus/widgets/bottom_navigation.dart';
 import 'package:tripus/widgets/primary_button.dart';
 
 class EditPolaroid extends StatefulWidget {
-  const EditPolaroid({super.key});
+  final dynamic imageSource; // File or Uint8List
+
+  const EditPolaroid({super.key, required this.imageSource});
 
   @override
   State<EditPolaroid> createState() => _EditPolaroidState();
@@ -14,7 +19,6 @@ class EditPolaroid extends StatefulWidget {
 
 class _EditPolaroidState extends State<EditPolaroid> {
   Color _color = Colors.white;
-  bool _isPublic = true;
   final TextEditingController _captionController = TextEditingController();
 
   @override
@@ -24,8 +28,18 @@ class _EditPolaroidState extends State<EditPolaroid> {
   }
 
   void savePolaroid() {
-    // 실제 저장 로직 제거 → 디버깅용 메시지 출력 또는 테스트용 dummy 처리
-    print('하드코딩된 폴라로이드 저장: ${_captionController.text}, 공개 여부: $_isPublic');
+    print('폴라로이드 저장: ${_captionController.text}, 색상: $_color');
+    // TODO: 이미지 + 텍스트 + 색상 -> 서버 전송
+  }
+
+  Widget buildImage() {
+    if (kIsWeb && widget.imageSource is Uint8List) {
+      return Image.memory(widget.imageSource, fit: BoxFit.cover);
+    } else if (!kIsWeb && widget.imageSource is File) {
+      return Image.file(widget.imageSource, fit: BoxFit.cover);
+    } else {
+      return const Text('이미지를 불러올 수 없습니다');
+    }
   }
 
   @override
@@ -43,9 +57,8 @@ class _EditPolaroidState extends State<EditPolaroid> {
                 text: _captionController.text.isEmpty
                     ? '텍스트를 입력해주세요.'
                     : _captionController.text,
-                image: Image.asset('assets/sample1.png'), // 하드코딩 이미지
+                image: buildImage(),
                 color: _color,
-                isPublic: _isPublic,
               ),
               const SizedBox(height: 30),
               Padding(
@@ -91,6 +104,9 @@ class _EditPolaroidState extends State<EditPolaroid> {
       child: CircleAvatar(
         radius: 20,
         backgroundColor: color,
+        child: _color == color
+            ? const Icon(Icons.check, color: Colors.white)
+            : null,
       ),
     );
   }

@@ -1,4 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:tripus/routes/app_routes.dart';
 import 'package:tripus/constants/colors.dart';
 import 'package:tripus/pages/polaroid/edit_polaroid.dart';
 import 'package:tripus/pages/polaroid/many_polaroid.dart';
@@ -7,17 +12,32 @@ import 'package:tripus/widgets/bottom_navigation.dart';
 class PolaroidPage extends StatelessWidget {
   const PolaroidPage({super.key});
 
+  Future<void> _pickImage(BuildContext context) async {
+    final ImagePicker picker = ImagePicker();
+
+    final XFile? picked =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (picked != null) {
+      if (kIsWeb) {
+        final bytes = await picked.readAsBytes();
+        Navigator.pushNamed(context, AppRoutes.editPolaroid, arguments: bytes);
+      } else {
+        final file = File(picked.path);
+        Navigator.pushNamed(context, AppRoutes.editPolaroid, arguments: file);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> mockItems = [
-      {'date': '', 'type': 'camera'}, // 첫 번째는 항상 카메라
+      {'type': 'camera'}, // 첫 번째는 항상 카메라
       {'date': '01.26', 'image': 'assets/sample1.png'},
       {'date': '01.25', 'image': 'assets/sample2.png'},
       {'date': '01.24', 'image': 'assets/sample3.png'},
       {'date': '01.23', 'image': 'assets/sample1.png'},
       {'date': '01.22', 'image': 'assets/sample2.png'},
-      {'date': '01.21', 'image': 'assets/sample3.png'},
-      {'date': '01.20', 'image': 'assets/sample1.png'},
     ];
 
     return Scaffold(
@@ -39,7 +59,7 @@ class PolaroidPage extends StatelessWidget {
               crossAxisCount: 3,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 0.85, // 정사각형 비율 보장
+              childAspectRatio: 0.85,
               children: mockItems.map((item) {
                 if (item['type'] == 'camera') {
                   return _buildCameraBox(context);
@@ -61,15 +81,9 @@ class PolaroidPage extends StatelessWidget {
 
   Widget _buildCameraBox(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => EditPolaroid()),
-        );
-      },
+      onTap: () => _pickImage(context),
       child: Column(
         children: [
-          // 날짜 공간을 빈 공간으로 확보 (다른 아이템과 정렬 맞추기)
           const SizedBox(height: 18),
           Expanded(
             child: Container(
@@ -99,7 +113,6 @@ class PolaroidPage extends StatelessWidget {
       },
       child: Column(
         children: [
-          // 날짜를 위쪽에 가운데 정렬로 배치
           SizedBox(
             height: 18,
             child: Center(

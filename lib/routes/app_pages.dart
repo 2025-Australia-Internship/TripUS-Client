@@ -45,7 +45,11 @@ final routes = {
   },
   //
   AppRoutes.polaroid: (context) => const PolaroidPage(),
-  AppRoutes.editPolaroid: (context) => const EditPolaroid(),
+  AppRoutes.editPolaroid: (context) {
+    final args = ModalRoute.of(context)!.settings.arguments;
+    return EditPolaroid(imageSource: args); // File or Uint8List
+  },
+
   AppRoutes.manyPolaroid: (context) => const ManyPolaroid(),
   //AppRoutes.onePolaroid: (context) => const OnePolaroid(
   // polaroidId: polaroidId,

@@ -72,20 +72,20 @@ class _HomePageStatet extends State<HomePage> {
                       padding: EdgeInsets.only(right: 30),
                       child: Row(
                         children: [
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundColor: light08,
-                            child: IconButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, AppRoutes.friend);
-                              },
-                              icon: SvgPicture.asset(
-                                'assets/home/friends.svg',
-                                width: 20,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10),
+                          // CircleAvatar(
+                          //   radius: 20,
+                          //   backgroundColor: light08,
+                          //   child: IconButton(
+                          //     onPressed: () {
+                          //       Navigator.pushNamed(context, AppRoutes.friend);
+                          //     },
+                          //     icon: SvgPicture.asset(
+                          //       'assets/home/friends.svg',
+                          //       width: 20,
+                          //     ),
+                          //   ),
+                          // ),
+                          // SizedBox(width: 10),
                           BackgroundButton(
                             onBackgroundSelected: (String background) {
                               _updateSelectedBackground(

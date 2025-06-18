@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tripus/constants/colors.dart';
 
 class Polaroid extends StatelessWidget {
   final String text;
-  final Image image;
+  final Widget image;
   final Color color;
-  final bool isPublic;
 
   const Polaroid({
     super.key,
     required this.text,
     required this.image,
     required this.color,
-    this.isPublic = true,
   });
 
   @override
@@ -31,7 +28,7 @@ class Polaroid extends StatelessWidget {
                 color: grey02,
                 blurRadius: 5,
                 spreadRadius: 3,
-                offset: Offset(2, 2),
+                offset: const Offset(2, 2),
               ),
             ],
           ),
@@ -40,13 +37,15 @@ class Polaroid extends StatelessWidget {
           top: 20,
           child: Column(
             children: [
-              Image(
-                image: image.image,
-                fit: BoxFit.cover,
+              // 이미지를 Widget 그대로 사용
+              SizedBox(
                 width: 240,
                 height: 300,
+                child: ClipRRect(
+                  child: image,
+                ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               SizedBox(
                 width: 235,
                 child: Text(
@@ -60,14 +59,6 @@ class Polaroid extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-        ),
-        Positioned(
-          bottom: 20,
-          right: 20,
-          child: SvgPicture.asset(
-            'assets/open_eye.svg',
-            width: 26,
           ),
         ),
       ],
