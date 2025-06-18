@@ -40,7 +40,6 @@ class _PolaroidPageState extends State<PolaroidPage> {
         MaterialPageRoute(
           builder: (context) => EditPolaroid(
             selectedImage: _selectedImage!,
-            base64Image: _base64Image!,
           ),
         ),
       );

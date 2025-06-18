@@ -105,6 +105,14 @@ class _ProfilePageStatet extends State<ProfilePage> {
     loadUserProfile();
   }
 
+  final List<Map<String, dynamic>> bookmarkedLandmarks = [
+    {
+      "id": 1,
+      "name": "Melbourne Museum",
+    },
+    // 더 추가 가능
+  ];
+
   Future<void> loadUserProfile() async {
     try {
       final String apiUrl = '${dotenv.env['BASE_URL']}/user/info';
@@ -204,33 +212,41 @@ class _ProfilePageStatet extends State<ProfilePage> {
                     ),
                     SizedBox(height: 15),
                     Divider(thickness: 2, height: 2, color: light08),
-                    SizedBox(height: 5),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Melbourne Polytechnic',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: dark04,
-                            ),
+                    ListView.builder(
+                      itemCount: bookmarkedLandmarks.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final landmark = bookmarkedLandmarks[index];
+                        return Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                landmark['name'],
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: dark04,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(
+                                    '/landmark_detail_page',
+                                    arguments: landmark['id'],
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: dark04,
+                                  size: 15,
+                                ),
+                              ),
+                            ],
                           ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.editProfile);
-                            },
-                            icon: Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              color: dark04,
-                              size: 15,
-                            ),
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ],
                 ),

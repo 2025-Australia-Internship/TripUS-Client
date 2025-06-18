@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tripus/constants/colors.dart';
@@ -6,11 +7,13 @@ import 'package:tripus/constants/colors.dart';
 class Profile extends StatefulWidget {
   final int width;
   final int height;
+  final void Function(String base64Image)? onImageSelected;
 
   const Profile({
     super.key,
     this.width = 100,
     this.height = 100,
+    this.onImageSelected,
   });
 
   @override
@@ -26,9 +29,16 @@ class _ProfileState extends State<Profile> {
         await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
+      final bytes = await pickedFile.readAsBytes(); // 바이트 읽기
+      final base64Image = base64Encode(bytes); // base64 인코딩
+
       setState(() {
         _selectedImage = File(pickedFile.path);
       });
+
+      if (widget.onImageSelected != null) {
+        widget.onImageSelected!(base64Image); // 콜백 실행
+      }
     }
   }
 

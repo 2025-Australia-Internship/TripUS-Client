@@ -9,7 +9,6 @@ import 'dart:io';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:tripus/constants/colors.dart';
-import 'package:tripus/main.dart';
 import 'package:tripus/pages/map/loding_AI.dart';
 import 'package:tripus/pages/polaroid/one_polaroid.dart';
 import 'package:tripus/widgets/custom_appbar.dart';
@@ -19,12 +18,10 @@ import 'package:tripus/widgets/primary_button.dart';
 
 class EditPolaroid extends StatefulWidget {
   final File selectedImage;
-  final String base64Image; // Base64로 인코딩된 이미지 데이터
 
   const EditPolaroid({
     Key? key,
     required this.selectedImage,
-    required this.base64Image,
   }) : super(key: key);
 
   @override
@@ -33,46 +30,8 @@ class EditPolaroid extends StatefulWidget {
 
 class _EditPolaroidState extends State<EditPolaroid> {
   Color _color = Colors.white;
-  TextEditingController _captionController = TextEditingController();
-
-  Future<String> imageToBase64(File selectedImage) async {
-    Uint8List imageBytes = await selectedImage.readAsBytes();
-    return base64Encode(imageBytes);
-  }
-
-  Future<void> createPolaroid(BuildContext context) async {
-    try {
-      final Uint8List imageBytes = await widget.selectedImage.readAsBytes();
-      final String base64Image = base64Encode(imageBytes);
-
-      const storage = FlutterSecureStorage();
-      final accessToken = await storage.read(key: 'jwt');
-
-      final apiUrl = '${dotenv.env['BASE_URL']}/polaroids';
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $accessToken',
-        },
-        body: jsonEncode({
-          'photo_url': base64Image,
-          'caption': _captionController.text,
-          'backgroundColor': _color.value.toRadixString(16),
-        }),
-      );
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-
-      if (response.statusCode == 201) {
-        showSnackBar(context, '폴라로이드가 생성되었습니다', isError: false);
-      } else {
-        showSnackBar(context, '폴라로이드 생성에 실패했습니다');
-      }
-    } catch (error) {
-      showSnackBar(context, '오류가 발생했습니다: ${error.toString()}');
-    }
-  }
+  bool _isPublic = true;
+  final TextEditingController _captionController = TextEditingController();
 
   @override
   void dispose() {
@@ -81,8 +40,6 @@ class _EditPolaroidState extends State<EditPolaroid> {
   }
 
   Future<void> savePolaroid() async {
-    final apiUrl = "${dotenv.env['BASE_URL']}/polaroids";
-
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'jwt');
 
@@ -92,14 +49,17 @@ class _EditPolaroidState extends State<EditPolaroid> {
     }
 
     try {
+      final String base64Image =
+          base64Encode(await widget.selectedImage.readAsBytes());
+
       final Map<String, dynamic> polaroidData = {
-        'photo_url': widget.base64Image,
+        'photo_url': base64Image,
         'caption': _captionController.text,
         'color': '#${_color.value.toRadixString(16).padLeft(8, '0')}',
       };
 
       final response = await http.post(
-        Uri.parse(apiUrl),
+        Uri.parse("${dotenv.env['BASE_URL']}/polaroids"),
         headers: {
           'Authorization': 'Bearer $accessToken',
           'Content-Type': 'application/json',
@@ -109,10 +69,12 @@ class _EditPolaroidState extends State<EditPolaroid> {
 
       if (response.statusCode == 201) {
         final responseBody = jsonDecode(response.body);
+        final int polaroidId = responseBody['id'];
+
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => LodingAiPage(
-              photoUrl: widget.base64Image,
+              photoUrl: base64Image,
               caption: _captionController.text,
               backgroundColor: _color,
               onComplete: () {
@@ -120,9 +82,8 @@ class _EditPolaroidState extends State<EditPolaroid> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => OnePolaroid(
-                      // polaroidId 수정 필요
-                      polaroidId: 1,
-                      photoUrl: widget.base64Image,
+                      polaroidId: polaroidId,
+                      photoUrl: base64Image,
                       caption: _captionController.text,
                       backgroundColor: _color,
                     ),
@@ -135,13 +96,14 @@ class _EditPolaroidState extends State<EditPolaroid> {
       } else {
         print('Failed to save Polaroid: ${response.statusCode}');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save Polaroid.')),
+          const SnackBar(content: Text('Failed to save Polaroid.')),
         );
       }
     } catch (error) {
       print('Error saving Polaroid: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred while saving Polaroid.')),
+        const SnackBar(
+            content: Text('An error occurred while saving Polaroid.')),
       );
     }
   }
@@ -158,36 +120,41 @@ class _EditPolaroidState extends State<EditPolaroid> {
           color: Colors.white,
           child: Column(
             children: [
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               Polaroid(
-                text: '텍스트를 입력해주세요.',
-                image: Image.asset('assets/sample1.png'),
-                color: red,
+                text: _captionController.text.isEmpty
+                    ? '텍스트를 입력해주세요.'
+                    : _captionController.text,
+                image: Image.file(widget.selectedImage),
+                color: _color,
+                isPublic: _isPublic,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildColorCircle(Color(0xffFF6D6D)),
-                    _buildColorCircle(Color(0xffFFCB71)),
-                    _buildColorCircle(Color(0xffFDFF72)),
-                    _buildColorCircle(Color(0xff9BFF76)),
-                    _buildColorCircle(Color(0xff8DE8FF)),
-                    _buildColorCircle(Color(0xffCE7BFF)),
+                    _buildColorCircle(const Color(0xffFF6D6D)),
+                    _buildColorCircle(const Color(0xffFFCB71)),
+                    _buildColorCircle(const Color(0xffFDFF72)),
+                    _buildColorCircle(const Color(0xff9BFF76)),
+                    _buildColorCircle(const Color(0xff8DE8FF)),
+                    _buildColorCircle(const Color(0xffCE7BFF)),
                   ],
                 ),
               ),
-              SizedBox(height: 30),
-              PrimaryButton(
-                text: '폴라로이드 제작하기',
-                backgroundColor: MainColor,
-                color: Colors.white,
-                onPressed: () {},
-                //Navigator.pushNamed(context, AppRoutes.one_polaroid),
+              const SizedBox(height: 30),
+              SizedBox(
+                width: 315,
+                child: PrimaryButton(
+                  text: '폴라로이드 제작하기',
+                  backgroundColor: MainColor,
+                  color: Colors.white,
+                  onPressed: savePolaroid,
+                ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
             ],
           ),
         ),
@@ -208,28 +175,5 @@ class _EditPolaroidState extends State<EditPolaroid> {
         backgroundColor: color,
       ),
     );
-  }
-
-  void showSnackBar(BuildContext context, String message,
-      {bool isError = true}) {
-    final snackBar = SnackBar(
-      behavior: SnackBarBehavior.floating,
-      content: Row(
-        children: [
-          Icon(
-            isError ? Icons.error_outline : Icons.check_circle_outline,
-            color: Colors.white,
-          ),
-          SizedBox(width: 8),
-          Text(
-            message,
-            style: TextStyle(color: Colors.white),
-          ),
-        ],
-      ),
-      backgroundColor: isError ? Color(0xffFA7A7A) : Color(0xff4CAF50),
-      duration: Duration(seconds: 3),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
