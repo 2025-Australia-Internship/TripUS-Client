@@ -1,8 +1,11 @@
 import 'dart:io';
-import 'dart:typed_data';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'package:tripus/routes/app_routes.dart';
 import 'package:tripus/constants/colors.dart';
+
 import 'package:tripus/widgets/custom_appbar.dart';
 import 'package:tripus/widgets/polaroid.dart';
 import 'package:tripus/widgets/bottom_navigation.dart';
@@ -27,9 +30,33 @@ class _EditPolaroidState extends State<EditPolaroid> {
     super.dispose();
   }
 
-  void savePolaroid() {
-    print('폴라로이드 저장: ${_captionController.text}, 색상: $_color');
-    // TODO: 이미지 + 텍스트 + 색상 -> 서버 전송
+  void savePolaroid() async {
+    final caption = _captionController.text;
+    final bgColor = _color;
+
+    Uint8List? imageBytes;
+    if (kIsWeb && widget.imageSource is Uint8List) {
+      imageBytes = widget.imageSource;
+    } else if (!kIsWeb && widget.imageSource is File) {
+      imageBytes = await (widget.imageSource as File).readAsBytes();
+    }
+
+    if (imageBytes == null) {
+      print('이미지 없음');
+      return;
+    }
+
+    final base64Image = base64Encode(imageBytes);
+
+    Navigator.pushNamed(
+      context,
+      AppRoutes.onePolaroid,
+      arguments: {
+        'photoUrl': base64Image,
+        'caption': caption,
+        'backgroundColor': bgColor.value.toRadixString(16).padLeft(8, '0'),
+      },
+    );
   }
 
   Widget buildImage() {
@@ -54,11 +81,9 @@ class _EditPolaroidState extends State<EditPolaroid> {
             children: [
               const SizedBox(height: 25),
               Polaroid(
-                text: _captionController.text.isEmpty
-                    ? '텍스트를 입력해주세요.'
-                    : _captionController.text,
                 image: buildImage(),
                 color: _color,
+                captionController: _captionController,
               ),
               const SizedBox(height: 30),
               Padding(

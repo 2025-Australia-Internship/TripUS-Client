@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:tripus/constants/colors.dart';
 
 class Polaroid extends StatelessWidget {
-  final String text;
   final Widget image;
   final Color color;
+  final TextEditingController captionController;
 
   const Polaroid({
     super.key,
-    required this.text,
     required this.image,
     required this.color,
+    required this.captionController,
   });
 
   @override
@@ -28,7 +28,7 @@ class Polaroid extends StatelessWidget {
                 color: grey02,
                 blurRadius: 5,
                 spreadRadius: 3,
-                offset: const Offset(2, 2),
+                offset: Offset(2, 2),
               ),
             ],
           ),
@@ -37,24 +37,31 @@ class Polaroid extends StatelessWidget {
           top: 20,
           child: Column(
             children: [
-              // 이미지를 Widget 그대로 사용
               SizedBox(
                 width: 240,
                 height: 300,
                 child: ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
                   child: image,
                 ),
               ),
               const SizedBox(height: 10),
               SizedBox(
                 width: 235,
-                child: Text(
-                  text,
+                child: TextField(
+                  controller: captionController,
+                  maxLines: 2,
                   textAlign: TextAlign.start,
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                     color: Color(0xff666666),
+                  ),
+                  decoration: const InputDecoration(
+                    hintText: '텍스트를 입력해주세요.',
+                    border: InputBorder.none,
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
                   ),
                 ),
               ),

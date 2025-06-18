@@ -49,13 +49,17 @@ final routes = {
     final args = ModalRoute.of(context)!.settings.arguments;
     return EditPolaroid(imageSource: args); // File or Uint8List
   },
-
   AppRoutes.manyPolaroid: (context) => const ManyPolaroid(),
-  //AppRoutes.onePolaroid: (context) => const OnePolaroid(
-  // polaroidId: polaroidId,
-  // photoUrl: photoUrl,
-  // caption: caption,
-  // backgroundColor: backgroundColor),
+  AppRoutes.onePolaroid: (context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    return OnePolaroid(
+      photoUrl: args['photoUrl'],
+      caption: args['caption'],
+      backgroundColor: Color(int.parse('0x${args['backgroundColor']}')),
+    );
+  },
   //
   AppRoutes.profile: (context) => ProfilePage(),
   AppRoutes.editProfile: (context) => EditProfilePage(),
