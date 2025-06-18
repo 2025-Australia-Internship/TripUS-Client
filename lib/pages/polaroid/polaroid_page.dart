@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:tripus/routes/app_routes.dart';
 import 'package:tripus/constants/colors.dart';
 import 'package:tripus/pages/polaroid/edit_polaroid.dart';
