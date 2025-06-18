@@ -59,6 +59,7 @@ flutter:
         - assets/
         - assets/join/
         - assets/home/
+        - assets/sample/
         - assets/background/
         - assets/config/.env
         - assets/landmarks.json

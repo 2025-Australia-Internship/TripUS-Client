@@ -1,23 +1,97 @@
 import 'dart:io';
-import 'dart:typed_data';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:tripus/routes/app_routes.dart';
 import 'package:tripus/constants/colors.dart';
-import 'package:tripus/pages/polaroid/edit_polaroid.dart';
-import 'package:tripus/pages/polaroid/many_polaroid.dart';
+import 'package:tripus/routes/app_routes.dart';
+import 'package:tripus/utils/storage_helper.dart';
+import 'package:tripus/services/api_service.dart';
+
 import 'package:tripus/widgets/bottom_navigation.dart';
 
-class PolaroidPage extends StatelessWidget {
+class PolaroidPage extends StatefulWidget {
   const PolaroidPage({super.key});
 
-  Future<void> _pickImage(BuildContext context) async {
-    final ImagePicker picker = ImagePicker();
+  @override
+  State<PolaroidPage> createState() => _PolaroidPageState();
+}
 
-    final XFile? picked =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+class _PolaroidPageState extends State<PolaroidPage> {
+  List<Map<String, dynamic>> items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchPolaroids();
+  }
+
+  ImageProvider resolveImage(String imageUrl) {
+    if (imageUrl.startsWith('assets/')) {
+      return AssetImage(imageUrl); // asset 경로일 경우
+    } else if (imageUrl.startsWith('data:image')) {
+      final base64Str = imageUrl.split(',').last;
+      final bytes = base64Decode(base64Str);
+      return MemoryImage(bytes);
+    } else {
+      return NetworkImage(imageUrl);
+    }
+  }
+
+  Future<void> fetchPolaroids() async {
+    try {
+      final token = (await StorageHelper.getToken('accessToken'))!;
+      final polaroids = await ApiService.getUserPolaroids(token);
+      final grouped = groupByDate(polaroids);
+
+      final todayDate = DateTime.now().toIso8601String().substring(0, 10);
+
+      final newItems = <Map<String, dynamic>>[
+        {'type': 'camera'},
+      ];
+
+      if (grouped.isEmpty || !grouped.containsKey(todayDate)) {
+        newItems.add({'type': 'today'});
+      }
+
+      newItems.addAll(grouped.entries.map((entry) => {
+            'type': 'polaroid',
+            'date': entry.key.substring(5), // MM-DD
+            'image': entry.value['photo_url'],
+          }));
+
+      setState(() {
+        items = newItems;
+      });
+    } catch (e) {
+      // fallback items in case of error
+      setState(() {
+        items = [
+          {'type': 'camera'},
+          {'type': 'today'},
+        ];
+      });
+    }
+  }
+
+  Map<String, Map<String, dynamic>> groupByDate(List polaroids) {
+    final Map<String, Map<String, dynamic>> result = {};
+    for (final item in polaroids) {
+      final createdAt = item['created_at'];
+      if (createdAt == null || createdAt is! String) continue;
+
+      final date = createdAt.substring(0, 10);
+      if (!result.containsKey(date)) {
+        result[date] = item;
+      }
+    }
+    return result;
+  }
+
+  Future<void> _pickImage(BuildContext context) async {
+    final picker = ImagePicker();
+    final XFile? picked = await picker.pickImage(source: ImageSource.gallery);
 
     if (picked != null) {
       if (kIsWeb) {
@@ -32,22 +106,11 @@ class PolaroidPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> mockItems = [
-      {'type': 'camera'}, // 첫 번째는 항상 카메라
-      {'date': '01.26', 'image': 'assets/sample1.png'},
-      {'date': '01.25', 'image': 'assets/sample2.png'},
-      {'date': '01.24', 'image': 'assets/sample3.png'},
-      {'date': '01.23', 'image': 'assets/sample1.png'},
-      {'date': '01.22', 'image': 'assets/sample2.png'},
-    ];
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(
-          '폴라로이드',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-        ),
+        title: const Text('폴라로이드',
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
@@ -56,23 +119,30 @@ class PolaroidPage extends StatelessWidget {
           width: 370,
           child: Padding(
             padding: const EdgeInsets.all(10),
-            child: GridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              childAspectRatio: 0.85,
-              children: mockItems.map((item) {
-                if (item['type'] == 'camera') {
-                  return _buildCameraBox(context);
-                } else {
-                  return _buildPolaroidItem(
-                    context,
-                    date: item['date'],
-                    imagePath: item['image'],
-                  );
-                }
-              }).toList(),
-            ),
+            child: items.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : GridView.count(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 0.85,
+                    children: items.map((item) {
+                      switch (item['type']) {
+                        case 'camera':
+                          return _buildCameraBox(context);
+                        case 'today':
+                          return _buildTodayGrayBox();
+                        case 'polaroid':
+                          return _buildPolaroidItem(
+                            context,
+                            date: item['date'],
+                            imagePath: item['image'],
+                          );
+                        default:
+                          return const SizedBox.shrink();
+                      }
+                    }).toList(),
+                  ),
           ),
         ),
       ),
@@ -103,14 +173,40 @@ class PolaroidPage extends StatelessWidget {
     );
   }
 
+  Widget _buildTodayGrayBox() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 18,
+          child: Center(
+            child: Text(
+              'Today',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: dark08,
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: grey04,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildPolaroidItem(BuildContext context,
       {required String date, required String imagePath}) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const ManyPolaroid()),
-        );
+        Navigator.pushNamed(context, AppRoutes.manyPolaroid);
       },
       child: Column(
         children: [
@@ -132,8 +228,9 @@ class PolaroidPage extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(imagePath),
+                  image: resolveImage(imagePath),
                   fit: BoxFit.cover,
+                  onError: (e, s) => debugPrint('이미지 로딩 실패: $e'),
                 ),
                 borderRadius: BorderRadius.circular(10),
               ),

@@ -81,39 +81,68 @@ class ApiService {
     }
   }
 
+  // 폴라로이드 전체 조회
+  static Future<List<dynamic>> getUserPolaroids(String token) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/api/polaroids'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(utf8.decode(response.bodyBytes));
+    } else {
+      throw Exception('폴라로이드 불러오기 실패: ${response.statusCode}');
+    }
+  }
+
+  // 폴라로이드 조회
+  static Future<Map<String, dynamic>> getPolaroidById(
+      String token, int id) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/api/polaroids/$id'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('폴라로이드 조회 실패: ${response.statusCode}');
+    }
+  }
+
   // 폴라로이드 생성
   static Future<int> createPolaroid({
-    required String base64Image,
+    required String token,
+    required String photoUrl,
     required String caption,
     required String color,
     required bool isOpened,
-    int? landmarkId,
   }) async {
-    const storage = FlutterSecureStorage();
-    final accessToken = await storage.read(key: 'jwt');
-
-    final Map<String, dynamic> polaroidData = {
-      'photo_url': base64Image,
-      'caption': caption,
-      'color': color,
-      'is_opened': isOpened,
-      if (landmarkId != null) 'landmark_id': landmarkId,
-    };
-
     final response = await http.post(
-      Uri.parse("$_baseUrl/api/polaroids"),
+      Uri.parse('$_baseUrl/api/polaroids'),
       headers: {
-        'Authorization': 'Bearer $accessToken',
+        'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       },
-      body: jsonEncode(polaroidData),
+      body: jsonEncode({
+        'photo_url': photoUrl,
+        'caption': caption,
+        'color': color,
+        'is_opened': isOpened,
+      }),
     );
 
     if (response.statusCode == 201) {
-      final body = jsonDecode(response.body);
-      return body['id'];
+      final json = jsonDecode(response.body);
+      return json['id']; // 생성된 폴라로이드 ID
     } else {
-      throw Exception("Failed to create polaroid: ${response.body}");
+      throw Exception('폴라로이드 생성 실패');
     }
   }
 }

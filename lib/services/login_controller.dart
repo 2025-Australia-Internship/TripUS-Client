@@ -49,7 +49,7 @@ class LoginController {
 
     try {
       final result = await ApiService.login(email, password);
-      await StorageHelper.saveToken('jwt', result['access_token']);
+      await StorageHelper.saveToken('accessToken', result['access_token']);
       return true;
     } catch (e) {
       final error = e.toString();

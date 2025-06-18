@@ -53,12 +53,9 @@ final routes = {
   AppRoutes.onePolaroid: (context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final polaroidId = args['polaroidId'] as int;
 
-    return OnePolaroid(
-      photoUrl: args['photoUrl'],
-      caption: args['caption'],
-      backgroundColor: Color(int.parse('0x${args['backgroundColor']}')),
-    );
+    return OnePolaroid(polaroidId: polaroidId);
   },
   //
   AppRoutes.profile: (context) => ProfilePage(),
