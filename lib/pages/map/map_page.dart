@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:tripus/models/landmark.dart';
 import 'package:tripus/widgets/landmark_marker.dart';
@@ -17,6 +18,19 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   String? selectedMarker;
   List<Landmark> landmarks = [];
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImageFromGallery() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      debugPrint('📷 선택된 이미지 경로: ${image.path}');
+      // 이후 처리: 예를 들면 해당 landmark에 사진 저장 or 다른 페이지로 이동 등
+    } else {
+      debugPrint('❌ 이미지 선택이 취소됨');
+    }
+  }
 
   @override
   void initState() {
@@ -36,7 +50,7 @@ class _MapPageState extends State<MapPage> {
     return Scaffold(
       body: FlutterMap(
         options: MapOptions(
-          center: LatLng(-37.7980, 144.9850),
+          center: LatLng(-37.8025, 144.9720),
           zoom: 13.6,
         ),
         children: [
@@ -59,10 +73,6 @@ class _MapPageState extends State<MapPage> {
                           ? null
                           : landmark.name;
                     });
-                  },
-                  onCameraTap: () {
-                    // 하드코딩 상태로 아무 동작 없이 남김
-                    debugPrint('🧷 카메라 버튼 눌림 - 실제 이미지 선택 없음');
                   },
                 ),
               );

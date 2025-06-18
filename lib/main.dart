@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:tripus/pages/home/home_page.dart';
+import 'package:tripus/pages/map/map_page.dart';
 import 'package:tripus/routes/app_pages.dart';
 import 'package:tripus/constants/theme.dart';
 import 'package:tripus/pages/SplashScreen.dart';
@@ -18,10 +20,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //debugShowCheckedModeBanner: false, // 디버그 배너 제거
+      debugShowCheckedModeBanner: false, // 디버그 배너 제거
       title: 'TripUS',
       theme: AppTheme.lightTheme,
-      home: const SplashScreen(),
+      home: const MapPage(),
       routes: routes,
     );
   }

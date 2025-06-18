@@ -31,14 +31,14 @@ class Landmark {
 
   factory Landmark.fromJson(Map<String, dynamic> json) {
     return Landmark(
-      id: json['id'],
-      name: json['name'],
-      coordinates: json['coordinates'],
-      address: json['address'],
-      image: json['image'],
-      backgroundImage: json['background_image'],
-      symbol: json['symbol'],
-      description: json['description'],
+      id: json['id'] ?? 0, // ← 기본값 제공
+      name: json['name'] ?? '',
+      coordinates: json['coordinates'] ?? '0,0',
+      address: json['address'] ?? '',
+      image: json['image'] ?? '',
+      backgroundImage: json['background_image'] ?? '',
+      symbol: json['symbol'] ?? '',
+      description: json['description'] ?? '',
     );
   }
 }

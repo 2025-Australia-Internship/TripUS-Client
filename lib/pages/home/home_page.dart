@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:tripus/routes/app_routes.dart';
 import 'package:tripus/constants/colors.dart';
+
 import 'package:tripus/widgets/background_button.dart';
 import 'package:tripus/widgets/LandmarkBadgeBox.dart';
 import 'package:tripus/widgets/bottom_navigation.dart';
@@ -18,6 +20,27 @@ class _HomePageStatet extends State<HomePage> {
   String selectedBackground = 'None';
 
   @override
+  void initState() {
+    super.initState();
+    _loadSelectedBackground(); // SharedPreferences에서 불러오기
+  }
+
+  Future<void> _loadSelectedBackground() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      selectedBackground = prefs.getString('background') ?? 'None';
+    });
+  }
+
+  Future<void> _updateSelectedBackground(String background) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('background', background);
+    setState(() {
+      selectedBackground = background;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
@@ -31,7 +54,7 @@ class _HomePageStatet extends State<HomePage> {
             automaticallyImplyLeading: false,
             flexibleSpace: FlexibleSpaceBar(
               background: Padding(
-                padding: const EdgeInsets.only(top: 30), // 상태바 고려
+                padding: const EdgeInsets.only(top: 10), // 상태바 고려
                 child: Row(
                   children: [
                     Padding(
@@ -65,9 +88,8 @@ class _HomePageStatet extends State<HomePage> {
                           SizedBox(width: 10),
                           BackgroundButton(
                             onBackgroundSelected: (String background) {
-                              setState(() {
-                                selectedBackground = background;
-                              });
+                              _updateSelectedBackground(
+                                  background); // 이제 상태+저장 둘 다 처리
                             },
                           ),
                         ],
@@ -87,12 +109,12 @@ class _HomePageStatet extends State<HomePage> {
                     children: [
                       SizedBox(
                         width: double.infinity,
-                        height: 250,
+                        height: 220,
                         child: Image.asset('assets/home/mascot.png'),
                       ),
                       Container(
                         width: double.infinity,
-                        margin: EdgeInsets.only(top: 230),
+                        margin: EdgeInsets.only(top: 180),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
@@ -228,7 +250,7 @@ class _HomePageStatet extends State<HomePage> {
                       ),
                       if (selectedBackground != 'None')
                         Positioned(
-                          bottom: 670,
+                          bottom: 380,
                           left: 0,
                           right: 0,
                           child: Align(
