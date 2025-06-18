@@ -153,7 +153,7 @@ class _ProfilePageStatet extends State<ProfilePage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(top: 70),
+          margin: EdgeInsets.only(top: 30),
           width: double.infinity,
           color: Colors.white,
           child: Column(
