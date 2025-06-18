@@ -206,7 +206,11 @@ class _PolaroidPageState extends State<PolaroidPage> {
       {required String date, required String imagePath}) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, AppRoutes.manyPolaroid);
+        Navigator.pushNamed(
+          context,
+          AppRoutes.manyPolaroid,
+          arguments: {'selectedDate': '2025-$date'},
+        );
       },
       child: Column(
         children: [

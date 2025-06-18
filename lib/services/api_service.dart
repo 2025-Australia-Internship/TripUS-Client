@@ -98,7 +98,7 @@ class ApiService {
     }
   }
 
-  // 폴라로이드 조회
+  // 폴라로이드 아이디 조회
   static Future<Map<String, dynamic>> getPolaroidById(
       String token, int id) async {
     final response = await http.get(
@@ -113,6 +113,21 @@ class ApiService {
       return jsonDecode(response.body);
     } else {
       throw Exception('폴라로이드 조회 실패: ${response.statusCode}');
+    }
+  }
+
+  // 폴라로이드 사용자 아이디 조회
+  static Future<List<Map<String, dynamic>>> getMyPolaroids(String token) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/api/polaroids'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+      return List<Map<String, dynamic>>.from(data);
+    } else {
+      throw Exception('내 폴라로이드 조회 실패: ${response.statusCode}');
     }
   }
 

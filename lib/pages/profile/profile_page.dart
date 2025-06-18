@@ -161,9 +161,9 @@ class _ProfilePageStatet extends State<ProfilePage> {
               Stack(
                 children: [
                   ProfileBox(
-                    name: 'AU-COS',
-                    image: Image.asset('assets/melbourne_museum.jpg'),
-                    message: '오늘도 OZ한 하루!',
+                    name: '호주미소녀',
+                    image: Image.asset('assets/Logo.png'),
+                    message: 'TripUS 많은 사랑과 관심 부탁드립니다!',
                   ),
                   Positioned(
                     top: 35,

@@ -8,60 +8,44 @@ import 'package:tripus/widgets/bottom_navigation.dart';
 import 'package:tripus/widgets/custom_appbar.dart';
 import 'package:tripus/utils/color_helper.dart';
 
-class Base64ImageWidget extends StatelessWidget {
-  final String base64String;
+class SmartImage extends StatelessWidget {
+  final String imageSource;
   final double width;
   final double height;
-  final BoxFit fit;
 
-  const Base64ImageWidget({
-    Key? key,
-    required this.base64String,
-    this.width = 260.0,
-    this.height = 400.0,
-    this.fit = BoxFit.cover,
-  }) : super(key: key);
+  const SmartImage({
+    super.key,
+    required this.imageSource,
+    this.width = 240,
+    this.height = 300,
+  });
 
   @override
   Widget build(BuildContext context) {
-    if (base64String.isEmpty) {
-      return _errorBox();
-    }
-
-    // 만약 URL이면 network로 처리
-    if (base64String.startsWith('http')) {
-      return Image.network(
-        base64String,
-        width: width,
-        height: height,
-        fit: fit,
-        errorBuilder: (_, __, ___) => _errorBox(),
-      );
-    }
-
-    try {
-      final bytes = base64.decode(
-        base64String.replaceAll(RegExp(r'data:image/[^;]+;base64,'), ''),
-      );
-
-      return Image.memory(
-        bytes,
-        width: width,
-        height: height,
-        fit: fit,
-        errorBuilder: (_, __, ___) => _errorBox(),
-      );
-    } catch (_) {
-      return _errorBox();
+    if (imageSource.trim().startsWith('data:image/') ||
+        RegExp(r'^[A-Za-z0-9+/=]+$').hasMatch(imageSource)) {
+      // base64 문자열인 경우
+      try {
+        final bytes =
+            base64.decode(imageSource.replaceAll(RegExp(r'[\n\r\s]'), ''));
+        return Image.memory(bytes,
+            width: width, height: height, fit: BoxFit.cover);
+      } catch (e) {
+        return _errorImage();
+      }
+    } else {
+      // 에셋 경로나 URL일 경우
+      return Image.asset(imageSource,
+          width: width, height: height, fit: BoxFit.cover);
     }
   }
 
-  Widget _errorBox() {
+  Widget _errorImage() {
     return Container(
       width: width,
       height: height,
-      decoration: BoxDecoration(color: Colors.grey[200]),
-      child: Icon(Icons.error, color: Colors.grey[400]),
+      color: Colors.grey[200],
+      child: const Icon(Icons.error, color: Colors.grey),
     );
   }
 }
@@ -110,6 +94,8 @@ class _OnePolaroidState extends State<OnePolaroid> {
 
   @override
   Widget build(BuildContext context) {
+    final p = polaroid;
+
     return Scaffold(
       appBar: CustomAppBar(
         automaticallyImplyLeading: false,
@@ -121,7 +107,7 @@ class _OnePolaroidState extends State<OnePolaroid> {
         ),
       ),
       body: Center(
-        child: polaroid == null
+        child: p == null
             ? (_debugLog != null
                 ? Text(_debugLog!, style: const TextStyle(color: Colors.red))
                 : const CircularProgressIndicator())
@@ -142,12 +128,7 @@ class _OnePolaroidState extends State<OnePolaroid> {
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
-                    Base64ImageWidget(
-                      base64String: polaroid!['photo_url'],
-                      width: 240,
-                      height: 300,
-                      fit: BoxFit.cover,
-                    ),
+                    SmartImage(imageSource: p['photo_url']),
                     const SizedBox(height: 10),
                     SizedBox(
                       width: 240,
