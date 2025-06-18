@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 
 import 'package:tripus/routes/app_routes.dart';
-import 'package:tripus/pages/home/routes.dart';
 import 'package:tripus/constants/colors.dart';
 import 'package:tripus/widgets/background_button.dart';
 import 'package:tripus/widgets/LandmarkBadgeBox.dart';
@@ -106,59 +103,59 @@ class _HomePageStatet extends State<HomePage> {
                         child: Column(
                           children: [
                             LandmarkBadgeBox(),
-                            Container(
-                              width: 315,
-                              height: 245,
-                              margin: EdgeInsets.only(top: 20),
-                              padding: EdgeInsets.all(21),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "오늘의 핀",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onDoubleTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => RoutePage()),
-                                      );
-                                    },
-                                    child: Container(
-                                      height: 170,
-                                      margin: EdgeInsets.only(top: 10),
-                                      child: FlutterMap(
-                                        options: MapOptions(
-                                          center:
-                                              LatLng(-37.8136, 144.9631), // 멜버른
-                                          zoom: 15.0,
-                                        ),
-                                        children: [
-                                          TileLayer(
-                                            urlTemplate:
-                                                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                            subdomains: [
-                                              'a',
-                                              'b',
-                                              'c'
-                                            ], // OSM 기본 타일
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Container(
+                            //   width: 315,
+                            //   height: 245,
+                            //   margin: EdgeInsets.only(top: 20),
+                            //   padding: EdgeInsets.all(21),
+                            //   decoration: BoxDecoration(
+                            //     color: Colors.white,
+                            //     borderRadius: BorderRadius.circular(12.0),
+                            //   ),
+                            //   child: Column(
+                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                            //     children: [
+                            //       Text(
+                            //         "오늘의 핀",
+                            //         style: TextStyle(
+                            //           fontWeight: FontWeight.w600,
+                            //           fontSize: 15,
+                            //         ),
+                            //       ),
+                            //       GestureDetector(
+                            //         onDoubleTap: () {
+                            //           Navigator.push(
+                            //             context,
+                            //             MaterialPageRoute(
+                            //                 builder: (context) => RoutePage()),
+                            //           );
+                            //         },
+                            //         child: Container(
+                            //           height: 170,
+                            //           margin: EdgeInsets.only(top: 10),
+                            //           child: FlutterMap(
+                            //             options: MapOptions(
+                            //               center:
+                            //                   LatLng(-37.8136, 144.9631), // 멜버른
+                            //               zoom: 15.0,
+                            //             ),
+                            //             children: [
+                            //               TileLayer(
+                            //                 urlTemplate:
+                            //                     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                            //                 subdomains: [
+                            //                   'a',
+                            //                   'b',
+                            //                   'c'
+                            //                 ], // OSM 기본 타일
+                            //               ),
+                            //             ],
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             Container(
                               width: 315,
                               height: 245,

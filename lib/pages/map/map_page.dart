@@ -1,14 +1,10 @@
-import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'package:tripus/models/landmark.dart';
 import 'package:tripus/widgets/landmark_marker.dart';
 import 'package:tripus/widgets/bottom_navigation.dart';
-import 'package:tripus/pages/polaroid/edit_polaroid.dart';
 import 'package:tripus/services/landmark/landmark_service.dart';
 
 class MapPage extends StatefulWidget {
@@ -19,36 +15,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  File? _selectedImage;
   String? selectedMarker;
-
-  Future<void> pickImage() async {
-    final picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 85,
-    );
-
-    if (pickedFile != null) {
-      final imageFile = File(pickedFile.path);
-      final bytes = await imageFile.readAsBytes();
-      final base64Image = base64Encode(bytes);
-
-      setState(() {
-        _selectedImage = imageFile;
-      });
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => EditPolaroid(
-            selectedImage: imageFile,
-          ),
-        ),
-      );
-    }
-  }
-
   List<Landmark> landmarks = [];
 
   @override
@@ -75,7 +42,7 @@ class _MapPageState extends State<MapPage> {
         children: [
           TileLayer(
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c'], // OSM 기본 타일
+            subdomains: ['a', 'b', 'c'],
           ),
           MarkerLayer(
             markers: landmarks.map((landmark) {
@@ -93,14 +60,17 @@ class _MapPageState extends State<MapPage> {
                           : landmark.name;
                     });
                   },
-                  onCameraTap: pickImage,
+                  onCameraTap: () {
+                    // 하드코딩 상태로 아무 동작 없이 남김
+                    debugPrint('🧷 카메라 버튼 눌림 - 실제 이미지 선택 없음');
+                  },
                 ),
               );
             }).toList(),
           )
         ],
       ),
-      bottomNavigationBar: BottomNavigation(initialIndex: 1),
+      bottomNavigationBar: const BottomNavigation(initialIndex: 1),
     );
   }
 }

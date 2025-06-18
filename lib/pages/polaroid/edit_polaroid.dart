@@ -1,28 +1,12 @@
-import 'dart:convert';
-import 'dart:typed_data';
-import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:tripus/constants/colors.dart';
-import 'package:tripus/pages/map/loding_AI.dart';
-import 'package:tripus/pages/polaroid/one_polaroid.dart';
 import 'package:tripus/widgets/custom_appbar.dart';
 import 'package:tripus/widgets/polaroid.dart';
 import 'package:tripus/widgets/bottom_navigation.dart';
 import 'package:tripus/widgets/primary_button.dart';
 
 class EditPolaroid extends StatefulWidget {
-  final File selectedImage;
-
-  const EditPolaroid({
-    Key? key,
-    required this.selectedImage,
-  }) : super(key: key);
+  const EditPolaroid({super.key});
 
   @override
   State<EditPolaroid> createState() => _EditPolaroidState();
@@ -39,81 +23,15 @@ class _EditPolaroidState extends State<EditPolaroid> {
     super.dispose();
   }
 
-  Future<void> savePolaroid() async {
-    const storage = FlutterSecureStorage();
-    final accessToken = await storage.read(key: 'jwt');
-
-    if (accessToken == null) {
-      print("Access token not found");
-      return;
-    }
-
-    try {
-      final String base64Image =
-          base64Encode(await widget.selectedImage.readAsBytes());
-
-      final Map<String, dynamic> polaroidData = {
-        'photo_url': base64Image,
-        'caption': _captionController.text,
-        'color': '#${_color.value.toRadixString(16).padLeft(8, '0')}',
-      };
-
-      final response = await http.post(
-        Uri.parse("${dotenv.env['BASE_URL']}/polaroids"),
-        headers: {
-          'Authorization': 'Bearer $accessToken',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(polaroidData),
-      );
-
-      if (response.statusCode == 201) {
-        final responseBody = jsonDecode(response.body);
-        final int polaroidId = responseBody['id'];
-
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => LodingAiPage(
-              photoUrl: base64Image,
-              caption: _captionController.text,
-              backgroundColor: _color,
-              onComplete: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => OnePolaroid(
-                      polaroidId: polaroidId,
-                      photoUrl: base64Image,
-                      caption: _captionController.text,
-                      backgroundColor: _color,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        );
-      } else {
-        print('Failed to save Polaroid: ${response.statusCode}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to save Polaroid.')),
-        );
-      }
-    } catch (error) {
-      print('Error saving Polaroid: $error');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('An error occurred while saving Polaroid.')),
-      );
-    }
+  void savePolaroid() {
+    // 실제 저장 로직 제거 → 디버깅용 메시지 출력 또는 테스트용 dummy 처리
+    print('하드코딩된 폴라로이드 저장: ${_captionController.text}, 공개 여부: $_isPublic');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        text: '폴라로이드',
-      ),
+      appBar: const CustomAppBar(text: '폴라로이드'),
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
@@ -125,7 +43,7 @@ class _EditPolaroidState extends State<EditPolaroid> {
                 text: _captionController.text.isEmpty
                     ? '텍스트를 입력해주세요.'
                     : _captionController.text,
-                image: Image.file(widget.selectedImage),
+                image: Image.asset('assets/sample1.png'), // 하드코딩 이미지
                 color: _color,
                 isPublic: _isPublic,
               ),

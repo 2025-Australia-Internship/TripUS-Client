@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tripus/models/user_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiService {
   static final String _baseUrl = dotenv.env['BASE_URL']!;
@@ -77,6 +78,42 @@ class ApiService {
       return body;
     } else {
       throw Exception(body['message'] ?? '로그인 실패');
+    }
+  }
+
+  // 폴라로이드 생성
+  static Future<int> createPolaroid({
+    required String base64Image,
+    required String caption,
+    required String color,
+    required bool isOpened,
+    int? landmarkId,
+  }) async {
+    const storage = FlutterSecureStorage();
+    final accessToken = await storage.read(key: 'jwt');
+
+    final Map<String, dynamic> polaroidData = {
+      'photo_url': base64Image,
+      'caption': caption,
+      'color': color,
+      'is_opened': isOpened,
+      if (landmarkId != null) 'landmark_id': landmarkId,
+    };
+
+    final response = await http.post(
+      Uri.parse("$_baseUrl/api/polaroids"),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(polaroidData),
+    );
+
+    if (response.statusCode == 201) {
+      final body = jsonDecode(response.body);
+      return body['id'];
+    } else {
+      throw Exception("Failed to create polaroid: ${response.body}");
     }
   }
 }
