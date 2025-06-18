@@ -19,18 +19,18 @@ class _MapPageState extends State<MapPage> {
   String? selectedMarker;
   List<Landmark> landmarks = [];
 
-  final ImagePicker _picker = ImagePicker();
+  // final ImagePicker _picker = ImagePicker();
 
-  Future<void> _pickImageFromGallery() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  // Future<void> _pickImageFromGallery() async {
+  //   final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
-    if (image != null) {
-      debugPrint('📷 선택된 이미지 경로: ${image.path}');
-      // 이후 처리: 예를 들면 해당 landmark에 사진 저장 or 다른 페이지로 이동 등
-    } else {
-      debugPrint('❌ 이미지 선택이 취소됨');
-    }
-  }
+  //   if (image != null) {
+  //     debugPrint('📷 선택된 이미지 경로: ${image.path}');
+  //     // 이후 처리: 예를 들면 해당 landmark에 사진 저장 or 다른 페이지로 이동 등
+  //   } else {
+  //     debugPrint('❌ 이미지 선택이 취소됨');
+  //   }
+  // }
 
   @override
   void initState() {
