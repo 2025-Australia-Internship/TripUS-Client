@@ -4,7 +4,7 @@ import 'package:tripus/models/user_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiService {
-  static final String _baseUrl = dotenv.env['BASE_URL'] ?? '';
+  static final String _baseUrl = dotenv.env['BASE_URL']!;
 
   // 이메일 중복 확인
   static Future<bool> checkEmailDuplicate(String email) async {
@@ -65,10 +65,17 @@ class ApiService {
       body: jsonEncode({'email': email, 'password': password}),
     );
 
+    print('응답 코드: ${response.statusCode}');
+    print('응답 바디: ${response.body}');
+
+    final body = jsonDecode(response.body);
+
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      if (body['access_token'] == null) {
+        throw Exception('No access token returned');
+      }
+      return body;
     } else {
-      final body = jsonDecode(response.body);
       throw Exception(body['message'] ?? '로그인 실패');
     }
   }

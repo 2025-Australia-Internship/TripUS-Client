@@ -95,21 +95,38 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
     } catch (e) {
       _controller.reset();
       print(e);
-      _setEmailError('이미 가입된 이메일이에요!');
+      _setEmailError('이메일 확인 중 에러가 발생했습니다.');
       return;
     }
 
     try {
-      await _controller.sendCode();
+      final code = await _controller.sendCode(); // 코드 받아오기
+
       setState(() {
         _emailStatusMessage = '인증 코드를 전송하였습니다';
         _emailMessageType = MessageType.success;
       });
+
+      // 🔔 알림창으로 코드 보여주기
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('인증 코드'),
+            content: Text('인증 코드: $code'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
     } catch (e) {
       print('이메일 중복 확인 실패: $e');
       _controller.reset();
       _setEmailError('중복 확인 중 오류가 발생했습니다');
-      return;
     }
   }
 
