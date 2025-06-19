@@ -21,7 +21,6 @@ Widget _buildPolaroidImage(String source) {
           source.replaceAll(RegExp(r'^data:image/[^;]+;base64,'), '');
       final bytes = base64.decode(base64Str);
       return ClipRRect(
-        borderRadius: BorderRadius.circular(8),
         child: Image.memory(
           bytes,
           width: 105,
@@ -34,7 +33,6 @@ Widget _buildPolaroidImage(String source) {
     }
   } else {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(8),
       child: Image.asset(
         source,
         width: 105,
@@ -153,43 +151,55 @@ class _ManyPolaroidState extends State<ManyPolaroid> {
                 height: 190,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [grey02, Color(0xff737373)],
-                  ),
+                  // 배경색이 아니라 gradient만 씌움
                 ),
-                child: Stack(
-                  children: [
-                    if (latest != null)
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Stack(
+                    children: [
+                      if (latest != null)
+                        Positioned.fill(
+                          child: _buildPolaroidImage(latest['photo_url']),
+                        ),
+
                       Positioned.fill(
-                        child: ClipRRect(
-                          child: Opacity(
-                            opacity: 0.3,
-                            child: _buildPolaroidImage(latest['photo_url']),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Color.fromARGB(0, 255, 255, 255),
+                                Color.fromARGB(255, 0, 0, 0),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    Positioned(
-                      top: 5,
-                      left: 5,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, AppRoutes.polaroid);
-                        },
-                        icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                        color: dark08,
+
+                      // 버튼과 날짜
+                      Positioned(
+                        top: 5,
+                        left: 5,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, AppRoutes.polaroid);
+                          },
+                          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                          color: Color(0xffffffff),
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 12,
-                      right: 20,
-                      child: Text(
-                        displayDate,
-                        style: const TextStyle(fontSize: 20, color: dark08),
+                      Positioned(
+                        bottom: 12,
+                        right: 20,
+                        child: Text(
+                          displayDate,
+                          style: const TextStyle(
+                              fontSize: 20, color: Color(0xffffffff)),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 20),

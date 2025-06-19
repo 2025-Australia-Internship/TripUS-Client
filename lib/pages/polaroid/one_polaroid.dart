@@ -7,6 +7,7 @@ import 'package:tripus/utils/storage_helper.dart';
 import 'package:tripus/widgets/bottom_navigation.dart';
 import 'package:tripus/widgets/custom_appbar.dart';
 import 'package:tripus/utils/color_helper.dart';
+import 'package:intl/intl.dart';
 
 class SmartImage extends StatelessWidget {
   final String imageSource;
@@ -102,7 +103,22 @@ class _OnePolaroidState extends State<OnePolaroid> {
         actionIcon: IconButton(
           icon: const Icon(Icons.close_rounded, color: dark08),
           onPressed: () {
-            Navigator.pushNamed(context, AppRoutes.manyPolaroid);
+            if (polaroid != null && polaroid!['created_at'] != null) {
+              final rawDate = DateTime.parse(polaroid!['created_at']);
+              final formattedDate = DateFormat('yyyy-MM-dd').format(rawDate);
+
+              Navigator.pushReplacementNamed(
+                context,
+                AppRoutes.manyPolaroid,
+                arguments: {
+                  'selectedDate': formattedDate,
+                },
+              );
+            } else {
+              setState(() {
+                _debugLog = '날짜 정보가 없습니다.';
+              });
+            }
           },
         ),
       ),

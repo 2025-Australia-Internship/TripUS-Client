@@ -27,6 +27,13 @@ class _PolaroidPageState extends State<PolaroidPage> {
     fetchPolaroids();
   }
 
+  bool _isToday(String mmDotdd) {
+    final now = DateTime.now();
+    final todayStr =
+        '${now.month.toString().padLeft(2, '0')}.${now.day.toString().padLeft(2, '0')}';
+    return mmDotdd == todayStr;
+  }
+
   ImageProvider resolveImage(String imageUrl) {
     if (imageUrl.startsWith('assets/')) {
       return AssetImage(imageUrl); // asset 경로일 경우
@@ -218,7 +225,7 @@ class _PolaroidPageState extends State<PolaroidPage> {
             height: 18,
             child: Center(
               child: Text(
-                date,
+                _isToday(date) ? 'Today' : date,
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,

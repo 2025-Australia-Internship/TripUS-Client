@@ -39,7 +39,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 70,
+      height: 90,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -51,7 +51,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 0),
+        padding: const EdgeInsets.only(bottom: 30),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

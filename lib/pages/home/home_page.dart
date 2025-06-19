@@ -50,7 +50,7 @@ class _HomePageStatet extends State<HomePage> {
             floating: false, // true로 하면 아래로 당길 때 다시 나타남
             pinned: false, // false면 스크롤 시 완전히 사라짐
             //snap: false,
-            expandedHeight: 70, // AppBar 높이 설정
+            expandedHeight: 80, // AppBar 높이 설정
             automaticallyImplyLeading: false,
             flexibleSpace: FlexibleSpaceBar(
               background: Padding(
@@ -109,7 +109,7 @@ class _HomePageStatet extends State<HomePage> {
                     children: [
                       SizedBox(
                         width: double.infinity,
-                        height: 220,
+                        height: 230,
                         child: Image.asset('assets/home/mascot.png'),
                       ),
                       Container(
